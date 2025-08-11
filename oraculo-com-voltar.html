@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1628">
+  <title>Oráculo — Entre Mundos</title>
+  <style>
+    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; }
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
+    .wrap{max-width:740px;margin:0 auto;padding:20px 16px 40px;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
+    h1{font-size:22px;margin:0;letter-spacing:.3px;}
+    .muted{color:var(--muted)}
+    .panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 0 40px rgba(255,255,255,.02);}
+    .oracle{display:grid;place-items:center;min-height:360px;text-align:center;padding:12px 14px;}
+    .msg{font-size:22px;line-height:1.45;opacity:0;transform:translateY(6px);}
+    .show{animation:fadeIn .45s ease forwards;}
+    @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+    .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+    button,.btn{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:transform .06s ease;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    button:active,.btn:active{transform:scale(.98);}
+    .btn-back{background:#15325f;border-color:#28508a}
+    footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="btn btn-back" href="index.html?v=10">← Voltar</a>
+      <div style="text-align:right">
+        <h1 style="margin:0">Oráculo — Entre Mundos</h1>
+        <div class="muted">Toca em “Abrir Oráculo” e recebe a tua mensagem.</div>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="oracle">
+        <div id="message" class="msg">Pronto para abrir o oráculo?</div>
+      </div>
+      <div class="row">
+        <button id="open">Abrir Oráculo</button>
+        <button id="another" style="display:none">Nova mensagem</button>
+        <button id="save" style="display:none">Guardar</button>
+        <button id="share" style="display:none">Partilhar</button>
+      </div>
+    </section>
+
+    <footer>Entre Mundos — Oráculo</footer>
+  </div>
+
+<script>
+let MESSAGES = [];
+const msgEl = document.getElementById('message');
+const btnOpen = document.getElementById('open');
+const btnAnother = document.getElementById('another');
+const btnSave = document.getElementById('save');
+const btnShare = document.getElementById('share');
+
+fetch('oraculo.json?v=10').then(r => r.json()).then(d => { MESSAGES = d; }).catch(()=>{
+  MESSAGES = ["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."];
+});
+
+function pick(){ return MESSAGES[Math.floor(Math.random()*MESSAGES.length)]; }
+function show(text){ msgEl.classList.remove('show'); setTimeout(()=>{ msgEl.textContent=text; msgEl.classList.add('show'); }, 10); }
+
+btnOpen.addEventListener('click', ()=>{ show(pick()); btnOpen.style.display='none'; btnAnother.style.display='inline-block'; btnSave.style.display='inline-block'; btnShare.style.display='inline-block'; });
+btnAnother.addEventListener('click', ()=> show(pick()) );
+
+btnSave.addEventListener('click', ()=>{
+  const list = JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]');
+  list.push({ text: msgEl.textContent, ts: Date.now() });
+  localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list));
+  btnSave.textContent = 'Guardado ✓';
+  setTimeout(()=> btnSave.textContent='Guardar', 1200);
+});
+
+btnShare.addEventListener('click', async ()=>{
+  const text = 'Oráculo — Entre Mundos\n\n' + msgEl.textContent;
+  if (navigator.share) { try { await navigator.share({ text }); } catch(e){} }
+  else { try { await navigator.clipboard.writeText(text); btnShare.textContent='Copiado ✓'; setTimeout(()=>btnShare.textContent='Partilhar',1200);} catch(e){} }
+});
+</script>
+</body>
+</html>
