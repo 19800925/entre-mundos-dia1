@@ -1,78 +1,116 @@
-// Tabs
-const tabs = document.querySelectorAll('.tab-btn');
-const cards = document.querySelectorAll('main .card');
+
+/* Tabs */
+const tabs = document.querySelectorAll('.tab');
+const panels = {
+  guia: document.getElementById('tab-guia'),
+  silencio: document.getElementById('tab-silencio'),
+  escrita: document.getElementById('tab-escrita')
+};
 tabs.forEach(btn => {
   btn.addEventListener('click', () => {
     tabs.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const t = btn.dataset.target;
-    cards.forEach(c => c.classList.toggle('visible', c.id === t));
+    Object.values(panels).forEach(p => p.classList.remove('active'));
+    panels[btn.dataset.tab].classList.add('active');
   });
 });
 
-// Breathing animation 4·4·4·4
+/* Respiração 4-4-4-4 */
 let breathTimer = null;
 const circle = document.getElementById('breathCircle');
-const startBreath = () => {
-  stopBreath();
+const label = document.getElementById('breathLabel');
+const startBreath = document.getElementById('startBreath');
+const stopBreath = document.getElementById('stopBreath');
+
+function runBreathCycle() {
   const phases = [
-    {label:'Inspira…', scale:1.0, to:1.15},
-    {label:'Sustém…', scale:1.15, to:1.15},
-    {label:'Expira…', scale:1.15, to:1.0},
-    {label:'Pausa…', scale:1.0, to:1.0},
+    {t: 'Inspira', cls: 'grow'},
+    {t: 'Sustém', cls: ''},
+    {t: 'Expira', cls: 'shrink'},
+    {t: 'Pausa', cls: ''},
   ];
   let i = 0;
-  circle.style.transition = 'transform 4s ease-in-out';
-  circle.textContent = phases[0].label;
-  circle.style.transform = `scale(${phases[0].to})`;
-  breathTimer = setInterval(() => {
-    i = (i + 1) % phases.length;
-    const p = phases[i];
-    circle.textContent = p.label;
-    circle.style.transform = `scale(${p.to})`;
-  }, 4000);
-};
-const stopBreath = () => {
-  if (breathTimer){ clearInterval(breathTimer); breathTimer=null; }
-  circle.textContent = 'Preparar…';
-  circle.style.transform = 'scale(1)';
-};
-document.getElementById('breathStart').onclick = startBreath;
-document.getElementById('breathStop').onclick = stopBreath;
+  const step = () => {
+    if (!breathTimer) return;
+    const p = phases[i % phases.length];
+    label.textContent = p.t;
+    circle.classList.remove('grow','shrink');
+    if (p.cls) circle.classList.add(p.cls);
+    setTimeout(() => {
+      if (!breathTimer) return;
+      i++;
+      step();
+    }, 4000);
+  };
+  step();
+}
 
-// Timer (Silêncio)
-let countdown = null;
-let remaining = 60;
-const timerEl = document.getElementById('timer');
+startBreath.addEventListener('click', () => {
+  if (breathTimer) return;
+  label.textContent = 'Preparar…';
+  // tiny delay then start
+  breathTimer = true;
+  setTimeout(runBreathCycle, 800);
+});
+
+stopBreath.addEventListener('click', () => {
+  breathTimer = null;
+  label.textContent = 'Preparar…';
+  circle.classList.remove('grow','shrink');
+});
+
+/* Silêncio — contador */
+let silentInterval = null;
 const chips = document.querySelectorAll('.chip');
 const customMin = document.getElementById('customMin');
+const startSilent = document.getElementById('startSilent');
+const stopSilent = document.getElementById('stopSilent');
+const silentTimer = document.getElementById('silentTimer');
 
-function fmt(sec){
-  const m = String(Math.floor(sec/60)).padStart(2,'0');
-  const s = String(sec%60).padStart(2,'0');
-  return `${m}:${s}`;
-}
-function setMinutes(min){
-  chips.forEach(c => c.classList.toggle('selected', c.dataset.min == min));
-  customMin.value = min;
-  remaining = min * 60;
-  timerEl.textContent = fmt(remaining);
-}
-chips.forEach(c => c.addEventListener('click', () => setMinutes(+c.dataset.min)));
-customMin.addEventListener('change', e => setMinutes(Math.max(1, Math.min(60, +e.target.value || 1))));
+chips.forEach(c => {
+  c.addEventListener('click', () => {
+    chips.forEach(x => x.classList.remove('selected'));
+    c.classList.add('selected');
+    customMin.value = c.dataset.min;
+    updateTimerDisplay(parseInt(customMin.value,10) * 60);
+  });
+});
 
-document.getElementById('timerStart').onclick = () => {
-  if (countdown) return;
-  countdown = setInterval(() => {
-    remaining--;
-    if (remaining <= 0){
-      remaining = 0;
-      clearInterval(countdown); countdown = null;
+customMin.addEventListener('input', () => {
+  let v = parseInt(customMin.value || '1', 10);
+  if (isNaN(v) || v < 1) v = 1;
+  if (v > 180) v = 180;
+  customMin.value = v;
+  chips.forEach(x => x.classList.remove('selected'));
+  updateTimerDisplay(v * 60);
+});
+
+function updateTimerDisplay(totalSeconds){
+  const m = Math.floor(totalSeconds / 60).toString().padStart(2,'0');
+  const s = Math.floor(totalSeconds % 60).toString().padStart(2,'0');
+  silentTimer.textContent = `${m}:${s}`;
+}
+
+startSilent.addEventListener('click', () => {
+  let secs = parseInt(customMin.value,10) * 60;
+  if (silentInterval) clearInterval(silentInterval);
+  updateTimerDisplay(secs);
+  silentInterval = setInterval(() => {
+    secs--;
+    if (secs <= 0){
+      clearInterval(silentInterval);
+      silentInterval = null;
+      updateTimerDisplay(0);
+      try { new AudioContext(); } catch(e) {}
+    } else {
+      updateTimerDisplay(secs);
     }
-    timerEl.textContent = fmt(remaining);
   }, 1000);
-};
-document.getElementById('timerStop').onclick = () => { clearInterval(countdown); countdown=null; };
+});
 
-// Initialize
-setMinutes(1);
+stopSilent.addEventListener('click', () => {
+  if (silentInterval) clearInterval(silentInterval);
+  silentInterval = null;
+});
+// init
+updateTimerDisplay(60);

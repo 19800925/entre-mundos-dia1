@@ -1,49 +1,101 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="top">
-    <div class="app-icon">?</div>
+  <header class="appbar">
+    <div class="logo">🔵</div>
     <h1>Entre Mundos — Dia 1</h1>
-    <p class="sub">Mensagem · Respiração · Frase · Silêncio</p>
   </header>
 
-  <nav class="tabs">
-    <button class="tab active">Guia Espiritual</button>
-    <button class="tab">Silêncio</button>
-    <button class="tab">Escrita da Alma</button>
+  <nav class="tabs" role="tablist" aria-label="Secções principais">
+    <button class="tab active" data-tab="guia" role="tab" aria-selected="true">Guia Espiritual</button>
+    <button class="tab" data-tab="silencio" role="tab" aria-selected="false">Silêncio</button>
+    <button class="tab" data-tab="escrita" role="tab" aria-selected="false">Escrita da Alma</button>
   </nav>
 
-  <main class="content">
-    <section class="card card--message">
-      <div class="card-inner">
-        <h2 class="card-title">Mensagem de hoje — <span class="accent">Reconexão</span></h2>
-        <p class="msg">
-          Respira e lembra-te: <span class="gold">tu és a casa antes do mundo.</span>
+  <main>
+    <!-- Guia Espiritual -->
+    <section id="tab-guia" class="panel active" role="tabpanel">
+      <div class="card">
+        <header class="card-title">
+          <span>Mensagem de hoje —</span> <strong>Reconexão</strong>
+        </header>
+        <p class="card-text">
+          Respira e lembra-te: <mark>tu és a casa antes do mundo</mark>.
           O teu valor não depende da produtividade; a tua verdade não precisa gritar.
           A cor azul é o teu porto — volta a ela quando o ruído te cansar.
         </p>
       </div>
+
+      <!-- Respiração 4·4·4·4 -->
+      <div class="card">
+        <header class="card-title">
+          <span>Prática —</span> <strong>Respiração 4·4·4·4</strong>
+        </header>
+
+        <div class="breath-wrap">
+          <div class="circle" id="breathCircle">
+            <div class="circle-label" id="breathLabel">Preparar…</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="startBreath" class="btn primary">Começar</button>
+          <button id="stopBreath" class="btn">Parar</button>
+        </div>
+        <div class="legend">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</div>
+      </div>
     </section>
 
-    <section class="card card--practice">
-      <h3 class="practice-title">Prática — Respiração 4·4·4·4</h3>
-      <div class="breath-wrap">
-        <div class="circle"><span>Preparar...</span></div>
+    <!-- Silêncio -->
+    <section id="tab-silencio" class="panel" role="tabpanel">
+      <div class="card">
+        <header class="card-title"><strong>Momento de silêncio</strong></header>
+        <p class="muted">Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
+
+        <div class="chips">
+          <button class="chip selected" data-min="1">1 min</button>
+          <button class="chip" data-min="2">2 min</button>
+          <button class="chip" data-min="3">3 min</button>
+          <button class="chip" data-min="5">5 min</button>
+        </div>
+
+        <div class="inline">
+          <span class="muted">ou</span>
+          <label class="sr-only" for="customMin">Minutos</label>
+          <input id="customMin" type="number" min="1" max="60" value="1" inputmode="numeric">
+          <span class="muted">min</span>
+        </div>
+
+        <div class="actions">
+          <button id="startSilent" class="btn primary">Iniciar</button>
+          <button id="stopSilent" class="btn">Parar</button>
+        </div>
+
+        <div class="timer" id="silentTimer">01:00</div>
+        <p class="hint">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
       </div>
-      <div class="actions">
-        <button class="btn btn-primary">Começar</button>
-        <button class="btn btn-ghost">Parar</button>
+    </section>
+
+    <!-- Escrita da Alma (placeholder) -->
+    <section id="tab-escrita" class="panel" role="tabpanel">
+      <div class="card">
+        <header class="card-title"><strong>Escrita da Alma</strong></header>
+        <p class="muted">Em breve aqui: um espaço para escreveres o que o coração te sussurra.</p>
       </div>
-      <p class="legend">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</p>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <footer class="footer">
+    Entre Mundos — feito com verdade 💙
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
