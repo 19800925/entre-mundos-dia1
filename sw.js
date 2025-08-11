@@ -1,12 +1,14 @@
-// purge caches + network-first to evitar versões antigas
-self.addEventListener('install', e => self.skipWaiting());
+const CACHE = 'em-v2';
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./script.js'])));
+});
 self.addEventListener('activate', e => {
-  e.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.map(k => caches.delete(k)));
-    await self.clients.claim();
-  })());
+  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
 self.addEventListener('fetch', e => {
-  e.respondWith(fetch(e.request, {cache:'no-store'}).catch(() => caches.match(e.request)));
+  const url = new URL(e.request.url);
+  if (url.origin === location.origin) {
+    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+  }
 });

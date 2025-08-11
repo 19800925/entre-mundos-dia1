@@ -1,121 +1,122 @@
 <!doctype html>
 <html lang="pt">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entre Mundos — Dia 1</title>
-<link rel="manifest" href="manifest.json?v=1">
-<style>
-:root{
-  --bg:#0a1628; --panel:#0f2240; --panel2:#122a4f; --text:#e8f0ff;
-  --muted:#a9bbd6; --accent:#1b4c8e; --accent2:#2c71d1; --ring:#ffffff26;
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Entre Mundos — Dia 1</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a1628">
+  <style>:root {
+  --bg: #0a1628;
+  --card:#10243a;
+  --muted:#93a4ba;
+  --text:#e9f0ff;
+  --brand:#2a62ff;
+  --brand-2:#1840a6;
+  --accent:#ffd23f;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
-.wrap{max-width:920px;margin:0 auto;padding:28px}
-h1{margin:0 0 8px 0;font-size:clamp(26px,4.8vw,36px)}
-.sub{color:var(--muted);margin-bottom:18px}
-.card{background:linear-gradient(180deg,var(--panel) 0%, var(--panel2) 100%);
-      border:1px solid var(--ring); border-radius:22px; padding:22px; box-shadow: 0 12px 40px #00000033}
-h2{margin:0 0 6px 0; font-size:20px; color:#cfe2ff}
-hr{border:0;border-top:1px solid #ffffff1e;margin:18px 0}
-.button{display:inline-flex;align-items:center;gap:8px;
-  background:var(--accent); color:#fff; font-weight:700; border:0; padding:12px 16px;
-  border-radius:14px; cursor:pointer}
-.button.secondary{background:#ffffff12;border:1px solid var(--ring);color:var(--text)}
-.choices{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px}
-.choice{padding:10px 12px;border-radius:20px;border:1px solid var(--ring);
-  background:#ffffff12;color:#fff;cursor:pointer}
-.choice.active{outline:2px solid #ffd53b; background:#ffffff18}
-.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.input{width:80px;padding:10px 12px;border-radius:12px;border:1px solid var(--ring);
-  background:#09172e;color:#fff;text-align:center}
-.timer{font-size:44px; letter-spacing:1px; font-weight:800; color:#ffd442; text-align:center; margin:8px 0}
-small{color:var(--muted)}
-footer{color:var(--muted); text-align:center; margin-top:26px}
+html,body{height:100%}
+body{
+  margin:0;padding:24px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 50% -200px, #143861 0%, var(--bg) 40%, var(--bg) 100%) fixed;
+  color:var(--text);
+}
+h1{font-size:34px;margin:0 0 6px 0}
+.tabs{display:flex;gap:16px;margin:8px 0 18px 0;flex-wrap:wrap}
+.tab{padding:10px 14px;border:1px solid #2a3e5d;border-radius:12px;color:#b7c6db;cursor:pointer;user-select:none}
+.tab.active{border-color:#436aa0;color:#dfeaff;box-shadow:0 0 0 2px rgba(67,106,160,.15) inset}
+.card{background:linear-gradient(180deg,#0f2239 0%, #0e1e32 100%);
+      border-radius:18px;border:1px solid #1e3656;padding:18px;margin:16px 0;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+h2{margin:0 0 12px 0;font-size:22px}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{padding:12px 18px;border-radius:14px;background:#0d2036;border:1px solid #2a3e5d;color:#cbd9ee;cursor:pointer}
+.chip.active{border-color:#ffd23f;color:#ffd23f;box-shadow:0 0 0 2px rgba(255,210,63,.18) inset}
+.input{background:#0d2036;border:1px solid #2a3e5d;color:#e9f0ff;padding:12px 14px;width:90px;border-radius:12px;font-size:16px;text-align:center}
+.btn{background:#1840a6;border:none;color:white;padding:12px 18px;border-radius:14px;font-weight:600;cursor:pointer}
+.btn.secondary{background:#253a5c;color:#e6eeff}
+.timer{font-size:68px;font-weight:800;letter-spacing:1px;color:#ffd23f;text-align:center;margin:6px 0 8px 0}
+.footer{margin-top:18px;color:#a9b9cf}
+.hide{display:none}
+.msg{font-size:18px;line-height:1.6}
+.big-circle{width:260px;height:260px;border-radius:50%;
+   background: radial-gradient(circle at 50% 45%, #1a3a60 0%, #0d2036 70%);
+   border:1px solid #2a3e5d;margin:16px auto;
+   display:flex;align-items:center;justify-content:center;color:#cfe0ff;font-size:24px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+a.link{color:#bcd2ff}
 </style>
+</head>
 <body>
-<div class="wrap">
-  <h1>Entre Mundos — Dia 1</h1>
-  <div class="sub">Mensagem • Respiração • Frase • Silêncio</div>
+  <header>
+    <h1>Entre Mundos — Dia 1</h1>
+    <div class="tabs">
+      <div class="tab active" data-tab="guia">Mensagem</div>
+      <div class="tab" data-tab="resp">Respiração</div>
+      <div class="tab" data-tab="frase">Frase</div>
+      <div class="tab" data-tab="silencio">Silêncio</div>
+    </div>
+  </header>
 
-  <div class="card">
+  <!-- MENSAGEM -->
+  <section id="guia" class="card">
+    <h2>Mensagem de hoje — <span style="color:#ffd23f">Reconexão</span></h2>
+    <p class="msg">
+      Respira e lembra-te: <strong>tu és a casa antes do mundo</strong>.
+      O teu valor não depende da produtividade; a tua verdade não precisa gritar.
+      A cor azul é o teu porto — volta a ela quando o ruído te cansar.
+    </p>
+    <div class="actions">
+      <a class="link" href="oraculo.html">🔮 Abrir Oráculo</a>
+    </div>
+  </section>
+
+  <!-- RESPIRAÇÃO -->
+  <section id="resp" class="card hide">
+    <h2>Prática — Respiração em 4 tempos (4·4·4·4)</h2>
+    <div class="big-circle" id="breathPhase">Preparar…</div>
+    <div class="actions">
+      <button class="btn" id="bStart">Começar</button>
+      <button class="btn secondary" id="bStop">Parar</button>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:8px">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
+  </section>
+
+  <!-- FRASE -->
+  <section id="frase" class="card hide">
+    <h2>Frase âncora</h2>
+    <p class="msg" style="font-weight:700;font-size:20px">“Eu volto. Eu volto. Eu volto.”</p>
+  </section>
+
+  <!-- SILÊNCIO -->
+  <section id="silencio" class="card hide">
     <h2>Momento de silêncio</h2>
-    <p>Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
-
-    <div class="choices" id="preset">
-      <div class="choice active" data-min="1">1 min</div>
-      <div class="choice" data-min="2">2 min</div>
-      <div class="choice" data-min="3">3 min</div>
-      <div class="choice" data-min="5">5 min</div>
+    <p class="muted">Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
+    <div class="row" style="margin:10px 0 6px">
+      <div class="chip active" data-min="1">1 min</div>
+      <div class="chip" data-min="2">2 min</div>
+      <div class="chip" data-min="3">3 min</div>
+      <div class="chip" data-min="5">5 min</div>
     </div>
-
-    <div class="row">
-      <small>ou</small>
-      <input id="customMin" class="input" type="number" min="1" max="60" step="1" value="1" aria-label="Minutos">
-      <button id="startBtn" class="button">Iniciar</button>
-      <button id="stopBtn" class="button secondary">Parar</button>
+    <div class="row" style="margin:10px 0">
+      <span class="muted">ou</span>
+      <input id="customMin" class="input" value="1" inputmode="numeric" pattern="[0-9]*">
+      <button class="btn" id="start">Iniciar</button>
+      <button class="btn secondary" id="stop">Parar</button>
     </div>
-
     <div class="timer" id="timer">01:00</div>
-    <small id="hint">Dica: o ecrã pode bloquear, mas a contagem continua.</small>
-  </div>
+    <p class="muted">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
+  </section>
 
-  <footer>Entre Mundos — feito com verdade 💙</footer>
-</div>
+  <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js?v=1').catch(()=>{});
-}
-
-// Timer logic
-let total = 60, left = 60, tId = null, running = false;
-const timer = document.getElementById('timer');
-const startBtn = document.getElementById('startBtn');
-const stopBtn = document.getElementById('stopBtn');
-const custom = document.getElementById('customMin');
-const preset = document.getElementById('preset');
-
-function fmt(s) {
-  const m = Math.floor(s/60), r = s % 60;
-  return (m<10?'0':'')+m+':' + (r<10?'0':'')+r;
-}
-function setMinutes(min){
-  total = left = Math.max(1, Math.min(60, parseInt(min)||1))*60;
-  timer.textContent = fmt(left);
-}
-function tick(){
-  if (left>0){ left--; timer.textContent = fmt(left); }
-  else { clearInterval(tId); running=false; startBtn.textContent='Reiniciar'; timer.textContent='00:00'; }
-}
-startBtn.onclick = () => {
-  if (running) return;
-  running = true;
-  clearInterval(tId);
-  // if finished, reset to selected minutes
-  if (left===0) setMinutes(custom.value);
-  tId = setInterval(tick, 1000);
-  startBtn.textContent='A contar…';
-};
-stopBtn.onclick = () => {
-  running = false;
-  clearInterval(tId);
-  startBtn.textContent='Iniciar';
-};
-custom.oninput = (e)=>{
-  preset.querySelectorAll('.choice').forEach(c=>c.classList.remove('active'));
-  setMinutes(e.target.value);
-};
-preset.addEventListener('click', (e)=>{
-  const el = e.target.closest('.choice'); if(!el) return;
-  preset.querySelectorAll('.choice').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  const min = el.getAttribute('data-min');
-  custom.value = min;
-  setMinutes(min);
-});
-// initial
-setMinutes(1);
-</script>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
+  </script>
 </body>
 </html>
