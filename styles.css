@@ -1,99 +1,92 @@
-/* ====== Tema Entre Mundos (igual ao que mostraste) ====== */
-:root{
-  --bg1:#071629;
-  --bg2:#0d2543;
-  --card:#143457;
-  --text:#e7eef7;
-  --muted:#b8c7db;
-  --accent:#ffd24b; /* dourado */
-  --ring: rgba(255,210,75,.25);
-}
 
+:root{
+  --bg:#071e34;
+  --bg2:#0d2e4e;
+  --panel:#0c2742;
+  --panel-inner:#0c2a49;
+  --text:#dbe7ff;
+  --muted:#a6b7d3;
+  --accent:#7dbaff;
+  --gold:#ffd23f;
+  --button:#1d4e89;
+  --button-ghost:#15283f;
+  --ring: rgba(125,186,255,.25);
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Rounded', 'SF Pro Text', Inter, Segoe UI, Roboto, system-ui, Arial, sans-serif;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,"Helvetica Neue",Arial,sans-serif;
   color:var(--text);
-  background: radial-gradient(1200px 600px at 50% -200px, var(--bg2), var(--bg1) 55%);
-  -webkit-font-smoothing:antialiased;
+  background: radial-gradient(1200px 600px at 50% -100px, var(--bg2), transparent) no-repeat, var(--bg);
+  background-attachment: fixed;
   line-height:1.45;
-  letter-spacing:.2px;
-  padding-bottom:32px;
+  padding-bottom:48px;
 }
+.top{
+  padding:28px 20px 0;
+}
+.app-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:inline-grid;place-items:center;
+  background:#103558;color:#9ed1ff;
+  border:1px solid #1c4c79;box-shadow:0 0 0 3px var(--ring) inset;
+  font-weight:700;margin-bottom:8px;
+}
+h1{margin:0 0 4px;font-size:32px;letter-spacing:.2px}
+.sub{margin:0;color:var(--muted)}
 
-/* Header */
-.app-header{
-  padding:18px 20px 8px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.brand-dot{
-  width:24px;height:24px;border-radius:50%;
-  background:linear-gradient(180deg,#2e65ff, #103165);
-  box-shadow:0 0 0 2px rgba(255,255,255,.06), 0 6px 14px rgba(0,0,0,.45);
-}
-h1{
-  margin:0;
-  font-weight:800;
-  font-size: clamp(24px, 5.6vw, 36px);
-}
-
-/* Tabs */
-.tabs{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-top:14px;
-}
-.sep{opacity:.45}
+.tabs{display:flex;gap:16px;padding:18px 20px 0}
 .tab{
-  appearance:none;
-  border:0;
-  background: rgba(255,255,255,.08);
+  background: linear-gradient(180deg,#0e2f51,#0a2440);
   color:var(--text);
-  padding:8px 14px;
-  border-radius:14px;
+  border:1px solid #1b426d;
+  padding:14px 18px;border-radius:14px;
   font-weight:600;
-  letter-spacing:.2px;
+  box-shadow:0 10px 20px rgba(0,0,0,.25), 0 0 0 3px transparent inset;
 }
-.tab.active{
-  background: rgba(255,255,255,.12);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
-}
+.tab.active{box-shadow:0 0 0 3px var(--ring) inset}
 
-/* Card */
-.content{padding:18px 20px}
+.content{padding:16px 20px 60px;max-width:820px;margin:0 auto}
+
 .card{
-  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:16px;
-  box-shadow:
-    0 12px 28px rgba(0,0,0,.45),
-    inset 0 0 0 1px rgba(255,255,255,.02);
-  overflow:hidden;
+  border-radius:22px;
+  border:1px solid #163d66;
+  background:linear-gradient(180deg,#0b2643,#0a2138);
+  box-shadow:0 18px 40px rgba(0,0,0,.35), 0 0 0 3px rgba(255,255,255,.02) inset;
+  padding:22px;
+  margin-bottom:22px;
 }
-.msg-card{padding:18px 18px 20px}
-.card-header{padding:6px 4px 10px}
-h2{
-  margin:0;
-  font-size: clamp(18px, 4.4vw, 22px);
-  font-weight:700;
+.card-inner{
+  border:1px solid #174066;
+  border-radius:18px;
+  background:linear-gradient(180deg,#0b294a,#0a2541);
+  padding:22px;
 }
-.accent{color:var(--accent)}
-.msg{
-  margin:0;
-  font-size: clamp(16px, 4.2vw, 18px);
-  color:var(--text);
-}
-.gold{ color: var(--accent); font-weight:800 }
+.card-title{margin:0 0 10px;color:var(--text);font-size:22px}
+.accent{color:var(--accent);font-weight:700}
+.msg{margin:0;color:var(--text);font-size:18px}
+.gold{color:var(--gold);font-weight:800}
 
-/* Melhor aparência em iPhone com notch */
-@supports (padding:max(0px)) {
-  body{ padding-top: max(0px, env(safe-area-inset-top)); }
-  .app-header{ padding-left: max(20px, env(safe-area-inset-left)); padding-right:max(20px, env(safe-area-inset-right)); }
-  .content{ padding-left: max(20px, env(safe-area-inset-left)); padding-right:max(20px, env(safe-area-inset-right)); }
+.card--practice{padding:22px}
+.practice-title{margin:0 0 18px;color:#aecdff;font-size:20px}
+.breath-wrap{display:grid;place-items:center;margin:10px 0 6px}
+.circle{
+  width:300px;height:300px;border-radius:50%;
+  background: radial-gradient(140px 140px at 50% 45%, #143f6a, #0a2239);
+  border: 1px solid #1a4166;
+  display:grid;place-items:center;
+  box-shadow: inset 0 0 60px rgba(35,125,255,.15), 0 18px 70px rgba(0,0,0,.45);
+}
+.circle span{font-size:28px;color:#cfe0ff;opacity:.95}
+.actions{display:flex;gap:16px;justify-content:center;margin:18px 0}
+.btn{
+  border:none;border-radius:12px;padding:12px 18px;font-weight:700;
+  font-size:16px;cursor:pointer;
+}
+.btn-primary{background:var(--button);color:#fff;border:1px solid #2a69aa}
+.btn-ghost{background:var(--button-ghost);color:#cfe0ff;border:1px solid #2b4770}
+.legend{color:#9ab6db;text-align:center;margin:6px 0 2px}
+@media (max-width:480px){
+  .circle{width:250px;height:250px}
 }

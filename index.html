@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="utf-8" />
@@ -7,33 +7,40 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="app-header">
-    <div class="brand">
-      <span class="brand-dot" aria-hidden="true"></span>
-      <h1>Entre Mundos — Dia 1</h1>
-    </div>
-
-    <nav class="tabs" aria-label="Secções da app">
-      <button class="tab active">Mensagem</button>
-      <span class="sep">•</span>
-      <button class="tab">Respiração</button>
-      <span class="sep">•</span>
-      <button class="tab">Frase</button>
-      <span class="sep">•</span>
-      <button class="tab">Silêncio</button>
-    </nav>
+  <header class="top">
+    <div class="app-icon">?</div>
+    <h1>Entre Mundos — Dia 1</h1>
+    <p class="sub">Mensagem · Respiração · Frase · Silêncio</p>
   </header>
 
+  <nav class="tabs">
+    <button class="tab active">Guia Espiritual</button>
+    <button class="tab">Silêncio</button>
+    <button class="tab">Escrita da Alma</button>
+  </nav>
+
   <main class="content">
-    <section class="card msg-card" aria-labelledby="msg-title">
-      <div class="card-header">
-        <h2 id="msg-title">Mensagem de hoje — <span class="accent">Reconexão</span></h2>
+    <section class="card card--message">
+      <div class="card-inner">
+        <h2 class="card-title">Mensagem de hoje — <span class="accent">Reconexão</span></h2>
+        <p class="msg">
+          Respira e lembra-te: <span class="gold">tu és a casa antes do mundo.</span>
+          O teu valor não depende da produtividade; a tua verdade não precisa gritar.
+          A cor azul é o teu porto — volta a ela quando o ruído te cansar.
+        </p>
       </div>
-      <p class="msg">
-        Respira e lembra-te: <strong class="gold">tu és a casa antes do mundo</strong>.
-        O teu valor não depende da produtividade; a tua verdade não precisa gritar.
-        A <strong class="gold">cor azul</strong> é o teu porto — volta a ela quando o ruído te cansar.
-      </p>
+    </section>
+
+    <section class="card card--practice">
+      <h3 class="practice-title">Prática — Respiração 4·4·4·4</h3>
+      <div class="breath-wrap">
+        <div class="circle"><span>Preparar...</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary">Começar</button>
+        <button class="btn btn-ghost">Parar</button>
+      </div>
+      <p class="legend">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</p>
     </section>
   </main>
 
