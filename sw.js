@@ -1,4 +1,4 @@
-const CACHE_NAME = 'entre-mundos-dia1-v4';
+const CACHE_NAME = 'entre-mundos-dia1-v7';
 const ASSETS = [
   './',
   './index.html',
