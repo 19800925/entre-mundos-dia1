@@ -45,6 +45,16 @@
     .btn-oraculo:active{transform:scale(.98);}
     /* debug oculto */
     .debug-link{display:none;font-size:12px;}
+
+    /* 🔧 Botão Admin discreto (só com #admin) */
+    #adminFab{
+      position:fixed; right:16px; bottom:calc(18px + env(safe-area-inset-bottom));
+      width:56px; height:56px; display:none;
+      background:#193b74aa; border:1px solid #2b4b82; border-radius:50%;
+      color:var(--fg); font-weight:800; box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 0 20px rgba(255,255,255,.05);
+      align-items:center; justify-content:center; text-decoration:none; backdrop-filter: blur(6px);
+    }
+    #adminFab:hover{ filter: brightness(1.08); }
   </style>
 </head>
 <body>
@@ -52,7 +62,7 @@
     <header>
       <img src="assets/icon-192.png" alt="Ícone">
       <div>
-        <h1>Entre Mundos — Dia 1</h1>
+        <h1 id="titleTap">Entre Mundos — Dia 1</h1>
         <div class="small muted">Mensagem • Respiração • Frase • Silêncio</div>
       </div>
     </header>
@@ -126,6 +136,9 @@
     <a class="btn-oraculo" href="oraculo.html">🔮 Oráculo</a>
   </div>
 
+  <!-- 🔧 Botão Admin flutuante (apenas com #admin) -->
+  <a id="adminFab" href="debug-oraculo.html" aria-label="Admin">🔧</a>
+
 <script>
   // Tabs
   const tabs = {guia:document.getElementById('guia'), silencio:document.getElementById('silencio'), escrita:document.getElementById('escrita')};
@@ -164,9 +177,37 @@
   // PWA SW
   if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
 
-  // Admin debug link só com #admin
-  function toggleDebug(){ const el=document.getElementById('debugLink'); if(!el) return; el.style.display = (location.hash === '#admin') ? 'inline' : 'none'; }
-  window.addEventListener('hashchange', toggleDebug); toggleDebug();
+  // Admin: mostrar link e FAB só com #admin
+  function toggleAdmin(){
+    const debugLink = document.getElementById('debugLink');
+    const fab = document.getElementById('adminFab');
+    const on = (location.hash === '#admin');
+    if (debugLink) debugLink.style.display = on ? 'inline' : 'none';
+    if (fab) fab.style.display = on ? 'flex' : 'none';
+  }
+  window.addEventListener('hashchange', toggleAdmin);
+  toggleAdmin();
+
+  // Duplo toque no título para abrir admin
+  (function(){
+    const title = document.getElementById('titleTap');
+    let last = 0;
+    function go(){
+      // mantém o #admin e abre debug
+      if (location.hash !== '#admin') location.hash = '#admin';
+      location.href = 'debug-oraculo.html';
+    }
+    title?.addEventListener('touchend', () => {
+      const now = Date.now();
+      if (now - last < 400) { go(); }
+      last = now;
+    });
+    title?.addEventListener('click', () => {
+      const now = Date.now();
+      if (now - last < 400) { go(); }
+      last = now;
+    });
+  })();
 </script>
 </body>
 </html>
