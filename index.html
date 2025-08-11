@@ -1,25 +1,24 @@
-
-<!DOCTYPE html>
-<html lang="pt">
+<!doctype html>
+<html lang="pt-PT">
 <head>
-<meta charset="UTF-8">
-<title>Oráculo — Entre Mundos</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<style>
-body { background-color: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-button { padding: 10px 15px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: auto; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=index-fase2.html?v=26">
+  <title>Entre Mundos — redirecionar…</title>
+  <script>
+    (function(){
+      var target = 'index-fase2.html?v=26';
+      function go(){ window.location.replace(target); }
+      // Se falhar (ficheiro não existir), tenta o oráculo como fallback.
+      window.addEventListener('error', function(){ window.location.replace('oraculo.html?v=26'); });
+      setTimeout(go, 10);
+    })();
+  </script>
+  <style>
+    body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;padding:24px}
+  </style>
 </head>
 <body>
-<h1>Mensagem do Oráculo</h1>
-<p id="message">A tua luz guia-te no silêncio.</p>
-<button id="share-whatsapp">Partilhar no WhatsApp</button>
-<script src="oraculo.js"></script>
-<script>
-document.getElementById("share-whatsapp").addEventListener("click", () => {
-    const msg = document.getElementById("message").innerText;
-    shareOnWhatsApp(msg);
-});
-</script>
+  A abrir <strong>Entre Mundos — Dia 1</strong>… Se não acontecer automaticamente, <a href="index-fase2.html?v=26">toca aqui</a>.
 </body>
 </html>
