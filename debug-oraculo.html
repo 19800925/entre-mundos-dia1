@@ -1,63 +1,189 @@
-
-<!DOCTYPE html>
-<html lang="pt">
+<!doctype html>
+<html lang="pt-PT">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Debug Oráculo</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #0b0f1a;
-    color: white;
-    text-align: center;
-    padding: 20px;
-  }
-  h1 {
-    color: cyan;
-  }
-  #count {
-    font-size: 2em;
-    margin-top: 20px;
-    color: yellow;
-  }
-  button {
-    padding: 10px 20px;
-    font-size: 1em;
-    margin-top: 20px;
-    background-color: cyan;
-    border: none;
-    cursor: pointer;
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entre Mundos — Debug do Oráculo</title>
+  <meta name="theme-color" content="#0a1628">
+  <style>
+    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --panel:#0f2342; --ring:#4a6fff; --accent:#ffd250; }
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
+    .wrap{max-width:980px;margin:0 auto;padding:20px 16px 40px;}
+    h1{font-size:22px;margin:0 0 6px;}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .btn:active{transform:scale(.98)}
+    .btn-danger{background:#6b1c2a;border-color:#8a2b3c}
+    .btn-soft{background:#142c54}
+    .panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:16px;padding:14px;margin-top:14px;box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 0 40px rgba(255,255,255,.02);}
+    input[type=text]{background:#0f2342;border:1px solid #2b4b82;border-radius:10px;color:var(--fg);padding:10px 12px;min-width:260px}
+    #list{max-height:56vh;overflow:auto;border:1px solid #2b4b82;border-radius:12px;background:#0f2342}
+    .item{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #203b6a}
+    .idx{opacity:.8}
+    .msg{white-space:pre-wrap}
+    .item:last-child{border-bottom:none}
+    .tools button{margin-left:6px}
+    .count{font-weight:800;color:var(--accent)}
+    textarea{width:100%;min-height:180px;background:#0f2342;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:10px}
+    footer{margin-top:20px;opacity:.8;font-size:12px;text-align:center}
+  </style>
 </head>
 <body>
-  <h1>🛠 Debug Oráculo</h1>
-  <p>Verifica quantas mensagens existem no oráculo e força atualização de cache.</p>
-  <div id="count">A carregar...</div>
-  <button onclick="location.reload(true)">🔄 Recarregar Página</button>
-  <button onclick="limparCache()">🧹 Limpar Cache</button>
+<div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <div>
+      <h1>Debug do Oráculo</h1>
+      <div class="muted">Gerir mensagens, exportar/importar e limpar cache. <span id="total" class="count"></span></div>
+    </div>
+    <div class="row">
+      <a class="btn btn-soft" href="index.html#admin">← Voltar</a>
+      <button class="btn" id="reload">🔄 Recarregar (no‑store)</button>
+      <button class="btn" id="clear">🧹 Limpar cache</button>
+    </div>
+  </div>
 
-  <script>
-    fetch('oraculo.json?v=' + Date.now())
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('count').textContent = 
-          `Mensagens no Oráculo: ${data.length}`;
-      })
-      .catch(() => {
-        document.getElementById('count').textContent = 'Erro ao carregar oraculo.json';
-      });
+  <div class="panel">
+    <div class="row">
+      <input id="newText" type="text" placeholder="Nova mensagem…">
+      <button class="btn" id="add">➕ Adicionar</button>
+      <button class="btn" id="export">⬇️ Exportar JSON</button>
+      <label class="btn">
+        ⬆️ Importar JSON
+        <input id="import" type="file" accept="application/json" style="display:none">
+      </label>
+      <button class="btn btn-danger" id="wipe">⚠️ Apagar tudo</button>
+    </div>
+  </div>
 
-    function limparCache() {
-      if ('caches' in window) {
-        caches.keys().then(function(names) {
-          for (let name of names) caches.delete(name);
-        }).then(() => {
-          alert('Cache limpa! Recarregue a página principal.');
-        });
-      }
+  <div id="list" class="panel"></div>
+
+  <div class="panel">
+    <div class="muted">JSON atual (apenas para copia/backup rápido)</div>
+    <textarea id="jsonBox" readonly></textarea>
+    <div class="row" style="justify-content:flex-end;margin-top:8px">
+      <button class="btn" id="copy">📋 Copiar</button>
+    </div>
+  </div>
+
+  <footer>Entre Mundos — Ferramentas do Oráculo (admin)</footer>
+</div>
+
+<script>
+let messages = [];
+const listEl = document.getElementById('list');
+const totalEl = document.getElementById('total');
+const jsonBox = document.getElementById('jsonBox');
+
+function normalize(data){
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.mensagens)) return data.mensagens;
+  if (data && Array.isArray(data.messages)) return data.messages;
+  return [];
+}
+
+async function load(nostore=true){
+  const url = 'oraculo.json' + (nostore ? ('?ts=' + Date.now()) : '');
+  const resp = await fetch(url, nostore ? {cache:'no-store'} : undefined);
+  const data = await resp.json();
+  messages = normalize(data);
+  render();
+}
+
+function render(){
+  totalEl.textContent = `Total: ${messages.length}`;
+  listEl.innerHTML = '';
+  messages.forEach((m, i) => {
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = \`
+      <div class="idx">#\${i+1}</div>
+      <div class="msg" contenteditable="true">\${m}</div>
+      <div class="tools">
+        <button class="btn btn-soft" data-act="up">⬆</button>
+        <button class="btn btn-soft" data-act="down">⬇</button>
+        <button class="btn btn-danger" data-act="del">Apagar</button>
+      </div>
+    \`;
+    item.querySelector('[contenteditable]').addEventListener('input', e => {
+      messages[i] = e.target.textContent;
+      syncBox();
+    });
+    item.querySelector('[data-act="del"]').addEventListener('click', () => {
+      messages.splice(i,1); render(); syncBox();
+    });
+    item.querySelector('[data-act="up"]').addEventListener('click', () => {
+      if (i>0){ [messages[i-1],messages[i]] = [messages[i],messages[i-1]]; render(); syncBox(); }
+    });
+    item.querySelector('[data-act="down"]').addEventListener('click', () => {
+      if (i<messages.length-1){ [messages[i+1],messages[i]] = [messages[i],messages[i+1]]; render(); syncBox(); }
+    });
+    listEl.appendChild(item);
+  });
+  syncBox();
+}
+
+function syncBox(){
+  jsonBox.value = JSON.stringify({ mensagens: messages }, null, 2);
+}
+
+document.getElementById('add').addEventListener('click', () => {
+  const v = document.getElementById('newText').value.trim();
+  if (!v) return;
+  messages.push(v);
+  document.getElementById('newText').value='';
+  render();
+});
+document.getElementById('export').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ mensagens: messages }, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'oraculo.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById('import').addEventListener('change', async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const text = await f.text();
+  try{
+    const data = JSON.parse(text);
+    const arr = normalize(data);
+    if (!Array.isArray(arr) || arr.length===0) throw new Error('JSON inválido');
+    messages = arr;
+    render();
+    alert('Importado! Agora faz upload deste oraculo.json para o GitHub.');
+  }catch(err){
+    alert('Erro a importar: ' + err.message);
+  }
+});
+document.getElementById('wipe').addEventListener('click', () => {
+  if (confirm('Apagar todas as mensagens da sessão? (Não altera o GitHub até exportar e subir)')){
+    messages = []; render();
+  }
+});
+document.getElementById('copy').addEventListener('click', async () => {
+  try{
+    await navigator.clipboard.writeText(jsonBox.value);
+    alert('JSON copiado! Faz upload como oraculo.json no GitHub.');
+  }catch(e){}
+});
+document.getElementById('reload').addEventListener('click', () => load(true));
+document.getElementById('clear').addEventListener('click', async () => {
+  try{
+    if ('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs){ await r.unregister(); }
     }
-  </script>
+    if (window.caches){
+      const names = await caches.keys();
+      await Promise.all(names.map(n => caches.delete(n)));
+    }
+  }catch(e){}
+  location.reload();
+});
+
+// init
+load(true);
+</script>
 </body>
 </html>
