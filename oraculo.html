@@ -6,31 +6,38 @@
   <meta name="theme-color" content="#0a1628">
   <title>Oráculo — Entre Mundos</title>
   <style>
-    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; }
-    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
-    .wrap{max-width:740px;margin:0 auto;padding:20px 16px 42px;}
+    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --panel:#0f2342; --btn:#18345e; --btnHover:#1d416f; }
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));
+      color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
+    .wrap{max-width:740px;margin:0 auto;padding:20px 16px 44px;}
     header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .btn{background:#15325f;color:var(--fg);border:1px solid #28508a;border-radius:12px;padding:10px 14px;
+      text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
     .muted{color:var(--muted)}
     .panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 0 40px rgba(255,255,255,.02);}
     .oracle{display:grid;place-items:center;min-height:360px;text-align:center;padding:12px 14px;}
     .msg{font-size:22px;line-height:1.45;opacity:0;transform:translateY(6px);min-height:2.6em;}
-    .show{animation:fadeIn .45s ease forwards;}
-    @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+    .show{animation:fadeIn .45s ease forwards;} @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
     .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
-    button,.btn{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:transform .06s ease;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-    button:active,.btn:active{transform:scale(.98);}
-    .btn-back{background:#15325f;border-color:#28508a}
-    footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
-    .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    button{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;
+      font-weight:700;cursor:pointer;transition:transform .06s ease;}
+    button:active{transform:scale(.98);}
+    .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
     .counter{font-size:12px;color:var(--muted)}
+    /* WhatsApp pill buttons */
+    .wa-bar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+    .wa-btn{display:inline-flex;align-items:center;gap:10px;background:var(--btn);padding:14px 18px;border-radius:18px;
+      border:1px solid #29538f;font-weight:800;letter-spacing:.2px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+    .wa-btn:hover{background:var(--btnHover)}
+    .wa-ico{width:22px;height:22px;display:inline-block}
     .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:4px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <a class="btn btn-back" href="index.html">← Voltar</a>
+      <a class="btn" href="index.html">← Voltar</a>
       <div style="margin-left:auto;text-align:right">
         <h1 style="margin:0">Oráculo — Entre Mundos</h1>
         <div class="muted">Toca em “Abrir Oráculo” e recebe a tua mensagem.</div>
@@ -41,14 +48,30 @@
       <div class="oracle">
         <div id="message" class="msg">Pronto para abrir o oráculo?</div>
       </div>
+
       <div class="row">
         <button id="open">Abrir Oráculo</button>
         <button id="another" style="display:none">Nova mensagem</button>
         <button id="copy" style="display:none">Copiar</button>
-        <button id="waSend" style="display:none">Enviar no WhatsApp</button>
-        <button id="waStatus" style="display:none">Colocar no Estado</button>
       </div>
+
+      <div class="wa-bar" id="waBar" style="display:none">
+        <a href="#" id="waSend" class="wa-btn" title="Partilhar no WhatsApp">
+          <svg viewBox="0 0 32 32" class="wa-ico" aria-hidden="true">
+            <path fill="#fff" d="M19.11 17.74c-.27-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.32.2-.6.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.32-1.56-1.47-1.82-.15-.27-.02-.42.11-.55.11-.11.25-.27.37-.41.12-.14.16-.23.24-.39.08-.16.04-.3-.02-.41-.06-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.82c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.65.21 1.24.18 1.7.11.52-.08 1.63-.66 1.86-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32zM16 3.2c-7.06 0-12.8 5.73-12.8 12.8 0 2.25.6 4.36 1.66 6.19L3.2 28.8l6.82-1.6A12.75 12.75 0 0 0 16 28.8c7.06 0 12.8-5.73 12.8-12.8S23.06 3.2 16 3.2zm0 22.9c-2.21 0-4.25-.72-5.9-1.93l-.42-.3-4.04.95.94-3.95-.31-.42a9.7 9.7 0 1 1 18.33-5.25 9.7 9.7 0 0 1-9.7 9.7z"/>
+          </svg>
+          <span>Partilhar no WhatsApp</span>
+        </a>
+        <a href="#" id="waStatus" class="wa-btn" title="Colocar no Estado">
+          <svg viewBox="0 0 32 32" class="wa-ico" aria-hidden="true">
+            <path fill="#fff" d="M19.11 17.74c-.27-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.32.2-.6.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.32-1.56-1.47-1.82-.15-.27-.02-.42.11-.55.11-.11.25-.27.37-.41.12-.14.16-.23.24-.39.08-.16.04-.3-.02-.41-.06-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.82c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.65.21 1.24.18 1.7.11.52-.08 1.63-.66 1.86-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32zM16 3.2c-7.06 0-12.8 5.73-12.8 12.8 0 2.25.6 4.36 1.66 6.19L3.2 28.8l6.82-1.6A12.75 12.75 0 0 0 16 28.8c7.06 0 12.8-5.73 12.8-12.8S23.06 3.2 16 3.2zm0 22.9c-2.21 0-4.25-.72-5.9-1.93l-.42-.3-4.04.95.94-3.95-.31-.42a9.7 9.7 0 1 1 18.33-5.25 9.7 9.7 0 0 1-9.7 9.7z"/>
+          </svg>
+          <span>Colocar no Estado</span>
+        </a>
+      </div>
+
       <div class="hint" id="shareHint" style="display:none">Dica: se o WhatsApp não abrir, a mensagem já está copiada — é só colar.</div>
+
       <div class="bottom">
         <span class="counter" id="counter"></span>
         <a class="btn" href="index.html">← Voltar ao menu</a>
@@ -71,33 +94,33 @@ function cleanTailNumber(s){ return (s||'').replace(/\s*\(\s*\d+\s*\)\s*$/, '').
 let ALL=[], deck=[], idx=-1;
 const STORAGE_KEY='entre-mundos-oraculo-deck-v2';
 
-const msgEl = document.getElementById('message');
-const btnOpen = document.getElementById('open');
-const btnAnother = document.getElementById('another');
-const btnCopy = document.getElementById('copy');
-const btnWaSend = document.getElementById('waSend');
-const btnWaStatus = document.getElementById('waStatus');
-const counterEl = document.getElementById('counter');
-const hintEl = document.getElementById('shareHint');
+const msgEl=document.getElementById('message');
+const btnOpen=document.getElementById('open');
+const btnAnother=document.getElementById('another');
+const btnCopy=document.getElementById('copy');
+const waBar=document.getElementById('waBar');
+const waSend=document.getElementById('waSend');
+const waStatus=document.getElementById('waStatus');
+const counterEl=document.getElementById('counter');
+const hintEl=document.getElementById('shareHint');
 
 function show(text){ msgEl.classList.remove('show'); setTimeout(()=>{ msgEl.textContent=text; msgEl.classList.add('show'); },10); }
 function updateCounter(){ if(!deck.length){counterEl.textContent='';return;} counterEl.textContent=(idx+1)+' de '+deck.length; }
 function newDeck(){ deck = shuffle(ALL.slice()); idx=-1; localStorage.setItem(STORAGE_KEY, JSON.stringify({deck,idx})); }
 function nextMessage(){ idx++; if(idx>=deck.length){ newDeck(); idx=0; } localStorage.setItem(STORAGE_KEY, JSON.stringify({deck,idx})); return deck[idx]; }
-function resetUI(){ btnOpen.style.display='inline-block'; btnAnother.style.display='none'; btnCopy.style.display='none'; btnWaSend.style.display='none'; btnWaStatus.style.display='none'; hintEl.style.display='none'; show('Pronto para abrir o oráculo?'); idx=-1; updateCounter(); }
+function resetUI(){ btnOpen.style.display='inline-block'; btnAnother.style.display='none'; btnCopy.style.display='none'; waBar.style.display='none'; hintEl.style.display='none'; show('Pronto para abrir o oráculo?'); idx=-1; updateCounter(); }
 
 async function loadMessages(){
   try{
-    const resp = await fetch('oraculo.json?ts='+Date.now(), {cache:'no-store'});
-    const data = await resp.json();
-    ALL = normalize(data).map(cleanTailNumber).filter(Boolean);
+    const resp=await fetch('oraculo.json?ts='+Date.now(),{cache:'no-store'});
+    const data=await resp.json();
+    ALL=normalize(data).map(cleanTailNumber).filter(Boolean);
   }catch(e){ ALL=["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."]; }
   try{
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
     if(saved && Array.isArray(saved.deck) && typeof saved.idx==='number' && saved.deck.length>0){
-      deck = saved.deck.map(cleanTailNumber);
-      idx = Math.max(-1, Math.min(saved.idx, deck.length-1));
-    }else{ newDeck(); }
+      deck=saved.deck.map(cleanTailNumber); idx=Math.max(-1, Math.min(saved.idx, deck.length-1));
+    } else { newDeck(); }
   }catch(e){ newDeck(); }
   updateCounter();
 }
@@ -109,51 +132,35 @@ btnOpen.addEventListener('click', ()=>{
   btnOpen.style.display='none';
   btnAnother.style.display='inline-block';
   btnCopy.style.display='inline-block';
-  btnWaSend.style.display='inline-block';
-  btnWaStatus.style.display='inline-block';
+  waBar.style.display='flex';
   hintEl.style.display='block';
   updateCounter();
 });
 btnAnother.addEventListener('click', ()=>{ show(nextMessage()); updateCounter(); });
 
-async function copyText(text){
-  try{ await navigator.clipboard.writeText(text); return true; }catch(e){ return false; }
-}
-
 btnCopy.addEventListener('click', async ()=>{
-  const text = msgEl.textContent.trim();
-  if (await copyText(text)){ btnCopy.textContent='Copiado ✓'; setTimeout(()=>btnCopy.textContent='Copiar',1000); }
+  const text=msgEl.textContent.trim();
+  try{ await navigator.clipboard.writeText(text); btnCopy.textContent='Copiado ✓'; setTimeout(()=>btnCopy.textContent='Copiar',1000);}catch(e){}
 });
 
-function openWhatsApp(text){
-  // deep link
-  const deep = 'whatsapp://send?text=' + encodeURIComponent(text);
-  const web = 'https://wa.me/?text=' + encodeURIComponent(text);
-  // try deep first
-  const a = document.createElement('a');
-  a.href = deep;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(()=>{
-    // fallback to web link (caso deep não seja aceite)
-    window.location.href = web;
-  }, 600);
+function openWhatsAppWith(text){
+  const deep='whatsapp://send?text='+encodeURIComponent(text);
+  const web='https://wa.me/?text='+encodeURIComponent(text);
+  // try deep first; if it doesn't open in ~600ms, go to web
+  const link=document.createElement('a'); link.href=deep; document.body.appendChild(link); link.click();
+  setTimeout(()=>{ window.location.href=web; }, 600);
 }
 
-btnWaSend.addEventListener('click', async ()=>{
-  const text = msgEl.textContent.trim();
-  await copyText(text);
-  openWhatsApp(text);
-});
+async function handleWAShare(mode){
+  const base=msgEl.textContent.trim();
+  let text=base;
+  if(mode==='status'){ text = base + "\n\n— Entre Mundos"; }
+  try{ await navigator.clipboard.writeText(text); }catch(e){}
+  openWhatsAppWith(text);
+}
 
-btnWaStatus.addEventListener('click', async ()=>{
-  const text = msgEl.textContent.trim();
-  await copyText(text);
-  // Não há URL oficial só para "Estado". Abrimos o WhatsApp com o texto;
-  // Na folha de partilha escolhe "My Status" (Estado). Texto já está copiado.
-  openWhatsApp(text + "\n\n— Entre Mundos");
-});
-
+waSend.addEventListener('click', ()=>handleWAShare('chat'));
+waStatus.addEventListener('click', ()=>handleWAShare('status'));
 </script>
 </body>
 </html>
