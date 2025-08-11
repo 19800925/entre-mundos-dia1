@@ -25,7 +25,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Network-first for full-page navigations to avoid ficar preso em HTML antigo
 async function networkFirst(event) {
   try {
     const res = await fetch(event.request, { cache: 'no-store' });
@@ -40,7 +39,6 @@ async function networkFirst(event) {
   }
 }
 
-// Stale-while-revalidate for restantes assets
 async function staleWhileRevalidate(event) {
   const cache = await caches.open(CACHE_VERSION);
   const cached = await cache.match(event.request);
@@ -53,11 +51,9 @@ async function staleWhileRevalidate(event) {
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-  // Tratar navegações (HTML) com network-first
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith(networkFirst(event));
     return;
   }
-  // Para o resto: SWR
   event.respondWith(staleWhileRevalidate(event));
 });
