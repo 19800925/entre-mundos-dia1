@@ -8,8 +8,8 @@
   <style>
     :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; }
     html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
-    .wrap{max-width:740px;margin:0 auto;padding:28px 16px 40px;}
-    header{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
+    .wrap{max-width:740px;margin:0 auto;padding:20px 16px 40px;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
     .muted{color:var(--muted)}
     .panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 0 40px rgba(255,255,255,.02);}
@@ -18,16 +18,20 @@
     .show{animation:fadeIn .45s ease forwards;}
     @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
     .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
-    button{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:transform .06s ease;}
-    button:active{transform:scale(.98);}
+    button,.btn{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:transform .06s ease;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    button:active,.btn:active{transform:scale(.98);}
+    .btn-back{background:#15325f;border-color:#28508a}
     footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>Oráculo — Entre Mundos</h1>
-      <div class="muted">Toca em “Abrir Oráculo” e recebe a tua mensagem.</div>
+      <a class="btn btn-back" href="index.html?v=11">← Voltar</a>
+      <div style="text-align:right">
+        <h1 style="margin:0">Oráculo — Entre Mundos</h1>
+        <div class="muted">Toca em “Abrir Oráculo” e recebe a tua mensagem.</div>
+      </div>
     </header>
 
     <section class="panel">
@@ -53,7 +57,7 @@ const btnAnother = document.getElementById('another');
 const btnSave = document.getElementById('save');
 const btnShare = document.getElementById('share');
 
-fetch('oraculo.json?v=10').then(r => r.json()).then(d => { MESSAGES = d; }).catch(()=>{
+fetch('oraculo.json?v=11').then(r => r.json()).then(d => { MESSAGES = d; }).catch(()=>{
   MESSAGES = ["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."];
 });
 
