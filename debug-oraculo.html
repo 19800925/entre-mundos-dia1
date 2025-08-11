@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -5,46 +6,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Debug Oráculo</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #0b0f1a; color: #fff; padding: 20px; }
-  button { margin: 5px 0; padding: 10px; border: none; background: #1e90ff; color: white; cursor: pointer; border-radius: 5px; }
-  pre { background: #111; padding: 10px; border-radius: 5px; white-space: pre-wrap; word-break: break-word; }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #0b0f1a;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    color: cyan;
+  }
+  #count {
+    font-size: 2em;
+    margin-top: 20px;
+    color: yellow;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin-top: 20px;
+    background-color: cyan;
+    border: none;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
-<h1>🛠 Debug Oráculo</h1>
-<button onclick="verificar()">Verificar agora</button>
-<button onclick="verificarSemCache()">Verificar (no-store)</button>
-<button onclick="limparCache()">Limpar cache & recarregar</button>
-<pre id="saida">Aguardando...</pre>
+  <h1>🛠 Debug Oráculo</h1>
+  <p>Verifica quantas mensagens existem no oráculo e força atualização de cache.</p>
+  <div id="count">A carregar...</div>
+  <button onclick="location.reload(true)">🔄 Recarregar Página</button>
+  <button onclick="limparCache()">🧹 Limpar Cache</button>
 
-<script>
-function verificar(fetchOptions={}) {
-    fetch('oraculo.json', fetchOptions)
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById('saida').textContent =
-          'Total de mensagens: ' + d.mensagens.length + '\nExemplo: ' + d.mensagens.slice(0,5).join('\n');
+  <script>
+    fetch('oraculo.json?v=' + Date.now())
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('count').textContent = 
+          `Mensagens no Oráculo: ${data.length}`;
       })
-      .catch(e => document.getElementById('saida').textContent = 'Erro: ' + e);
-}
+      .catch(() => {
+        document.getElementById('count').textContent = 'Erro ao carregar oraculo.json';
+      });
 
-function verificarSemCache() {
-    verificar({cache: 'no-store'});
-}
-
-function limparCache() {
-    if ('caches' in window) {
-        caches.keys().then(names => {
-            for (let name of names) caches.delete(name);
+    function limparCache() {
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) caches.delete(name);
+        }).then(() => {
+          alert('Cache limpa! Recarregue a página principal.');
         });
+      }
     }
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(regs => {
-            for (let reg of regs) reg.unregister();
-        });
-    }
-    location.reload(true);
-}
-</script>
+  </script>
 </body>
 </html>
