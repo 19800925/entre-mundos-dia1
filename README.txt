@@ -1,61 +1,24 @@
-ENTRE MUNDOS — Fase 2 (Lite)
-=============================
-Este pacote contém:
-- sw.js (novo) → melhor cache + atualizações rápidas
-- Snippets JS prontos para colar no index.html (opcional, mantém o visual)
+Oráculo Entre Mundos — Pacote V2
+================================
+Ficheiros:
+- oraculo.html  → página do oráculo (carrega mensagens de oraculo.json; tem fallback)
+- oraculo.json  → lista de mensagens (podes editar e acrescentar à vontade)
 
-COMO USAR
----------
-1) No GitHub, substitua o ficheiro sw.js da raiz por este (arraste e faça Commit).
-2) Aguarde 1–2 minutos. Abra a app com ?v=7 no fim do link para forçar refresh:
-   https://19800925.github.io/entre-mundos-dia1/?v=7
-3) Se estiver instalada no ecrã do iPhone, apague o atalho e volte a "Adicionar ao Ecrã Principal".
+Como publicar:
+1) No GitHub (repo entre-mundos-dia1): Add file → Upload files → carrega oraculo.html e oraculo.json (na raiz).
+2) Commit.
+3) Testar: https://19800925.github.io/entre-mundos-dia1/oraculo.html?v=2
 
-SNIPPET #1 — Respiração (mesmo visual, transição mais suave)
-----------------------------------------------------------------
-Cole no <script> do seu index.html, substituindo apenas a parte da respiração.
+Como acrescentar mensagens:
+- Edita o ficheiro oraculo.json (é um array JSON). Exemplo:
+  [
+    "Mensagem 1",
+    "Mensagem 2",
+    "Mensagem 3"
+  ]
+- Guarda/Commit. O oráculo vai usar a nova lista automaticamente.
+- Se tiver cache teimoso, abre com ?v=2 no fim do URL para forçar refresh.
 
-// Respiração (rAF para suavizar, mantém 4•4•4•4)
-let breathTimer=null, phase=0; const phases=['Inspira','Sustenha','Expira','Pausa'];
-const circle=document.getElementById('circle'), btxt=document.getElementById('breath-text');
-
-function stepPhase(){
-  const p = phases[phase % 4];
-  if (btxt) btxt.textContent = p;
-  const target = (p==='Inspira') ? 1.2 : (p==='Expira' ? 0.9 : 1.05);
-  const start = performance.now(); const dur = 750;
-  const from = 1; // escala base
-
-  function anim(t){
-    const k = Math.min(1, (t - start)/dur);
-    const scale = from + (target - from)*k;
-    if (circle) circle.style.transform = `scale(${scale})`;
-    if(k<1) requestAnimationFrame(anim);
-  }
-  requestAnimationFrame(anim);
-  phase++;
-}
-
-document.getElementById('start-breath')?.addEventListener('click', ()=>{
-  if (breathTimer) return;
-  phase = 0; stepPhase();
-  breathTimer = setInterval(stepPhase, 4000);
-});
-document.getElementById('stop-breath')?.addEventListener('click', ()=>{
-  clearInterval(breathTimer); breathTimer=null;
-  if (btxt) btxt.textContent='Pausa';
-  if (circle) circle.style.transform='scale(1)';
-});
-
-SNIPPET #2 — Silêncio (guardar última duração escolhida)
---------------------------------------------------------
-Cole no seu <script>, sem remover o que já existe.
-
-const minsInput = document.getElementById('minutes');
-if (minsInput) {
-  const saved = localStorage.getItem('entre-mundos-dia1-silencio-mins');
-  if (saved) minsInput.value = saved;
-  minsInput.addEventListener('change', ()=> {
-    localStorage.setItem('entre-mundos-dia1-silencio-mins', minsInput.value);
-  });
-}
+Funciona offline?
+- Sim, quando a página já tiver sido aberta uma vez. Se quiseres garantir cache total,
+  adiciona 'oraculo.html' e 'oraculo.json' ao array ASSETS do teu sw.js.
