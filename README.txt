@@ -1,20 +1,22 @@
-Entre Mundos — Integração do Oráculo (400 mensagens)
-====================================================
+# Patch: voltar do Oráculo mostra sempre o Dia 1 completo
 
-Ficheiros neste pacote:
-- index.html       → acrescenta um botão fixo de rodapé "🔮 Oráculo" (fundo azul cósmico)
-- oraculo.html     → página do Oráculo (lê mensagens de oraculo.json, tem Guardar/Partilhar)
-- oraculo.json     → 400 mensagens (podes editar à vontade)
-- sw.js            → inclui oraculo.html e oraculo.json no cache offline (v8)
+## O que faz
+- Força o **reload** do `index-fase2.html` sempre que voltas do Oráculo pelo botão *Voltar* (corrige o problema do Safari/iOS que guarda um DOM parcial no Back/Forward Cache).
+- Mantém tudo como está visualmente.
 
-Como publicar (GitHub Pages):
-1) Abra o repositório `entre-mundos-dia1` → Add file → Upload files.
-2) Carregue estes 4 ficheiros para a raiz (substitua os existentes quando aplicável).
-3) Commit.
-4) Teste: https://19800925.github.io/entre-mundos-dia1/?v=8
-   - Oráculo direto: https://19800925.github.io/entre-mundos-dia1/oraculo.html?v=3
-5) Se a app já estava instalada no iPhone, apague o atalho e volte a "Adicionar ao Ecrã Principal".
+## Como aplicar
+1. Faça upload destes ficheiros para a raiz do repositório `entre-mundos-dia1`:
+   - `app-fix-back-forward.js`
+   - `oraculo.html` (com o botão Voltar a apontar para `index-fase2.html?v=31`)
+2. Abra o ficheiro `index-fase2.html` e **adicione esta linha antes de `</body>`**:
 
-Personalização:
-- Acrescentar mensagens: edite `oraculo.json` (array JSON). A página lerá automaticamente.
-- Se o cache ficar teimoso, incremente a versão no URL (?v=8/3) ou no `CACHE` do sw.js.
+```html
+<script src="app-fix-back-forward.js?v=31"></script>
+```
+
+3. Commit. Depois testa em:
+   `https://19800925.github.io/entre-mundos-dia1/index-fase2.html?v=31`
+
+> Dica: se ainda vires a versão antiga, limpa a cache do Safari
+> (Definições › Safari › Avançadas › Dados dos sites › apaga `github.io`) ou usa
+> uma query diferente `?v=31` para obrigar o refresh.
