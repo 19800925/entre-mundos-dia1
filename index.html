@@ -1,11 +1,24 @@
 <!doctype html>
 <html lang="pt-PT">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=index-fase2.html?v=29">
-  <title>Entre Mundos — redirecionar…</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="refresh" content="0; url=index-fase2.html?v=33">
+  <title>Entre Mundos — a abrir…</title>
+  <script>
+    // Fallback em JS para o caso do meta refresh falhar
+    (function(){
+      var target = 'index-fase2.html?v=33';
+      try { location.replace(target); } catch (_) { location.href = target; }
+    })();
+  </script>
+  <style>
+    body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;
+         background:#0a1628;color:#e9f0ff;display:grid;place-items:center;height:100vh;margin:0}
+    .card{padding:18px 22px;border:1px solid #264b7f;border-radius:12px;background:#102544}
+  </style>
 </head>
 <body>
-  <p>Redirecionar para <a href="index-fase2.html?v=29">index-fase2.html</a>…</p>
+  <div class="card">A abrir a app…</div>
 </body>
 </html>
