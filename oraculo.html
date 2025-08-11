@@ -63,10 +63,7 @@ function normalize(data){
   return [];
 }
 function shuffle(arr){ for (let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
-function cleanTailNumber(s){
-  // remove " (123)" no fim da frase e espaços extra
-  return (s||'').replace(/\s*\(\s*\d+\s*\)\s*$/, '').trim();
-}
+function cleanTailNumber(s){ return (s||'').replace(/\s*\(\s*\d+\s*\)\s*$/, '').trim(); }
 
 let ALL=[], deck=[], idx=-1;
 const STORAGE_KEY='entre-mundos-oraculo-deck-v2';
@@ -105,7 +102,33 @@ resetUI(); loadMessages();
 btnOpen.addEventListener('click', ()=>{ const t=nextMessage(); show(t); btnOpen.style.display='none'; btnAnother.style.display='inline-block'; btnSave.style.display='inline-block'; btnShare.style.display='inline-block'; updateCounter(); });
 btnAnother.addEventListener('click', ()=>{ show(nextMessage()); updateCounter(); });
 btnSave.addEventListener('click', ()=>{ try{ const list=JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]'); list.push({text:msgEl.textContent,ts:Date.now()}); localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list)); btnSave.textContent='Guardado ✓'; setTimeout(()=>btnSave.textContent='Guardar',1000);}catch(e){} });
-btnShare.addEventListener('click', async ()=>{ const text='Oráculo — Entre Mundos\n\n'+msgEl.textContent; try{ if(navigator.share) await navigator.share({text}); else { await navigator.clipboard.writeText(text); btnShare.textContent='Copiado ✓'; setTimeout(()=>btnShare.textContent='Partilhar',1000);} }catch(e){} });
+
+btnShare.addEventListener('click', async ()=>{
+  const plain = (msgEl.textContent || '').trim();
+  if (!plain){ return; }
+  const text = 'Oráculo — Entre Mundos\n\n' + plain;
+  // 1) Web Share API (texto puro)
+  try{
+    if (navigator.share && typeof navigator.share === 'function'){
+      await navigator.share({ title: 'Entre Mundos — Oráculo', text });
+      return;
+    }
+  }catch(e){
+    // continua para fallback
+  }
+  // 2) WhatsApp fallback
+  try{
+    const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
+    window.location.href = wa;
+    return;
+  }catch(e){}
+  // 3) Copiar
+  try{
+    await navigator.clipboard.writeText(text);
+    btnShare.textContent='Copiado ✓';
+    setTimeout(()=>btnShare.textContent='Partilhar',1000);
+  }catch(e){ alert('Mensagem copiada: '+text); }
+});
 </script>
 </body>
 </html>
