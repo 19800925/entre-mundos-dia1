@@ -1,24 +1,34 @@
-<!doctype html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=index-fase2.html?v=26">
-  <title>Entre Mundos — redirecionar…</title>
-  <script>
-    (function(){
-      var target = 'index-fase2.html?v=26';
-      function go(){ window.location.replace(target); }
-      // Se falhar (ficheiro não existir), tenta o oráculo como fallback.
-      window.addEventListener('error', function(){ window.location.replace('oraculo.html?v=26'); });
-      setTimeout(go, 10);
-    })();
-  </script>
-  <style>
-    body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;padding:24px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entre Mundos — Menu</title>
+<style>
+body {
+    background-color: #021b33;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 50px;
+}
+button {
+    background-color: #004080;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0059b3;
+}
+</style>
 </head>
 <body>
-  A abrir <strong>Entre Mundos — Dia 1</strong>… Se não acontecer automaticamente, <a href="index-fase2.html?v=26">toca aqui</a>.
+<h1>Entre Mundos</h1>
+<p>Escolhe uma opção para começar</p>
+<a href="oraculo.html"><button>Abrir Oráculo</button></a>
 </body>
 </html>
