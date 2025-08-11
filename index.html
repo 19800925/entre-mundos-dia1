@@ -9,72 +9,10 @@
   <meta name="theme-color" content="#0A244A" />
   <link rel="icon" href="assets/icon-192.png" />
 
-  <!-- Cache-busting v9 -->
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 </head>
 <body>
-  <header class="appbar">
-    <img src="assets/icon-192.png" alt="Ícone" class="app-icon" />
-    <div class="titles">
-      <h1>Entre Mundos — Dia 1</h1>
-      <p class="subtitle">Mensagem · Respiração · Frase · Silêncio</p>
-    </div>
-  </header>
-
-  <nav class="tabs" role="tablist" aria-label="Navegação principal">
-    <button class="tab active" data-tab="guia" role="tab" aria-selected="true">Guia Espiritual</button>
-    <button class="tab" data-tab="silencio" role="tab" aria-selected="false">Silêncio</button>
-    <button class="tab" data-tab="escrita" role="tab" aria-selected="false">Escrita da Alma</button>
-  </nav>
-
-  <main>
-    <section id="tab-guia" class="tabpanel active" role="tabpanel">
-      <div class="card">
-        <h2>Mensagem de hoje — <span class="gold">Reconexão</span></h2>
-        <p>
-          Respira e lembra-te: <strong>tu és a casa antes do mundo</strong>.
-          O teu valor não depende da produtividade; a tua verdade não precisa gritar.
-          A <span class="gold">cor azul</span> é o teu porto — volta a ela quando o ruído te cansar.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Prática — Respiração em 4 tempos <span class="muted">(4·4·4·4)</span></h3>
-        <div class="breath-wrap"><div id="circle" class="circle">Pausa</div></div>
-        <div class="actions">
-          <button id="start">Começar</button>
-          <button id="stop" class="ghost">Parar</button>
-        </div>
-        <p class="legend">Inspira 4 · Sustém 4 · Expira 4 · Pausa 4</p>
-      </div>
-
-      <blockquote class="quote">“Eu volto. Eu volto. Eu volto.”</blockquote>
-    </section>
-
-    <section id="tab-silencio" class="tabpanel" role="tabpanel" aria-hidden="true">
-      <div class="card center">
-        <h2>Silêncio</h2>
-        <p>1 minuto de presença. Fecha os olhos e apenas observa a respiração.</p>
-        <button id="silence-btn">Começar 1:00</button>
-        <p id="silence-timer" class="timer">01:00</p>
-      </div>
-    </section>
-
-    <section id="tab-escrita" class="tabpanel" role="tabpanel" aria-hidden="true">
-      <div class="card">
-        <h2>Escrita da Alma</h2>
-        <p>Completa: “Agora, o que dói é… O que me alivia é… Hoje escolho…”</p>
-        <textarea id="journaling" rows="6" placeholder="Escreve aqui, sem censura."></textarea>
-        <div class="actions">
-          <button id="save-note">Guardar</button>
-          <button id="clear-note" class="ghost">Limpar</button>
-        </div>
-        <p id="save-status" class="muted"></p>
-      </div>
-    </section>
-  </main>
-
-  <!-- Cache-busting v9 -->
-  <script src="script.js?v=9"></script>
+  <!-- Conteúdo da app -->
+  <script src="script.js?v=10"></script>
 </body>
 </html>

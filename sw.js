@@ -1,9 +1,9 @@
-const CACHE_NAME = 'entre-mundos-dia1-v9';
+const CACHE_NAME = 'entre-mundos-dia1-v10';
 const ASSETS = [
   './',
   './index.html',
-  './style.css?v=9',
-  './script.js?v=9',
+  './style.css?v=10',
+  './script.js?v=10',
   './manifest.json',
   './assets/icon-192.png',
   './assets/IMG_2247.png'
