@@ -1,60 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entre Mundos - Dia 1</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Entre Mundos — Dia 1</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0A244A" />
+  <link rel="icon" href="assets/icon-192.png" />
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <section id="dia1" role="main" aria-label="Dia 1 - Reconexão">
-    <div class="conteudo">
-      <h1>Dia 1 — Reconexão</h1>
-      <p>Respira fundo, fecha os olhos e sente o regresso a ti mesmo.</p>
-      <button id="respirar">Guiar respiração 5x</button>
-      <p id="contador" aria-live="polite"></p>
+  <header class="appbar">
+    <img src="assets/icon-192.png" alt="Ícone" class="app-icon" />
+    <div class="titles">
+      <h1>Entre Mundos — Dia 1</h1>
+      <p class="subtitle">Mensagem · Respiração · Frase · Silêncio</p>
     </div>
-  </section>
+  </header>
 
-  <script>
-    // Respiração simples 5x (4-4-4-4)
-    const btn = document.getElementById('respirar');
-    const contador = document.getElementById('contador');
-    let ativo = false;
-    btn.addEventListener('click', async () => {
-      if (ativo) return;
-      ativo = true;
-      btn.disabled = true;
-      for (let i=1; i<=5; i++) {
-        contador.textContent = `Inspira (${i}/5)`;
-        await new Promise(r => setTimeout(r, 4000));
-        contador.textContent = `Segura (${i}/5)`;
-        await new Promise(r => setTimeout(r, 4000));
-        contador.textContent = `Expira (${i}/5)`;
-        await new Promise(r => setTimeout(r, 4000));
-        contador.textContent = `Pausa (${i}/5)`;
-        await new Promise(r => setTimeout(r, 4000));
-      }
-      contador.textContent = "Feito. Obrigado por voltares a ti 💙";
-      btn.disabled = false;
-      ativo = false;
-    });
+  <nav class="tabs" role="tablist" aria-label="Navegação principal">
+    <button class="tab active" data-tab="guia" role="tab" aria-selected="true">Guia Espiritual</button>
+    <button class="tab" data-tab="silencio" role="tab" aria-selected="false">Silêncio</button>
+    <button class="tab" data-tab="escrita" role="tab" aria-selected="false">Escrita da Alma</button>
+  </nav>
 
-    // Registo do service worker (PWA)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js');
-      });
-    }
-  </script>
+  <main>
+    <!-- TAB: Guia Espiritual -->
+    <section id="tab-guia" class="tabpanel active" role="tabpanel">
+      <div class="card">
+        <h2>Mensagem de hoje — <span class="gold">Reconexão</span></h2>
+        <p>
+          Respira e lembra-te: <strong>tu és a casa antes do mundo</strong>.
+          O teu valor não depende da produtividade; a tua verdade não precisa gritar.
+          A <span class="gold">cor azul</span> é o teu porto — volta a ela quando o ruído te cansar.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Prática — Respiração em 4 tempos <span class="muted">(4·4·4·4)</span></h3>
+
+        <div class="breath-wrap">
+          <div id="circle" class="circle">Pausa</div>
+        </div>
+
+        <div class="actions">
+          <button id="start">Começar</button>
+          <button id="stop" class="ghost">Parar</button>
+        </div>
+        <p class="legend">Inspira 4 · Sustém 4 · Expira 4 · Pausa 4</p>
+      </div>
+
+      <blockquote class="quote">“Eu volto. Eu volto. Eu volto.”</blockquote>
+    </section>
+
+    <!-- TAB: Silêncio -->
+    <section id="tab-silencio" class="tabpanel" role="tabpanel" aria-hidden="true">
+      <div class="card center">
+        <h2>Silêncio</h2>
+        <p>1 minuto de presença. Fecha os olhos e apenas observa a respiração.</p>
+        <button id="silence-btn">Começar 1:00</button>
+        <p id="silence-timer" class="timer">01:00</p>
+      </div>
+    </section>
+
+    <!-- TAB: Escrita da Alma -->
+    <section id="tab-escrita" class="tabpanel" role="tabpanel" aria-hidden="true">
+      <div class="card">
+        <h2>Escrita da Alma</h2>
+        <p>Completa: “Agora, o que dói é… O que me alivia é… Hoje escolho…”</p>
+        <textarea id="journaling" rows="6" placeholder="Escreve aqui, sem censura."></textarea>
+        <div class="actions">
+          <button id="save-note">Guardar</button>
+          <button id="clear-note" class="ghost">Limpar</button>
+        </div>
+        <p id="save-status" class="muted"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
