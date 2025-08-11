@@ -56,29 +56,21 @@
   </div>
 
 <script>
-/* ---------- Util ---------- */
 function normalize(data){
   if (Array.isArray(data)) return data;
   if (data && Array.isArray(data.mensagens)) return data.mensagens;
   if (data && Array.isArray(data.messages)) return data.messages;
   return [];
 }
-function shuffle(arr){
-  for (let i=arr.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]] = [arr[j],arr[i]];
-  }
-  return arr;
+function shuffle(arr){ for (let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+function cleanTailNumber(s){
+  // remove " (123)" no fim da frase e espaços extra
+  return (s||'').replace(/\s*\(\s*\d+\s*\)\s*$/, '').trim();
 }
 
-/* ---------- Estado ---------- */
-let ALL = [];
-let deck = []; // sem repetição
-let idx = -1;
+let ALL=[], deck=[], idx=-1;
+const STORAGE_KEY='entre-mundos-oraculo-deck-v2';
 
-const STORAGE_KEY = 'entre-mundos-oraculo-deck-v1';
-
-/* ---------- UI ---------- */
 const msgEl = document.getElementById('message');
 const btnOpen = document.getElementById('open');
 const btnAnother = document.getElementById('another');
@@ -86,100 +78,34 @@ const btnSave = document.getElementById('save');
 const btnShare = document.getElementById('share');
 const counterEl = document.getElementById('counter');
 
-function show(text){
-  msgEl.classList.remove('show');
-  setTimeout(()=>{ msgEl.textContent = text; msgEl.classList.add('show'); }, 10);
-}
-function updateCounter(){
-  if (!deck.length) { counterEl.textContent = ''; return; }
-  counterEl.textContent = (idx+1) + ' de ' + deck.length;
-}
-function resetUI(){
-  btnOpen.style.display='inline-block';
-  btnAnother.style.display='none';
-  btnSave.style.display='none';
-  btnShare.style.display='none';
-  show('Pronto para abrir o oráculo?');
-  idx = -1;
-  updateCounter();
-}
+function show(text){ msgEl.classList.remove('show'); setTimeout(()=>{ msgEl.textContent=text; msgEl.classList.add('show'); },10); }
+function updateCounter(){ if(!deck.length){counterEl.textContent='';return;} counterEl.textContent=(idx+1)+' de '+deck.length; }
+function newDeck(){ deck = shuffle(ALL.slice()); idx=-1; localStorage.setItem(STORAGE_KEY, JSON.stringify({deck,idx})); }
+function nextMessage(){ idx++; if(idx>=deck.length){ newDeck(); idx=0; } localStorage.setItem(STORAGE_KEY, JSON.stringify({deck,idx})); return deck[idx]; }
+function resetUI(){ btnOpen.style.display='inline-block'; btnAnother.style.display='none'; btnSave.style.display='none'; btnShare.style.display='none'; show('Pronto para abrir o oráculo?'); idx=-1; updateCounter(); }
 
-/* ---------- Lógica do Baralho ---------- */
-function newDeck(){
-  deck = shuffle(ALL.slice());
-  idx = -1;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({deck, idx}));
-}
-function nextMessage(){
-  if (!deck || deck.length === 0) return "Sem mensagens disponíveis.";
-  idx++;
-  if (idx >= deck.length){
-    // recomeça um baralho novo
-    newDeck();
-    idx = 0;
-  }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({deck, idx}));
-  return deck[idx];
-}
-
-/* ---------- Bootstrap ---------- */
 async function loadMessages(){
   try{
-    const url = 'oraculo.json?ts=' + Date.now();
-    const resp = await fetch(url, {cache:'no-store'});
+    const resp = await fetch('oraculo.json?ts='+Date.now(), {cache:'no-store'});
     const data = await resp.json();
-    ALL = normalize(data);
-  }catch(e){
-    ALL = ["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."];
-  }
-  // tenta recuperar deck antigo
+    ALL = normalize(data).map(cleanTailNumber).filter(Boolean);
+  }catch(e){ ALL=["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."]; }
   try{
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (saved && Array.isArray(saved.deck) && typeof saved.idx === 'number' && saved.deck.length > 0){
-      deck = saved.deck;
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
+    if(saved && Array.isArray(saved.deck) && typeof saved.idx==='number' && saved.deck.length>0){
+      deck = saved.deck.map(cleanTailNumber);
       idx = Math.max(-1, Math.min(saved.idx, deck.length-1));
-    }else{
-      newDeck();
-    }
-  }catch(e){
-    newDeck();
-  }
+    }else{ newDeck(); }
+  }catch(e){ newDeck(); }
   updateCounter();
 }
-resetUI();
-loadMessages();
 
-/* ---------- Ações ---------- */
-btnOpen.addEventListener('click', ()=>{
-  const t = nextMessage();
-  show(t);
-  btnOpen.style.display='none';
-  btnAnother.style.display='inline-block';
-  btnSave.style.display='inline-block';
-  btnShare.style.display='inline-block';
-  updateCounter();
-});
-btnAnother.addEventListener('click', ()=>{
-  const t = nextMessage();
-  show(t);
-  updateCounter();
-});
-btnSave.addEventListener('click', ()=>{
-  try{
-    const list = JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]');
-    list.push({ text: msgEl.textContent, ts: Date.now() });
-    localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list));
-    btnSave.textContent = 'Guardado ✓';
-    setTimeout(()=> btnSave.textContent='Guardar', 1000);
-  }catch(e){}
-});
-btnShare.addEventListener('click', async ()=>{
-  const text = 'Oráculo — Entre Mundos\n\n' + msgEl.textContent;
-  try{
-    if (navigator.share) await navigator.share({ text });
-    else { await navigator.clipboard.writeText(text); btnShare.textContent='Copiado ✓'; setTimeout(()=>btnShare.textContent='Partilhar',1000); }
-  }catch(e){}
-});
+resetUI(); loadMessages();
+
+btnOpen.addEventListener('click', ()=>{ const t=nextMessage(); show(t); btnOpen.style.display='none'; btnAnother.style.display='inline-block'; btnSave.style.display='inline-block'; btnShare.style.display='inline-block'; updateCounter(); });
+btnAnother.addEventListener('click', ()=>{ show(nextMessage()); updateCounter(); });
+btnSave.addEventListener('click', ()=>{ try{ const list=JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]'); list.push({text:msgEl.textContent,ts:Date.now()}); localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list)); btnSave.textContent='Guardado ✓'; setTimeout(()=>btnSave.textContent='Guardar',1000);}catch(e){} });
+btnShare.addEventListener('click', async ()=>{ const text='Oráculo — Entre Mundos\n\n'+msgEl.textContent; try{ if(navigator.share) await navigator.share({text}); else { await navigator.clipboard.writeText(text); btnShare.textContent='Copiado ✓'; setTimeout(()=>btnShare.textContent='Partilhar',1000);} }catch(e){} });
 </script>
 </body>
 </html>
