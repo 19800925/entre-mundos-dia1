@@ -14,7 +14,7 @@
     .muted{color:var(--muted)}
     .panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 0 40px rgba(255,255,255,.02);}
     .oracle{display:grid;place-items:center;min-height:360px;text-align:center;padding:12px 14px;}
-    .msg{font-size:22px;line-height:1.45;opacity:0;transform:translateY(6px);}
+    .msg{font-size:22px;line-height:1.45;opacity:0;transform:translateY(6px);min-height:2.6em;}
     .show{animation:fadeIn .45s ease forwards;}
     @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
     .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
@@ -28,7 +28,7 @@
 <body>
   <div class="wrap">
     <header>
-      <a class="btn btn-back" href="index.html?v=12">← Voltar</a>
+      <a class="btn btn-back" href="index.html">← Voltar</a>
       <div style="margin-left:auto;text-align:right">
         <h1 style="margin:0">Oráculo — Entre Mundos</h1>
         <div class="muted">Toca em “Abrir Oráculo” e recebe a tua mensagem.</div>
@@ -46,7 +46,7 @@
         <button id="share" style="display:none">Partilhar</button>
       </div>
       <div class="row">
-        <a class="btn bottom-back" href="index.html?v=12">← Voltar ao menu</a>
+        <a class="btn bottom-back" href="index.html">← Voltar ao menu</a>
       </div>
     </section>
 
@@ -61,28 +61,63 @@ const btnAnother = document.getElementById('another');
 const btnSave = document.getElementById('save');
 const btnShare = document.getElementById('share');
 
-fetch('oraculo.json?v=12').then(r => r.json()).then(d => { MESSAGES = d; }).catch(()=>{
-  MESSAGES = ["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."];
+// Reset state so funciona sempre que se entra
+function resetUI(){
+  if (btnOpen) btnOpen.style.display='inline-block';
+  if (btnAnother) btnAnother.style.display='none';
+  if (btnSave) btnSave.style.display='none';
+  if (btnShare) btnShare.style.display='none';
+  if (msgEl){ msgEl.classList.remove('show'); msgEl.textContent='Pronto para abrir o oráculo?'; }
+}
+resetUI();
+
+// Busca mensagens com cache bust + no-store para evitar ficar preso
+const url = 'oraculo.json?ts=' + Date.now();
+fetch(url, {cache:'no-store'})
+  .then(r => r.json())
+  .then(d => { MESSAGES = Array.isArray(d) ? d : []; })
+  .catch(()=>{
+    MESSAGES = ["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."];
+  });
+
+function pick(){
+  if (!Array.isArray(MESSAGES) || MESSAGES.length === 0){
+    return "A presença é casa. (sem dados — tenta novamente em instantes)";
+  }
+  const i = Math.floor(Math.random()*MESSAGES.length);
+  return MESSAGES[i];
+}
+function show(text){
+  msgEl.classList.remove('show');
+  setTimeout(()=>{ msgEl.textContent=text; msgEl.classList.add('show'); }, 10);
+}
+
+btnOpen.addEventListener('click', ()=>{
+  show(pick());
+  btnOpen.style.display='none';
+  btnAnother.style.display='inline-block';
+  btnSave.style.display='inline-block';
+  btnShare.style.display='inline-block';
 });
 
-function pick(){ return MESSAGES[Math.floor(Math.random()*MESSAGES.length)]; }
-function show(text){ msgEl.classList.remove('show'); setTimeout(()=>{ msgEl.textContent=text; msgEl.classList.add('show'); }, 10); }
-
-btnOpen.addEventListener('click', ()=>{ show(pick()); btnOpen.style.display='none'; btnAnother.style.display='inline-block'; btnSave.style.display='inline-block'; btnShare.style.display='inline-block'; });
 btnAnother.addEventListener('click', ()=> show(pick()) );
 
 btnSave.addEventListener('click', ()=>{
-  const list = JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]');
-  list.push({ text: msgEl.textContent, ts: Date.now() });
-  localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list));
-  btnSave.textContent = 'Guardado ✓';
-  setTimeout(()=> btnSave.textContent='Guardar', 1200);
+  try{
+    const list = JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]');
+    list.push({ text: msgEl.textContent, ts: Date.now() });
+    localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list));
+    btnSave.textContent = 'Guardado ✓';
+    setTimeout(()=> btnSave.textContent='Guardar', 1200);
+  }catch(e){ console.log(e); }
 });
 
 btnShare.addEventListener('click', async ()=>{
   const text = 'Oráculo — Entre Mundos\n\n' + msgEl.textContent;
-  if (navigator.share) { try { await navigator.share({ text }); } catch(e){} }
-  else { try { await navigator.clipboard.writeText(text); btnShare.textContent='Copiado ✓'; setTimeout(()=>btnShare.textContent='Partilhar',1200);} catch(e){} }
+  try{
+    if (navigator.share) await navigator.share({ text });
+    else { await navigator.clipboard.writeText(text); btnShare.textContent='Copiado ✓'; setTimeout(()=>btnShare.textContent='Partilhar',1200); }
+  }catch(e){}
 });
 </script>
 </body>
