@@ -13,15 +13,13 @@ const circle = document.getElementById('circle');
 const startBtn = document.getElementById('start');
 const stopBtn  = document.getElementById('stop');
 let breathing = false;
-
 const fases = [
-  {label:'Inspira',   secs:4, expand:true},
-  {label:'Sustém',    secs:4, expand:true},
-  {label:'Expira',    secs:4, expand:false},
-  {label:'Pausa',     secs:4, expand:false},
+  {label:'Inspira', secs:4, expand:true},
+  {label:'Sustém',  secs:4, expand:true},
+  {label:'Expira',  secs:4, expand:false},
+  {label:'Pausa',   secs:4, expand:false},
 ];
-
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function ciclo(){
   while(breathing){
     for (const f of fases){
@@ -42,9 +40,7 @@ const sBtn = document.getElementById('silence-btn');
 const sTimer = document.getElementById('silence-timer');
 let sInt = null;
 sBtn?.addEventListener('click', () => {
-  let t = 60;
-  sBtn.disabled = true;
-  sInt && clearInterval(sInt);
+  let t = 60; sBtn.disabled = true; sInt && clearInterval(sInt);
   sInt = setInterval(() => {
     t--; const mm = String(Math.floor(t/60)).padStart(2,'0');
     const ss = String(t%60).padStart(2,'0');

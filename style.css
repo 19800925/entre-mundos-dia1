@@ -1,29 +1,19 @@
 :root{
-  --bg:#071b38;
-  --bg-2:#0d2b57;
-  --text:#d9e6ff;
-  --muted:#8da6d8;
-  --gold:#f1c14f;
-  --stroke:rgba(255,255,255,.08);
-  --card:rgba(13,43,87,.55);
-  --shadow:0 12px 40px rgba(3,9,20,.4);
-  --radius:16px;
+  --bg:#071b38; --bg-2:#0d2b57; --text:#d9e6ff; --muted:#8da6d8;
+  --gold:#f1c14f; --stroke:rgba(255,255,255,.08); --card:rgba(13,43,87,.55);
+  --shadow:0 12px 40px rgba(3,9,20,.4); --radius:16px;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
+*{box-sizing:border-box} html,body{height:100%}
+/* Fundo: gradiente + UM olho centrado mais abaixo (sem repetir) */
 body{
-  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  color:var(--text);
-  /* Fundo único com olho centrado mais abaixo */
-body {
-  background-color: #071b38; /* cor de base azul escuro */
-  background-image: url("assets/IMG_2247.png"); /* caminho do olho */
-  background-size: contain; /* mantém proporção do olho */
-  background-repeat: no-repeat; /* não repetir */
-  background-position: center 65%; /* centrado e descido */
-  background-attachment: fixed; /* mantém fixo ao rolar */
-}: radial-gradient(1200px 900px at 70% -10%, #133a73 0%, var(--bg) 42%, #06162f 100%);
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; color:var(--text);
+  background:
+    radial-gradient(1200px 900px at 70% -10%, #133a73 0%, var(--bg) 42%, #06162f 100%),
+    url("assets/IMG_2247.png") center 65% / contain no-repeat;
+  background-attachment: fixed;
+  background-color: var(--bg);
 }
+/* App bar / tabs */
 .appbar{display:flex; gap:12px; align-items:center; padding:18px 16px 8px 16px}
 .app-icon{width:28px; height:28px; border-radius:6px}
 h1{font-size:22px; margin:0}
@@ -33,21 +23,19 @@ h1{font-size:22px; margin:0}
   background:rgba(255,255,255,.04); color:var(--text);
   padding:10px 14px; border-radius:12px; font-weight:600}
 .tab.active{outline:2px solid #5b80ff; background:rgba(91,128,255,.12)}
+/* Layout */
 main{padding:8px 16px 32px 16px; max-width:820px; margin:0 auto}
-.card{background:var(--card); border:1px solid var(--stroke);
+.card{background:rgba(13,43,87,.46); border:1px solid var(--stroke);
   border-radius:var(--radius); padding:18px; margin:16px 0; box-shadow:var(--shadow);
   backdrop-filter:saturate(120%) blur(6px)}
 .card.center{text-align:center}
-h2{margin:0 0 8px 0}
-h3{margin:0 0 14px 0}
-.gold{color:var(--gold)}
-.muted{color:var(--muted)}
+h2{margin:0 0 8px 0} h3{margin:0 0 14px 0} .gold{color:var(--gold)} .muted{color:var(--muted)}
+/* Breathing circle */
 .breath-wrap{display:flex; justify-content:center; align-items:center; padding:10px 0 16px}
 .circle{
   width:260px; height:260px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  font-size:28px; font-weight:700; letter-spacing:.5px;
-  color:#eaf1ff;
+  font-size:28px; font-weight:700; letter-spacing:.5px; color:#eaf1ff;
   background: radial-gradient(60% 60% at 50% 40%, #1a396c, #0a244a 70%);
   border:1px solid rgba(255,255,255,.12);
   box-shadow: inset 0 0 60px rgba(255,255,255,.05), 0 20px 60px rgba(8,22,46,.6);
@@ -55,17 +43,13 @@ h3{margin:0 0 14px 0}
 }
 .circle.expand{ transform: scale(1.15) }
 .actions{display:flex; gap:12px; margin-top:6px}
-button{appearance:none; border:none; border-radius:12px;
-  padding:12px 18px; font-weight:700; cursor:pointer;
+button{appearance:none; border:none; border-radius:12px; padding:12px 18px; font-weight:700; cursor:pointer;
   color:#0b1c37; background:#cfe0ff}
 button.ghost{background:transparent; color:#cfe0ff; border:1px solid var(--stroke)}
 .legend{color:var(--muted); margin:.5rem 0 0}
 .quote{margin:18px 0 0; padding:16px; border-left:4px solid var(--gold);
   background:rgba(255,255,255,.04); border-radius:12px}
-.tabpanel{display:none}
-.tabpanel.active{display:block}
+.tabpanel{display:none} .tabpanel.active{display:block}
 .timer{font-size:28px; margin:10px 0 0}
-textarea{
-  width:100%; background:rgba(255,255,255,.05); color:var(--text);
-  border:1px solid var(--stroke); border-radius:12px; padding:12px; resize:vertical; min-height:140px;
-}
+textarea{width:100%; background:rgba(255,255,255,.05); color:var(--text);
+  border:1px solid var(--stroke); border-radius:12px; padding:12px; resize:vertical; min-height:140px}

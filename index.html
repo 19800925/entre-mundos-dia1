@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
- <link rel="stylesheet" href="style.css?v=7">
-...
-<script src="script.js?v=4"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Entre Mundos — Dia 1</title>
 
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0A244A" />
   <link rel="icon" href="assets/icon-192.png" />
 
-  <link rel="stylesheet" href="style.css" />
+  <!-- Cache-busting v9 -->
+  <link rel="stylesheet" href="style.css?v=9" />
 </head>
 <body>
   <header class="appbar">
@@ -28,7 +28,6 @@
   </nav>
 
   <main>
-    <!-- TAB: Guia Espiritual -->
     <section id="tab-guia" class="tabpanel active" role="tabpanel">
       <div class="card">
         <h2>Mensagem de hoje — <span class="gold">Reconexão</span></h2>
@@ -41,11 +40,7 @@
 
       <div class="card">
         <h3>Prática — Respiração em 4 tempos <span class="muted">(4·4·4·4)</span></h3>
-
-        <div class="breath-wrap">
-          <div id="circle" class="circle">Pausa</div>
-        </div>
-
+        <div class="breath-wrap"><div id="circle" class="circle">Pausa</div></div>
         <div class="actions">
           <button id="start">Começar</button>
           <button id="stop" class="ghost">Parar</button>
@@ -56,7 +51,6 @@
       <blockquote class="quote">“Eu volto. Eu volto. Eu volto.”</blockquote>
     </section>
 
-    <!-- TAB: Silêncio -->
     <section id="tab-silencio" class="tabpanel" role="tabpanel" aria-hidden="true">
       <div class="card center">
         <h2>Silêncio</h2>
@@ -66,7 +60,6 @@
       </div>
     </section>
 
-    <!-- TAB: Escrita da Alma -->
     <section id="tab-escrita" class="tabpanel" role="tabpanel" aria-hidden="true">
       <div class="card">
         <h2>Escrita da Alma</h2>
@@ -81,6 +74,7 @@
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <!-- Cache-busting v9 -->
+  <script src="script.js?v=9"></script>
 </body>
 </html>

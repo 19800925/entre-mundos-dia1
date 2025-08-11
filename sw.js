@@ -1,9 +1,9 @@
-const CACHE_NAME = 'entre-mundos-dia1-v7';
+const CACHE_NAME = 'entre-mundos-dia1-v9';
 const ASSETS = [
   './',
   './index.html',
-  './style.css?v=4',
-  './script.js?v=4',
+  './style.css?v=9',
+  './script.js?v=9',
   './manifest.json',
   './assets/icon-192.png',
   './assets/IMG_2247.png'
@@ -25,7 +25,6 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// network-first para navegação (garante apanhar HTML novo)
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.mode === 'navigate') {
