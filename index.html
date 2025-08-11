@@ -10,11 +10,7 @@
   <style>
     :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; --ring:#4a6fff; }
     html,body{margin:0;height:100%;font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));}
-    .wrap{
-      max-width:720px;margin:0 auto;padding:24px 16px;
-      /* espaço para o rodapé + safe area */
-      padding-bottom: calc(130px + env(safe-area-inset-bottom));
-    }
+    .wrap{max-width:720px;margin:0 auto;padding:24px 16px 100px;}
     header{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
     header img{width:32px;height:32px;border-radius:6px;}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
@@ -32,20 +28,8 @@
     .row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
     textarea{width:100%;min-height:180px;padding:12px;border-radius:12px;border:1px solid #2b4b82;background:#0f2342;color:var(--fg);}
     .small{font-size:12px;opacity:.9;} footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
-
-    /* chips (se existirem) */
-    .chip{padding:8px 12px;border-radius:999px;border:1px solid #2b4b82;background:#142c54;color:var(--fg);font-weight:600;cursor:pointer}
-    .chip.active{outline:2px solid var(--ring)}
-
-    /* Rodapé Oráculo com safe area e z-index alto */
-    .footer-oraculo{
-      position:fixed;left:0;right:0;bottom:0;
-      padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-      background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);
-      border-top:1px solid #25406d;display:flex;justify-content:center;
-      box-shadow:0 -10px 30px rgba(0,0,0,.25);
-      z-index:9999;
-    }
+    /* footer oráculo */
+    .footer-oraculo{position:fixed;left:0;right:0;bottom:0;padding:10px 16px;background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);border-top:1px solid #25406d;display:flex;justify-content:center;box-shadow:0 -10px 30px rgba(0,0,0,.25);}
     .btn-oraculo{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:#193b74;border:1px solid #2b4b82;border-radius:12px;color:var(--fg);font-weight:800;letter-spacing:.3px;text-decoration:none;}
     .btn-oraculo:active{transform:scale(.98);}
   </style>
@@ -128,7 +112,7 @@
 
   <!-- Botão fixo do Oráculo -->
   <div class="footer-oraculo">
-    <a class="btn-oraculo" href="oraculo.html?v=9">🔮 Oráculo</a>
+    <a class="btn-oraculo" href="oraculo.html?v=3">🔮 Oráculo</a>
   </div>
 
 <script>
