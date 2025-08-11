@@ -1,119 +1,87 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entre Mundos — Dia 1</title>
-  <meta name="theme-color" content="#0a1628" />
-  <link rel="manifest" href="manifest.json?v=3" />
-  <link rel="icon" href="assets/icon-192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="assets/icon-512.png" sizes="180x180">
-  <style>
-    :root{
-      --bg:#081523;
-      --card:#0f2746;
-      --muted:#a9bbd4;
-      --text:#e9f0fa;
-      --accent:#2b6cf6;
-      --accent-2:#ffd54d;
-      --pill:#173255;
-      --pill-active:#223f6a;
-    }
-    html,body{margin:0;padding:0;background:linear-gradient(180deg,#0a1628 0%,#081523 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,sans-serif}
-    .wrap{max-width:880px;margin:0 auto;padding:28px 18px 80px}
-    header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-    .app-logo{width:28px;height:28px;border-radius:6px;box-shadow:0 0 0 2px rgba(255,255,255,.06)}
-    h1{font-weight:780;margin:0;font-size:34px;letter-spacing:.2px}
-    .sub{color:var(--muted);margin:10px 0 20px}
-    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-    .tab{padding:10px 14px;border-radius:12px;background:var(--pill);color:var(--muted);text-decoration:none}
-    .tab.active{background:var(--pill-active);color:var(--text);box-shadow:0 0 0 2px rgba(255,255,255,.04) inset}
-    .card{background:rgba(255,255,255,.04);border-radius:20px;padding:18px 18px;margin:14px 0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
-    .card h2{margin:0 0 8px;font-size:20px; font-weight:700}
-    .big{font-size:28px;font-weight:800;letter-spacing:1px;color:var(--accent-2);text-align:center}
-    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    button,.btn{appearance:none;border:none;background:#1b3d70;color:#fff;padding:12px 18px;border-radius:14px;font-size:16px}
-    .btn-secondary{background:#334a6f}
-    .btn-whatsapp{display:flex;align-items:center;gap:10px;background:#1e3d6a}
-    .btn-whatsapp svg{width:20px;height:20px;fill:#fff;opacity:.95}
-    .muted{color:var(--muted);font-size:14px}
-    .counter{font-variant-numeric:tabular-nums}
-    .footer{margin-top:26px;color:var(--muted);text-align:center;font-size:13px}
-    .hidden{display:none}
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <img src="assets/icon-192.png" alt="LUZ" class="app-logo">
+  <header class="header">
+    <div class="brand">
+      <div class="app-icon">🔵</div>
       <h1>Entre Mundos — Dia 1</h1>
-    </header>
-    <div class="sub">Mensagem • Respiração • Frase • Silêncio</div>
-
-    <nav class="tabs">
-      <a class="tab active" href="#mensagem">Guia Espiritual</a>
-      <a class="tab" href="#silencio">Silêncio</a>
-      <a class="tab" href="#respiracao">Respiração</a>
-      <a class="tab" href="#frase">Frase Âncora</a>
+    </div>
+    <nav class="subnav">
+      <button class="tab-btn active" data-target="guia">Mensagem</button>
+      <span>•</span>
+      <button class="tab-btn" data-target="resp">Respiração</button>
+      <span>•</span>
+      <button class="tab-btn" data-target="frase">Frase</button>
+      <span>•</span>
+      <button class="tab-btn" data-target="silencio">Silêncio</button>
     </nav>
+  </header>
 
-    <!-- Mensagem -->
-    <section id="mensagem" class="card">
-      <h2>Mensagem de hoje — <span id="topic">Reconexão</span></h2>
-      <p>Respira e lembra‑te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-      <div class="row">
-        <a class="btn btn-whatsapp" href="oraculo.html">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19.11 17.31c-.27-.14-1.6-.79-1.84-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.15-1.34-.79-.7-1.32-1.55-1.48-1.82-.16-.27-.02-.41.12-.54.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.83-2.01-.22-.53-.44-.46-.61-.47-.16-.01-.34-.01-.52-.01s-.48.07-.73.34c-.25.27-.96.94-.96 2.29s.99 2.66 1.12 2.84c.14.18 1.95 2.97 4.72 4.16.66.29 1.18.46 1.58.59.66.21 1.26.18 1.73.11.53-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32z"/><path d="M26.67 5.33C23.79 2.44 20.07 1 16 1 7.73 1 1 7.73 1 16c0 2.61.68 5.16 1.98 7.41L1 31l7.74-1.97c2.2 1.2 4.7 1.83 7.27 1.83 8.27 0 15-6.73 15-15 0-4.07-1.44-7.79-4.33-10.67zM16 28.67c-2.38 0-4.72-.64-6.77-1.86l-.48-.29-4.6 1.17 1.23-4.48-.31-.46C3.79 20.59 3.33 18.32 3.33 16 3.33 9.07 9.07 3.33 16 3.33c3.38 0 6.55 1.31 8.94 3.69 2.38 2.38 3.73 5.57 3.73 8.97 0 6.93-5.74 12.67-12.67 12.67z"/></svg>
-          Abrir Oráculo
-        </a>
-      </div>
+  <main>
+    <!-- Guia Espiritual -->
+    <section id="guia" class="card visible">
+      <h2>Mensagem de hoje — <span class="gold">Reconexão</span></h2>
+      <p>
+        Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da
+        produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.
+      </p>
     </section>
 
-    <!-- Silêncio -->
+    <!-- Respiração 4·4·4·4 -->
+    <section id="resp" class="card">
+      <h2>Prática — Respiração <span class="dots">4·4·4·4</span></h2>
+      <div class="breath-wrapper">
+        <div id="breathCircle" class="circle">Preparar…</div>
+      </div>
+      <div class="actions">
+        <button id="breathStart" class="btn">Começar</button>
+        <button id="breathStop" class="btn ghost">Parar</button>
+      </div>
+      <p class="hint">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</p>
+    </section>
+
+    <!-- Frase âncora -->
+    <section id="frase" class="card">
+      <h2>Frase âncora</h2>
+      <blockquote id="fraseText">“Eu volto. Eu volto. Eu volto.”</blockquote>
+    </section>
+
+    <!-- Silêncio (cronómetro) -->
     <section id="silencio" class="card">
       <h2>Momento de silêncio</h2>
       <p>Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
-      <div class="row">
-        <button class="pill" data-min="1">1 min</button>
-        <button class="pill" data-min="2">2 min</button>
-        <button class="pill" data-min="3">3 min</button>
-        <button class="pill" data-min="5">5 min</button>
+
+      <div class="chips">
+        <button class="chip selected" data-min="1">1 min</button>
+        <button class="chip" data-min="2">2 min</button>
+        <button class="chip" data-min="3">3 min</button>
+        <button class="chip" data-min="5">5 min</button>
       </div>
-      <div class="row">
-        <span class="muted">ou</span>
-        <input id="customMin" type="number" min="1" value="1" style="width:70px;border-radius:10px;border:none;padding:10px;background:#102945;color:#fff" />
-        <button id="startBtn">Iniciar</button>
-        <button id="stopBtn" class="btn-secondary">Parar</button>
+
+      <div class="or">
+        <span>ou</span>
+        <input id="customMin" type="number" min="1" max="60" value="1" aria-label="Minutos">
+        <span>min</span>
       </div>
-      <div class="big counter" id="counter">01:00</div>
-      <p class="muted">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
-    </section>
 
-    <!-- Respiração -->
-    <section id="respiracao" class="card">
-      <h2>Prática — Respiração 4·4·4·4</h2>
-      <div class="row">
-        <button id="breathStart">Começar</button>
-        <button id="breathStop" class="btn-secondary">Parar</button>
+      <div class="actions">
+        <button id="timerStart" class="btn">Iniciar</button>
+        <button id="timerStop" class="btn ghost">Parar</button>
       </div>
-      <p class="muted">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
+
+      <div id="timer" class="timer">01:00</div>
+      <p class="note">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
     </section>
+  </main>
 
-    <!-- Frase -->
-    <section id="frase" class="card">
-      <h2>Frase âncora</h2>
-      <p class="big" style="color:#ffd34d">“Eu volto. Eu volto. Eu volto.”</p>
-    </section>
+  <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
 
-    <div class="footer">Entre Mundos — feito com verdade 💙</div>
-  </div>
-
-  <script src="script.js?v=3"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js');
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
