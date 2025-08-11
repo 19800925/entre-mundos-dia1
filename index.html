@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0a1628">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icon-192.png?v=10">
+  <link rel="icon" href="assets/icon-192.png">
   <title>Entre Mundos — Dia 1</title>
   <style>
     :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; --ring:#4a6fff; }
     html,body{margin:0;height:100%;font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));}
-    .wrap{
-      max-width:720px;margin:0 auto;padding:24px 16px;
-      padding-bottom: calc(130px + env(safe-area-inset-bottom));
-    }
+    .wrap{max-width:720px;margin:0 auto;padding:24px 16px; padding-bottom: calc(130px + env(safe-area-inset-bottom));}
     header{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
     header img{width:32px;height:32px;border-radius:6px;}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
@@ -30,25 +27,33 @@
     .breath-text{font-size:18px;}
     .row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
     textarea{width:100%;min-height:180px;padding:12px;border-radius:12px;border:1px solid #2b4b82;background:#0f2342;color:var(--fg);}
-    .small{font-size:12px;opacity:.9;} footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
+    .small{font-size:12px;opacity:.9;}
+    footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
+
+    /* chips rápidas (se existir o silêncio) */
     .chip{padding:8px 12px;border-radius:999px;border:1px solid #2b4b82;background:#142c54;color:var(--fg);font-weight:600;cursor:pointer}
     .chip.active{outline:2px solid var(--ring)}
+
+    /* Rodapé Oráculo */
     .footer-oraculo{
       position:fixed;left:0;right:0;bottom:0;
       padding:10px 16px calc(10px + env(safe-area-inset-bottom));
       background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);
-      border-top:1px solid #25406d;display:flex;justify-content:center;
+      border-top:1px solid #25406d;display:flex;justify-content:center;align-items:center;gap:16px;
       box-shadow:0 -10px 30px rgba(0,0,0,.25);
       z-index:9999;
     }
     .btn-oraculo{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:#193b74;border:1px solid #2b4b82;border-radius:12px;color:var(--fg);font-weight:800;letter-spacing:.3px;text-decoration:none;}
     .btn-oraculo:active{transform:scale(.98);}
+
+    /* Link de debug oculto por defeito */
+    .debug-link{display:none;font-size:12px;}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <img src="assets/icon-192.png?v=10" alt="Ícone">
+      <img src="assets/icon-192.png" alt="Ícone">
       <div>
         <h1>Entre Mundos — Dia 1</h1>
         <div class="small muted">Mensagem • Respiração • Frase • Silêncio</div>
@@ -64,9 +69,8 @@
     <section id="guia" class="panel active">
       <div class="card">
         <div class="muted">Mensagem de hoje — <span class="accent">Reconexão</span></div>
-        <p>Respira e lembra-te: <span class="accent">tu és a casa antes do mundo</span>. O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+        <p>Respira e lembra-te: <span class="accent">tu és a casa antes do mundo</span>.</p>
       </div>
-
       <div class="card center">
         <div class="muted">Prática — Respiração em 4 tempos (4•4•4•4)</div>
         <div id="circle" class="breath-circle"><div class="breath-text" id="breath-text">Preparar…</div></div>
@@ -74,9 +78,7 @@
           <button class="cta" id="start-breath">Começar</button>
           <button class="cta" id="stop-breath">Parar</button>
         </div>
-        <div class="small muted" style="margin-top:8px">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</div>
       </div>
-
       <div class="card center">
         <div class="muted">Frase âncora</div>
         <p class="accent">“Eu volto. Eu volto. Eu volto.”</p>
@@ -86,7 +88,6 @@
     <section id="silencio" class="panel">
       <div class="card center">
         <div class="muted">Momento de silêncio</div>
-        <p>Escolhe a duração e toca em <b>Iniciar</b>.</p>
         <div class="row" style="margin-bottom:8px; gap:8px; flex-wrap:wrap">
           <button class="chip dur-btn" data-mins="1">1 min</button>
           <button class="chip dur-btn" data-mins="2">2 min</button>
@@ -107,9 +108,8 @@
 
     <section id="escrita" class="panel">
       <div class="card">
-        <div class="muted">Escrita da Alma (fica guardado no teu dispositivo)</div>
-        <p class="small">Sugestões: “Agora, o que dói é…”, “O que ainda me prende é…”, “O que me alivia é…”</p>
-        <textarea id="journal" placeholder="Escreve aqui. Só tu lês."></textarea>
+        <div class="muted">Escrita da Alma (só no teu dispositivo)</div>
+        <textarea id="journal" placeholder="Escreve aqui. Só tu lês." style="width:100%;min-height:160px"></textarea>
         <div class="row" style="justify-content: space-between; margin-top:8px">
           <span class="small muted" id="count">0 caracteres</span>
           <button class="cta" id="save">Guardar</button>
@@ -118,60 +118,62 @@
       </div>
     </section>
 
-    <footer>Entre Mundos — Dia 1 • feito com verdade 🩵</footer>
+    <footer>
+      Entre Mundos — Dia 1 • feito com verdade 🩵
+      <span id="debugLink" class="debug-link"> • <a href="debug-oraculo.html">🛠 Debug</a></span>
+    </footer>
   </div>
 
   <div class="footer-oraculo">
-    <a class="btn-oraculo" href="oraculo.html?v=10">🔮 Oráculo</a>
+    <a class="btn-oraculo" href="oraculo.html">🔮 Oráculo</a>
   </div>
 
 <script>
+  // Tabs
   const tabs = {guia:document.getElementById('guia'), silencio:document.getElementById('silencio'), escrita:document.getElementById('escrita')};
   function activate(id){ for(const [k,el] of Object.entries(tabs)){ el.classList.toggle('active', k===id); document.getElementById('tab-'+k).classList.toggle('active', k===id);}}
   document.getElementById('tab-guia').onclick=()=>activate('guia');
   document.getElementById('tab-silencio').onclick=()=>activate('silencio');
   document.getElementById('tab-escrita').onclick=()=>activate('escrita');
 
+  // Respiração (animação suave fake)
   let breathTimer=null, phase=0; const phases=['Inspira','Sustenha','Expira','Pausa'];
   const circle=document.getElementById('circle'), btxt=document.getElementById('breath-text');
   function stepPhase(){ const p=phases[phase%4]; if(btxt) btxt.textContent=p; const target=(p==='Inspira')?1.2:(p==='Expira'?0.9:1.05); const start=performance.now(); const dur=750; function anim(t){ const k=Math.min(1,(t-start)/dur); const s=1+(target-1)*k; if(circle) circle.style.transform=`scale(${s})`; if(k<1) requestAnimationFrame(anim);} requestAnimationFrame(anim); phase++; }
   document.getElementById('start-breath')?.addEventListener('click', ()=>{ if(breathTimer) return; phase=0; stepPhase(); breathTimer=setInterval(stepPhase,4000); });
   document.getElementById('stop-breath')?.addEventListener('click', ()=>{ clearInterval(breathTimer); breathTimer=null; if(btxt) btxt.textContent='Pausa'; if(circle) circle.style.transform='scale(1)'; });
 
+  // Silêncio
   const timerEl=document.getElementById('timer');
   const minutesInput=document.getElementById('minutes');
   const durBtns=[...document.querySelectorAll('.dur-btn')];
   function fmt(s){const m=Math.floor(s/60),r=s%60;return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0');}
-  function setActive(mins){
-    durBtns.forEach(b=>b.classList.toggle('active', Number(b.dataset.mins)===mins));
-    if (minutesInput) minutesInput.value = String(mins);
-    localStorage.setItem('entre-mundos-dia1-silencio-mins', String(mins));
-  }
+  function setActive(mins){ durBtns.forEach(b=>b.classList.toggle('active', Number(b.dataset.mins)===mins)); if (minutesInput) minutesInput.value = String(mins); localStorage.setItem('entre-mundos-dia1-silencio-mins', String(mins)); }
   let tInt=null,left=60;
   function tick(){ left--; if(left<=0){ clearInterval(tInt); tInt=null; left=0; } timerEl.textContent = fmt(left); }
-  document.getElementById('start-timer').onclick=()=>{
-    const mins = Math.max(1, Math.min(30, parseInt(minutesInput.value||'1',10)));
-    left = mins*60; timerEl.textContent = fmt(left);
-    clearInterval(tInt); tInt = setInterval(tick,1000);
-    setActive(mins);
-  };
+  document.getElementById('start-timer').onclick=()=>{ const mins = Math.max(1, Math.min(30, parseInt(minutesInput.value||'1',10))); left = mins*60; timerEl.textContent = fmt(left); clearInterval(tInt); tInt = setInterval(tick,1000); setActive(mins); };
   document.getElementById('stop-timer').onclick=()=>{ clearInterval(tInt); tInt=null; };
   durBtns.forEach(b=>b.onclick=()=> setActive(Number(b.dataset.mins)));
-  const savedMins = parseInt(localStorage.getItem('entre-mundos-dia1-silencio-mins')||'1',10);
-  setActive(savedMins); timerEl.textContent = fmt(savedMins*60);
+  const savedMins = parseInt(localStorage.getItem('entre-mundos-dia1-silencio-mins')||'1',10); setActive(savedMins); timerEl.textContent = fmt(savedMins*60);
 
+  // Escrita
   const area=document.getElementById('journal'), count=document.getElementById('count'), status=document.getElementById('status');
   function update(){ count.textContent = (area.value.length) + ' caracteres'; }
   area.addEventListener('input', update);
-  document.getElementById('save').onclick = () => {
-    localStorage.setItem('entre-mundos-dia1-journal', area.value);
-    status.textContent = 'Guardado no teu dispositivo.';
-    setTimeout(() => status.textContent = '', 2000);
-  };
-  const savedJournal = localStorage.getItem('entre-mundos-dia1-journal');
-  if (savedJournal) { area.value = savedJournal; update(); }
+  document.getElementById('save').onclick = () => { localStorage.setItem('entre-mundos-dia1-journal', area.value); status.textContent = 'Guardado no teu dispositivo.'; setTimeout(() => status.textContent = '', 2000); };
+  const savedJournal = localStorage.getItem('entre-mundos-dia1-journal'); if (savedJournal) { area.value = savedJournal; update(); }
 
+  // PWA
   if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
+
+  // Mostrar link de debug só com #admin
+  function toggleDebug(){
+    const el = document.getElementById('debugLink');
+    if (!el) return;
+    el.style.display = (location.hash === '#admin') ? 'inline' : 'none';
+  }
+  window.addEventListener('hashchange', toggleDebug);
+  toggleDebug();
 </script>
 </body>
 </html>

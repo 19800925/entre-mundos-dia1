@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debug Oráculo</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #0b0f1a; color: #fff; padding: 20px; }
+  button { margin: 5px 0; padding: 10px; border: none; background: #1e90ff; color: white; cursor: pointer; border-radius: 5px; }
+  pre { background: #111; padding: 10px; border-radius: 5px; white-space: pre-wrap; word-break: break-word; }
+</style>
+</head>
+<body>
+<h1>🛠 Debug Oráculo</h1>
+<button onclick="verificar()">Verificar agora</button>
+<button onclick="verificarSemCache()">Verificar (no-store)</button>
+<button onclick="limparCache()">Limpar cache & recarregar</button>
+<pre id="saida">Aguardando...</pre>
+
+<script>
+function verificar(fetchOptions={}) {
+    fetch('oraculo.json', fetchOptions)
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('saida').textContent =
+          'Total de mensagens: ' + d.mensagens.length + '\nExemplo: ' + d.mensagens.slice(0,5).join('\n');
+      })
+      .catch(e => document.getElementById('saida').textContent = 'Erro: ' + e);
+}
+
+function verificarSemCache() {
+    verificar({cache: 'no-store'});
+}
+
+function limparCache() {
+    if ('caches' in window) {
+        caches.keys().then(names => {
+            for (let name of names) caches.delete(name);
+        });
+    }
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+            for (let reg of regs) reg.unregister();
+        });
+    }
+    location.reload(true);
+}
+</script>
+</body>
+</html>
