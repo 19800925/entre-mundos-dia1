@@ -1,1 +1,121 @@
-<!doctype html><meta charset='utf-8'><title>Entre Mundos — Dia 1</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:0;font-family:system-ui;background:#0a1628;color:#e6f0ff} .w{max-width:860px;margin:0 auto;padding:28px} .card{background:#10233e55;border:1px solid #ffffff22;border-radius:18px;padding:22px} a.cta{display:inline-flex;gap:12px;align-items:center;text-decoration:none;color:#fff;background:#184a8c;padding:14px 18px;border-radius:14px} h1{margin:6px 0}</style><div class=w><h1>Entre Mundos — Dia 1</h1><div class=sub>Mensagem • Respiração • Frase • Silêncio</div><div class=card><a class=cta href='/entre-mundos-dia1/oraculo.html?v=34'>🔮 Abrir Oráculo</a></div></div><script>if('serviceWorker'in navigator){navigator.serviceWorker.register('/entre-mundos-dia1/sw.js?v=34')}</script>
+<!doctype html>
+<html lang="pt">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entre Mundos — Dia 1</title>
+<link rel="manifest" href="manifest.json?v=1">
+<style>
+:root{
+  --bg:#0a1628; --panel:#0f2240; --panel2:#122a4f; --text:#e8f0ff;
+  --muted:#a9bbd6; --accent:#1b4c8e; --accent2:#2c71d1; --ring:#ffffff26;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:28px}
+h1{margin:0 0 8px 0;font-size:clamp(26px,4.8vw,36px)}
+.sub{color:var(--muted);margin-bottom:18px}
+.card{background:linear-gradient(180deg,var(--panel) 0%, var(--panel2) 100%);
+      border:1px solid var(--ring); border-radius:22px; padding:22px; box-shadow: 0 12px 40px #00000033}
+h2{margin:0 0 6px 0; font-size:20px; color:#cfe2ff}
+hr{border:0;border-top:1px solid #ffffff1e;margin:18px 0}
+.button{display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent); color:#fff; font-weight:700; border:0; padding:12px 16px;
+  border-radius:14px; cursor:pointer}
+.button.secondary{background:#ffffff12;border:1px solid var(--ring);color:var(--text)}
+.choices{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px}
+.choice{padding:10px 12px;border-radius:20px;border:1px solid var(--ring);
+  background:#ffffff12;color:#fff;cursor:pointer}
+.choice.active{outline:2px solid #ffd53b; background:#ffffff18}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.input{width:80px;padding:10px 12px;border-radius:12px;border:1px solid var(--ring);
+  background:#09172e;color:#fff;text-align:center}
+.timer{font-size:44px; letter-spacing:1px; font-weight:800; color:#ffd442; text-align:center; margin:8px 0}
+small{color:var(--muted)}
+footer{color:var(--muted); text-align:center; margin-top:26px}
+</style>
+<body>
+<div class="wrap">
+  <h1>Entre Mundos — Dia 1</h1>
+  <div class="sub">Mensagem • Respiração • Frase • Silêncio</div>
+
+  <div class="card">
+    <h2>Momento de silêncio</h2>
+    <p>Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
+
+    <div class="choices" id="preset">
+      <div class="choice active" data-min="1">1 min</div>
+      <div class="choice" data-min="2">2 min</div>
+      <div class="choice" data-min="3">3 min</div>
+      <div class="choice" data-min="5">5 min</div>
+    </div>
+
+    <div class="row">
+      <small>ou</small>
+      <input id="customMin" class="input" type="number" min="1" max="60" step="1" value="1" aria-label="Minutos">
+      <button id="startBtn" class="button">Iniciar</button>
+      <button id="stopBtn" class="button secondary">Parar</button>
+    </div>
+
+    <div class="timer" id="timer">01:00</div>
+    <small id="hint">Dica: o ecrã pode bloquear, mas a contagem continua.</small>
+  </div>
+
+  <footer>Entre Mundos — feito com verdade 💙</footer>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js?v=1').catch(()=>{});
+}
+
+// Timer logic
+let total = 60, left = 60, tId = null, running = false;
+const timer = document.getElementById('timer');
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+const custom = document.getElementById('customMin');
+const preset = document.getElementById('preset');
+
+function fmt(s) {
+  const m = Math.floor(s/60), r = s % 60;
+  return (m<10?'0':'')+m+':' + (r<10?'0':'')+r;
+}
+function setMinutes(min){
+  total = left = Math.max(1, Math.min(60, parseInt(min)||1))*60;
+  timer.textContent = fmt(left);
+}
+function tick(){
+  if (left>0){ left--; timer.textContent = fmt(left); }
+  else { clearInterval(tId); running=false; startBtn.textContent='Reiniciar'; timer.textContent='00:00'; }
+}
+startBtn.onclick = () => {
+  if (running) return;
+  running = true;
+  clearInterval(tId);
+  // if finished, reset to selected minutes
+  if (left===0) setMinutes(custom.value);
+  tId = setInterval(tick, 1000);
+  startBtn.textContent='A contar…';
+};
+stopBtn.onclick = () => {
+  running = false;
+  clearInterval(tId);
+  startBtn.textContent='Iniciar';
+};
+custom.oninput = (e)=>{
+  preset.querySelectorAll('.choice').forEach(c=>c.classList.remove('active'));
+  setMinutes(e.target.value);
+};
+preset.addEventListener('click', (e)=>{
+  const el = e.target.closest('.choice'); if(!el) return;
+  preset.querySelectorAll('.choice').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const min = el.getAttribute('data-min');
+  custom.value = min;
+  setMinutes(min);
+});
+// initial
+setMinutes(1);
+</script>
+</body>
+</html>
