@@ -6,13 +6,11 @@
   <meta name="theme-color" content="#0a1628">
   <title>Oráculo — Entre Mundos</title>
   <style>
-    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --panel:#0f2342; --btn:#18345e; --btnHover:#1d416f; }
-    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));
-      color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
+    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --panel:#0f2342; --btn:#17365f; --btnHover:#1f4476; }
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));color:var(--fg);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;}
     .wrap{max-width:740px;margin:0 auto;padding:20px 16px 44px;}
     header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-    .btn{background:#15325f;color:var(--fg);border:1px solid #28508a;border-radius:12px;padding:10px 14px;
-      text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+    .btn{background:#15325f;color:var(--fg);border:1px solid #28508a;border-radius:12px;padding:10px 14px;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
     .muted{color:var(--muted)}
     .panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 0 40px rgba(255,255,255,.02);}
@@ -20,18 +18,17 @@
     .msg{font-size:22px;line-height:1.45;opacity:0;transform:translateY(6px);min-height:2.6em;}
     .show{animation:fadeIn .45s ease forwards;} @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
     .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
-    button{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;
-      font-weight:700;cursor:pointer;transition:transform .06s ease;}
+    button{background:#193b74;color:var(--fg);border:1px solid #2b4b82;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;transition:transform .06s ease;}
     button:active{transform:scale(.98);}
     .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
     .counter{font-size:12px;color:var(--muted)}
     /* WhatsApp pill buttons */
-    .wa-bar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px}
-    .wa-btn{display:inline-flex;align-items:center;gap:10px;background:var(--btn);padding:14px 18px;border-radius:18px;
-      border:1px solid #29538f;font-weight:800;letter-spacing:.2px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+    .wa-bar{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+    .wa-btn{display:inline-flex;align-items:center;gap:12px;background:var(--btn);padding:14px 20px;border-radius:22px;border:1px solid #2b558e;font-weight:800;letter-spacing:.2px;box-shadow:0 10px 24px rgba(0,0,0,.18);text-decoration:none;color:#fff}
+    .wa-btn:link,.wa-btn:visited{color:#fff;text-decoration:none}
     .wa-btn:hover{background:var(--btnHover)}
-    .wa-ico{width:22px;height:22px;display:inline-block}
-    .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:4px}
+    .wa-ico{width:24px;height:24px;display:inline-block;fill:#fff}
+    .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
   </style>
 </head>
 <body>
@@ -58,13 +55,13 @@
       <div class="wa-bar" id="waBar" style="display:none">
         <a href="#" id="waSend" class="wa-btn" title="Partilhar no WhatsApp">
           <svg viewBox="0 0 32 32" class="wa-ico" aria-hidden="true">
-            <path fill="#fff" d="M19.11 17.74c-.27-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.32.2-.6.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.32-1.56-1.47-1.82-.15-.27-.02-.42.11-.55.11-.11.25-.27.37-.41.12-.14.16-.23.24-.39.08-.16.04-.3-.02-.41-.06-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.82c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.65.21 1.24.18 1.7.11.52-.08 1.63-.66 1.86-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32zM16 3.2c-7.06 0-12.8 5.73-12.8 12.8 0 2.25.6 4.36 1.66 6.19L3.2 28.8l6.82-1.6A12.75 12.75 0 0 0 16 28.8c7.06 0 12.8-5.73 12.8-12.8S23.06 3.2 16 3.2zm0 22.9c-2.21 0-4.25-.72-5.9-1.93l-.42-.3-4.04.95.94-3.95-.31-.42a9.7 9.7 0 1 1 18.33-5.25 9.7 9.7 0 0 1-9.7 9.7z"/>
+            <path d="M19.11 17.74c-.27-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.32.2-.6.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.32-1.56-1.47-1.82-.15-.27-.02-.42.11-.55.11-.11.25-.27.37-.41.12-.14.16-.23.24-.39.08-.16.04-.3-.02-.41-.06-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.82c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.65.21 1.24.18 1.7.11.52-.08 1.63-.66 1.86-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32z"/>
           </svg>
           <span>Partilhar no WhatsApp</span>
         </a>
         <a href="#" id="waStatus" class="wa-btn" title="Colocar no Estado">
           <svg viewBox="0 0 32 32" class="wa-ico" aria-hidden="true">
-            <path fill="#fff" d="M19.11 17.74c-.27-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.32.2-.6.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.32-1.56-1.47-1.82-.15-.27-.02-.42.11-.55.11-.11.25-.27.37-.41.12-.14.16-.23.24-.39.08-.16.04-.3-.02-.41-.06-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.82c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.65.21 1.24.18 1.7.11.52-.08 1.63-.66 1.86-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32zM16 3.2c-7.06 0-12.8 5.73-12.8 12.8 0 2.25.6 4.36 1.66 6.19L3.2 28.8l6.82-1.6A12.75 12.75 0 0 0 16 28.8c7.06 0 12.8-5.73 12.8-12.8S23.06 3.2 16 3.2zm0 22.9c-2.21 0-4.25-.72-5.9-1.93l-.42-.3-4.04.95.94-3.95-.31-.42a9.7 9.7 0 1 1 18.33-5.25 9.7 9.7 0 0 1-9.7 9.7z"/>
+            <path d="M19.11 17.74c-.27-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.32.2-.6.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.32-1.56-1.47-1.82-.15-.27-.02-.42.11-.55.11-.11.25-.27.37-.41.12-.14.16-.23.24-.39.08-.16.04-.3-.02-.41-.06-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47l-.53-.01c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.82c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.65.21 1.24.18 1.7.11.52-.08 1.63-.66 1.86-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32z"/>
           </svg>
           <span>Colocar no Estado</span>
         </a>
@@ -146,7 +143,6 @@ btnCopy.addEventListener('click', async ()=>{
 function openWhatsAppWith(text){
   const deep='whatsapp://send?text='+encodeURIComponent(text);
   const web='https://wa.me/?text='+encodeURIComponent(text);
-  // try deep first; if it doesn't open in ~600ms, go to web
   const link=document.createElement('a'); link.href=deep; document.body.appendChild(link); link.click();
   setTimeout(()=>{ window.location.href=web; }, 600);
 }
