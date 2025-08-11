@@ -1,5 +1,5 @@
-// sw.js — cache incluindo Oráculo
-const CACHE = 'entre-mundos-dia1-v8';
+// sw.js — cache v10
+const CACHE = 'entre-mundos-dia1-v10';
 const ASSETS = [
   './','./index.html','./manifest.json',
   './oraculo.html','./oraculo.json',
@@ -20,8 +20,10 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fetchPromise = fetch(e.request).then(resp => {
-        const copy = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy));
+        try {
+          const copy = resp.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy));
+        } catch(e){}
         return resp;
       }).catch(()=>cached);
       return cached || fetchPromise;

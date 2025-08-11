@@ -53,8 +53,7 @@ const btnAnother = document.getElementById('another');
 const btnSave = document.getElementById('save');
 const btnShare = document.getElementById('share');
 
-// JSON externo com cache-busting
-fetch('oraculo.json?v=3').then(r => r.json()).then(d => { MESSAGES = d; }).catch(()=>{
+fetch('oraculo.json?v=10').then(r => r.json()).then(d => { MESSAGES = d; }).catch(()=>{
   MESSAGES = ["Respira. O silêncio não é vazio — é casa.","És amado mesmo quando duvidas de ti."];
 });
 

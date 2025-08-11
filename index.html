@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0a1628">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icon-192.png?v=8">
+  <link rel="icon" href="assets/icon-192.png?v=10">
   <title>Entre Mundos — Dia 1</title>
   <style>
     :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; --ring:#4a6fff; }
     html,body{margin:0;height:100%;font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));}
-    .wrap{max-width:720px;margin:0 auto;padding:24px 16px 100px;}
+    .wrap{
+      max-width:720px;margin:0 auto;padding:24px 16px;
+      padding-bottom: calc(130px + env(safe-area-inset-bottom));
+    }
     header{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
     header img{width:32px;height:32px;border-radius:6px;}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
@@ -28,8 +31,16 @@
     .row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
     textarea{width:100%;min-height:180px;padding:12px;border-radius:12px;border:1px solid #2b4b82;background:#0f2342;color:var(--fg);}
     .small{font-size:12px;opacity:.9;} footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
-    /* footer oráculo */
-    .footer-oraculo{position:fixed;left:0;right:0;bottom:0;padding:10px 16px;background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);border-top:1px solid #25406d;display:flex;justify-content:center;box-shadow:0 -10px 30px rgba(0,0,0,.25);}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid #2b4b82;background:#142c54;color:var(--fg);font-weight:600;cursor:pointer}
+    .chip.active{outline:2px solid var(--ring)}
+    .footer-oraculo{
+      position:fixed;left:0;right:0;bottom:0;
+      padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+      background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);
+      border-top:1px solid #25406d;display:flex;justify-content:center;
+      box-shadow:0 -10px 30px rgba(0,0,0,.25);
+      z-index:9999;
+    }
     .btn-oraculo{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:#193b74;border:1px solid #2b4b82;border-radius:12px;color:var(--fg);font-weight:800;letter-spacing:.3px;text-decoration:none;}
     .btn-oraculo:active{transform:scale(.98);}
   </style>
@@ -37,7 +48,7 @@
 <body>
   <div class="wrap">
     <header>
-      <img src="assets/icon-192.png?v=8" alt="Ícone">
+      <img src="assets/icon-192.png?v=10" alt="Ícone">
       <div>
         <h1>Entre Mundos — Dia 1</h1>
         <div class="small muted">Mensagem • Respiração • Frase • Silêncio</div>
@@ -75,7 +86,7 @@
     <section id="silencio" class="panel">
       <div class="card center">
         <div class="muted">Momento de silêncio</div>
-        <p>Define o tempo e toca em <b>Iniciar</b>. Fica contigo, só a respirar.</p>
+        <p>Escolhe a duração e toca em <b>Iniciar</b>.</p>
         <div class="row" style="margin-bottom:8px; gap:8px; flex-wrap:wrap">
           <button class="chip dur-btn" data-mins="1">1 min</button>
           <button class="chip dur-btn" data-mins="2">2 min</button>
@@ -110,27 +121,23 @@
     <footer>Entre Mundos — Dia 1 • feito com verdade 🩵</footer>
   </div>
 
-  <!-- Botão fixo do Oráculo -->
   <div class="footer-oraculo">
-    <a class="btn-oraculo" href="oraculo.html?v=3">🔮 Oráculo</a>
+    <a class="btn-oraculo" href="oraculo.html?v=10">🔮 Oráculo</a>
   </div>
 
 <script>
-  // Tabs
   const tabs = {guia:document.getElementById('guia'), silencio:document.getElementById('silencio'), escrita:document.getElementById('escrita')};
   function activate(id){ for(const [k,el] of Object.entries(tabs)){ el.classList.toggle('active', k===id); document.getElementById('tab-'+k).classList.toggle('active', k===id);}}
   document.getElementById('tab-guia').onclick=()=>activate('guia');
   document.getElementById('tab-silencio').onclick=()=>activate('silencio');
   document.getElementById('tab-escrita').onclick=()=>activate('escrita');
 
-  // Respiração suave
   let breathTimer=null, phase=0; const phases=['Inspira','Sustenha','Expira','Pausa'];
   const circle=document.getElementById('circle'), btxt=document.getElementById('breath-text');
   function stepPhase(){ const p=phases[phase%4]; if(btxt) btxt.textContent=p; const target=(p==='Inspira')?1.2:(p==='Expira'?0.9:1.05); const start=performance.now(); const dur=750; function anim(t){ const k=Math.min(1,(t-start)/dur); const s=1+(target-1)*k; if(circle) circle.style.transform=`scale(${s})`; if(k<1) requestAnimationFrame(anim);} requestAnimationFrame(anim); phase++; }
   document.getElementById('start-breath')?.addEventListener('click', ()=>{ if(breathTimer) return; phase=0; stepPhase(); breathTimer=setInterval(stepPhase,4000); });
   document.getElementById('stop-breath')?.addEventListener('click', ()=>{ clearInterval(breathTimer); breathTimer=null; if(btxt) btxt.textContent='Pausa'; if(circle) circle.style.transform='scale(1)'; });
 
-  // Silêncio com presets 1/2/3/5 + lembrar última
   const timerEl=document.getElementById('timer');
   const minutesInput=document.getElementById('minutes');
   const durBtns=[...document.querySelectorAll('.dur-btn')];
@@ -153,7 +160,6 @@
   const savedMins = parseInt(localStorage.getItem('entre-mundos-dia1-silencio-mins')||'1',10);
   setActive(savedMins); timerEl.textContent = fmt(savedMins*60);
 
-  // Escrita
   const area=document.getElementById('journal'), count=document.getElementById('count'), status=document.getElementById('status');
   function update(){ count.textContent = (area.value.length) + ' caracteres'; }
   area.addEventListener('input', update);
@@ -165,7 +171,6 @@
   const savedJournal = localStorage.getItem('entre-mundos-dia1-journal');
   if (savedJournal) { area.value = savedJournal; update(); }
 
-  // PWA
   if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
 </script>
 </body>
