@@ -1,213 +1,25 @@
-<!doctype html>
-<html lang="pt-PT">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0a1628">
-  <title>Entre Mundos — Dia 1</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icon-192.png">
-  <style>
-    :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; --ring:#4a6fff; }
-    html,body{margin:0;height:100%;font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);
-      background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));}
-    .wrap{max-width:720px;margin:0 auto;padding:24px 16px; padding-bottom: calc(130px + env(safe-area-inset-bottom));}
-    header{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
-    header img{width:32px;height:32px;border-radius:6px;}
-    h1{font-size:22px;margin:0;letter-spacing:.3px;}
-    .small{font-size:12px;opacity:.9;}
-    .muted{color:var(--muted)} .accent{color:var(--accent);font-weight:700;}
-    nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 20px;}
-    nav button{background:var(--panel);color:var(--fg);border:1px solid #25406d;border-radius:10px;padding:12px;font-weight:600;cursor:pointer;}
-    nav button.active{outline:2px solid var(--ring);}
-    section.panel{background:rgba(15,35,66,.66);border:1px solid #25406d;border-radius:14px;padding:16px;display:none;box-shadow:0 10px 30px rgba(0,0,0,.25), inset 0 0 40px rgba(255,255,255,.02);}
-    section.panel.active{display:block;}
-    .card{background:rgba(20,44,84,.7);border:1px solid #2b4b82;border-radius:14px;padding:14px;margin:12px 0;}
-    .cta{display:inline-block;padding:12px 16px;background:#193b74;border:1px solid #2b4b82;border-radius:10px;color:var(--fg);font-weight:700;cursor:pointer;}
-    .center{text-align:center;}
-    .row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
-    .breath-circle{width:180px;height:180px;border-radius:50%;margin:16px auto;background:radial-gradient(closest-side,#21447e,#152b52);display:grid;place-items:center;border:2px solid #2b4b82;transition:transform 1s ease-in-out;}
-    .breath-text{font-size:18px;}
-    textarea{width:100%;min-height:180px;padding:12px;border-radius:12px;border:1px solid #2b4b82;background:#0f2342;color:var(--fg);}
-    /* chips silêncio */
-    .chip{padding:8px 12px;border-radius:999px;border:1px solid #2b4b82;background:#142c54;color:var(--fg);font-weight:600;cursor:pointer}
-    .chip.active{outline:2px solid var(--ring)}
-    footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
-    /* rodapé oráculo fixo */
-    .footer-oraculo{
-      position:fixed;left:0;right:0;bottom:0;
-      padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-      background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);
-      border-top:1px solid #25406d;display:flex;justify-content:center;align-items:center;gap:16px;
-      box-shadow:0 -10px 30px rgba(0,0,0,.25); z-index:9999;
-    }
-    .btn-oraculo{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:#193b74;border:1px solid #2b4b82;border-radius:12px;color:var(--fg);font-weight:800;letter-spacing:.3px;text-decoration:none;}
-    .btn-oraculo:active{transform:scale(.98);}
-    /* debug oculto */
-    .debug-link{display:none;font-size:12px;}
 
-    /* 🔧 Botão Admin discreto (só com #admin) */
-    #adminFab{
-      position:fixed; right:16px; bottom:calc(18px + env(safe-area-inset-bottom));
-      width:56px; height:56px; display:none;
-      background:#193b74aa; border:1px solid #2b4b82; border-radius:50%;
-      color:var(--fg); font-weight:800; box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 0 20px rgba(255,255,255,.05);
-      align-items:center; justify-content:center; text-decoration:none; backdrop-filter: blur(6px);
-    }
-    #adminFab:hover{ filter: brightness(1.08); }
-  </style>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Oráculo — Entre Mundos</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+body { background-color: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+button { padding: 10px 15px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: auto; }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <img src="assets/icon-192.png" alt="Ícone">
-      <div>
-        <h1 id="titleTap">Entre Mundos — Dia 1</h1>
-        <div class="small muted">Mensagem • Respiração • Frase • Silêncio</div>
-      </div>
-    </header>
-
-    <nav>
-      <button id="tab-guia" class="active">Guia Espiritual</button>
-      <button id="tab-silencio">Silêncio</button>
-      <button id="tab-escrita">Escrita da Alma</button>
-    </nav>
-
-    <section id="guia" class="panel active">
-      <div class="card">
-        <div class="muted">Mensagem de hoje — <span class="accent">Reconexão</span></div>
-        <p>Respira e lembra-te: <span class="accent">tu és a casa antes do mundo</span>. O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-      </div>
-      <div class="card center">
-        <div class="muted">Prática — Respiração em 4 tempos (4•4•4•4)</div>
-        <div id="circle" class="breath-circle"><div class="breath-text" id="breath-text">Preparar…</div></div>
-        <div class="row">
-          <button class="cta" id="start-breath">Começar</button>
-          <button class="cta" id="stop-breath">Parar</button>
-        </div>
-        <div class="small muted">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</div>
-      </div>
-      <div class="card center">
-        <div class="muted">Frase âncora</div>
-        <p class="accent">“Eu volto. Eu volto. Eu volto.”</p>
-      </div>
-    </section>
-
-    <section id="silencio" class="panel">
-      <div class="card center">
-        <div class="muted">Momento de silêncio</div>
-        <div class="row" style="margin-bottom:8px; gap:8px; flex-wrap:wrap">
-          <button class="chip dur-btn" data-mins="1">1 min</button>
-          <button class="chip dur-btn" data-mins="2">2 min</button>
-          <button class="chip dur-btn" data-mins="3">3 min</button>
-          <button class="chip dur-btn" data-mins="5">5 min</button>
-          <label style="margin-left:8px">
-            <span class="small muted">ou</span>
-            <input id="minutes" type="number" min="1" max="30" value="1" style="width:80px">
-          </label>
-        </div>
-        <div class="row" style="margin-bottom:8px">
-          <button class="cta" id="start-timer">Iniciar</button>
-          <button class="cta" id="stop-timer">Parar</button>
-        </div>
-        <div id="timer" class="accent" style="font-size:28px">01:00</div>
-      </div>
-    </section>
-
-    <section id="escrita" class="panel">
-      <div class="card">
-        <div class="muted">Escrita da Alma (só no teu dispositivo)</div>
-        <textarea id="journal" placeholder="Escreve aqui. Só tu lês."></textarea>
-        <div class="row" style="justify-content: space-between; margin-top:8px">
-          <span class="small muted" id="count">0 caracteres</span>
-          <button class="cta" id="save">Guardar</button>
-        </div>
-        <div class="small" id="status" style="margin-top:6px"></div>
-      </div>
-    </section>
-
-    <footer>
-      Entre Mundos — Dia 1 • feito com verdade 🩵
-      <span id="debugLink" class="debug-link"> • <a href="debug-oraculo.html">🛠 Debug</a></span>
-    </footer>
-  </div>
-
-  <div class="footer-oraculo">
-    <a class="btn-oraculo" href="oraculo.html">🔮 Oráculo</a>
-  </div>
-
-  <!-- 🔧 Botão Admin flutuante (apenas com #admin) -->
-  <a id="adminFab" href="debug-oraculo.html" aria-label="Admin">🔧</a>
-
+<h1>Mensagem do Oráculo</h1>
+<p id="message">A tua luz guia-te no silêncio.</p>
+<button id="share-whatsapp">Partilhar no WhatsApp</button>
+<script src="oraculo.js"></script>
 <script>
-  // Tabs
-  const tabs = {guia:document.getElementById('guia'), silencio:document.getElementById('silencio'), escrita:document.getElementById('escrita')};
-  function activate(id){ for(const [k,el] of Object.entries(tabs)){ el.classList.toggle('active', k===id); document.getElementById('tab-'+k).classList.toggle('active', k===id);}}
-  document.getElementById('tab-guia').onclick=()=>activate('guia');
-  document.getElementById('tab-silencio').onclick=()=>activate('silencio');
-  document.getElementById('tab-escrita').onclick=()=>activate('escrita');
-
-  // Respiração (animação suave)
-  let breathTimer=null, phase=0; const phases=['Inspira','Sustenha','Expira','Pausa'];
-  const circle=document.getElementById('circle'), btxt=document.getElementById('breath-text');
-  function stepPhase(){ const p=phases[phase%4]; if(btxt) btxt.textContent=p; const target=(p==='Inspira')?1.2:(p==='Expira'?0.9:1.05); const start=performance.now(); const dur=750; function anim(t){ const k=Math.min(1,(t-start)/dur); const s=1+(target-1)*k; if(circle) circle.style.transform=`scale(${s})`; if(k<1) requestAnimationFrame(anim);} requestAnimationFrame(anim); phase++; }
-  document.getElementById('start-breath')?.addEventListener('click', ()=>{ if(breathTimer) return; phase=0; stepPhase(); breathTimer=setInterval(stepPhase,4000); });
-  document.getElementById('stop-breath')?.addEventListener('click', ()=>{ clearInterval(breathTimer); breathTimer=null; if(btxt) btxt.textContent='Pausa'; if(circle) circle.style.transform='scale(1)'; });
-
-  // Silêncio
-  const timerEl=document.getElementById('timer');
-  const minutesInput=document.getElementById('minutes');
-  const durBtns=[...document.querySelectorAll('.dur-btn')];
-  function fmt(s){const m=Math.floor(s/60),r=s%60;return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0');}
-  function setActive(mins){ durBtns.forEach(b=>b.classList.toggle('active', Number(b.dataset.mins)===mins)); if (minutesInput) minutesInput.value = String(mins); localStorage.setItem('entre-mundos-dia1-silencio-mins', String(mins)); }
-  let tInt=null,left=60;
-  function tick(){ left--; if(left<=0){ clearInterval(tInt); tInt=null; left=0; } timerEl.textContent = fmt(left); }
-  document.getElementById('start-timer').onclick=()=>{ const mins = Math.max(1, Math.min(30, parseInt(minutesInput.value||'1',10))); left = mins*60; timerEl.textContent = fmt(left); clearInterval(tInt); tInt = setInterval(tick,1000); setActive(mins); };
-  document.getElementById('stop-timer').onclick=()=>{ clearInterval(tInt); tInt=null; };
-  durBtns.forEach(b=>b.onclick=()=> setActive(Number(b.dataset.mins)));
-  const savedMins = parseInt(localStorage.getItem('entre-mundos-dia1-silencio-mins')||'1',10); setActive(savedMins); timerEl.textContent = fmt(savedMins*60);
-
-  // Escrita
-  const area=document.getElementById('journal'), count=document.getElementById('count'), status=document.getElementById('status');
-  function update(){ count.textContent = (area.value.length) + ' caracteres'; }
-  area.addEventListener('input', update);
-  document.getElementById('save').onclick = () => { localStorage.setItem('entre-mundos-dia1-journal', area.value); status.textContent = 'Guardado no teu dispositivo.'; setTimeout(() => status.textContent = '', 2000); };
-  const savedJournal = localStorage.getItem('entre-mundos-dia1-journal'); if (savedJournal) { area.value = savedJournal; update(); }
-
-  // PWA SW
-  if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
-
-  // Admin: mostrar link e FAB só com #admin
-  function toggleAdmin(){
-    const debugLink = document.getElementById('debugLink');
-    const fab = document.getElementById('adminFab');
-    const on = (location.hash === '#admin');
-    if (debugLink) debugLink.style.display = on ? 'inline' : 'none';
-    if (fab) fab.style.display = on ? 'flex' : 'none';
-  }
-  window.addEventListener('hashchange', toggleAdmin);
-  toggleAdmin();
-
-  // Duplo toque no título para abrir admin
-  (function(){
-    const title = document.getElementById('titleTap');
-    let last = 0;
-    function go(){
-      // mantém o #admin e abre debug
-      if (location.hash !== '#admin') location.hash = '#admin';
-      location.href = 'debug-oraculo.html';
-    }
-    title?.addEventListener('touchend', () => {
-      const now = Date.now();
-      if (now - last < 400) { go(); }
-      last = now;
-    });
-    title?.addEventListener('click', () => {
-      const now = Date.now();
-      if (now - last < 400) { go(); }
-      last = now;
-    });
-  })();
+document.getElementById("share-whatsapp").addEventListener("click", () => {
+    const msg = document.getElementById("message").innerText;
+    shareOnWhatsApp(msg);
+});
 </script>
 </body>
 </html>
