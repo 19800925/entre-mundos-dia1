@@ -14,7 +14,15 @@ html,body{height:100%}
 body{
   margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   color:var(--text);
-  background: radial-gradient(1200px 900px at 70% -10%, #133a73 0%, var(--bg) 42%, #06162f 100%);
+  /* Fundo único com olho centrado mais abaixo */
+body {
+  background-color: #071b38; /* cor de base azul escuro */
+  background-image: url("assets/IMG_2247.png"); /* caminho do olho */
+  background-size: contain; /* mantém proporção do olho */
+  background-repeat: no-repeat; /* não repetir */
+  background-position: center 65%; /* centrado e descido */
+  background-attachment: fixed; /* mantém fixo ao rolar */
+}: radial-gradient(1200px 900px at 70% -10%, #133a73 0%, var(--bg) 42%, #06162f 100%);
 }
 .appbar{display:flex; gap:12px; align-items:center; padding:18px 16px 8px 16px}
 .app-icon{width:28px; height:28px; border-radius:6px}
