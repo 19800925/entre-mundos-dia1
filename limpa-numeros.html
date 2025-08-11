@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Limpar números das frases — Oráculo</title>
+<style>
+  body{font-family:-apple-system,system-ui; padding:18px; background:#0a1628; color:#e9f0ff}
+  textarea{width:100%; min-height:220px; border-radius:8px; padding:10px; background:#0f2342; color:#e9f0ff; border:1px solid #25406d}
+  button{background:#17365f; color:#fff; border:1px solid #2b558e; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer}
+</style>
+</head>
+<body>
+<h1>Limpar números no fim das frases</h1>
+<p>Cole o JSON original abaixo e toque em <b>Limpar</b>. Vamos remover sufixos como <code>(23)</code>.</p>
+<textarea id="src" placeholder='Cole aqui o conteúdo de oraculo.json'></textarea>
+<p><button id="go">Limpar</button></p>
+<h3>Resultado</h3>
+<textarea id="dst" placeholder="Resultado aparecerá aqui"></textarea>
+<script>
+document.getElementById('go').onclick = () => {
+  try{
+    const obj = JSON.parse(document.getElementById('src').value);
+    const arr = (obj.mensagens||obj.messages||obj)||[];
+    const cleaned = arr.map(x => (x||'').replace(/\s*\(\s*\d+\s*\)\s*$/, '').trim()).filter(Boolean);
+    document.getElementById('dst').value = JSON.stringify({mensagens: cleaned}, null, 2);
+  }catch(e){
+    alert('JSON inválido');
+  }
+};
+</script>
+</body>
+</html>
