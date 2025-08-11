@@ -24,6 +24,7 @@
     footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
     .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
     .counter{font-size:12px;color:var(--muted)}
+    .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:4px}
   </style>
 </head>
 <body>
@@ -43,9 +44,11 @@
       <div class="row">
         <button id="open">Abrir Oráculo</button>
         <button id="another" style="display:none">Nova mensagem</button>
-        <button id="save" style="display:none">Guardar</button>
-        <button id="share" style="display:none">Partilhar</button>
+        <button id="copy" style="display:none">Copiar</button>
+        <button id="waSend" style="display:none">Enviar no WhatsApp</button>
+        <button id="waStatus" style="display:none">Colocar no Estado</button>
       </div>
+      <div class="hint" id="shareHint" style="display:none">Dica: se o WhatsApp não abrir, a mensagem já está copiada — é só colar.</div>
       <div class="bottom">
         <span class="counter" id="counter"></span>
         <a class="btn" href="index.html">← Voltar ao menu</a>
@@ -71,15 +74,17 @@ const STORAGE_KEY='entre-mundos-oraculo-deck-v2';
 const msgEl = document.getElementById('message');
 const btnOpen = document.getElementById('open');
 const btnAnother = document.getElementById('another');
-const btnSave = document.getElementById('save');
-const btnShare = document.getElementById('share');
+const btnCopy = document.getElementById('copy');
+const btnWaSend = document.getElementById('waSend');
+const btnWaStatus = document.getElementById('waStatus');
 const counterEl = document.getElementById('counter');
+const hintEl = document.getElementById('shareHint');
 
 function show(text){ msgEl.classList.remove('show'); setTimeout(()=>{ msgEl.textContent=text; msgEl.classList.add('show'); },10); }
 function updateCounter(){ if(!deck.length){counterEl.textContent='';return;} counterEl.textContent=(idx+1)+' de '+deck.length; }
 function newDeck(){ deck = shuffle(ALL.slice()); idx=-1; localStorage.setItem(STORAGE_KEY, JSON.stringify({deck,idx})); }
 function nextMessage(){ idx++; if(idx>=deck.length){ newDeck(); idx=0; } localStorage.setItem(STORAGE_KEY, JSON.stringify({deck,idx})); return deck[idx]; }
-function resetUI(){ btnOpen.style.display='inline-block'; btnAnother.style.display='none'; btnSave.style.display='none'; btnShare.style.display='none'; show('Pronto para abrir o oráculo?'); idx=-1; updateCounter(); }
+function resetUI(){ btnOpen.style.display='inline-block'; btnAnother.style.display='none'; btnCopy.style.display='none'; btnWaSend.style.display='none'; btnWaStatus.style.display='none'; hintEl.style.display='none'; show('Pronto para abrir o oráculo?'); idx=-1; updateCounter(); }
 
 async function loadMessages(){
   try{
@@ -99,36 +104,56 @@ async function loadMessages(){
 
 resetUI(); loadMessages();
 
-btnOpen.addEventListener('click', ()=>{ const t=nextMessage(); show(t); btnOpen.style.display='none'; btnAnother.style.display='inline-block'; btnSave.style.display='inline-block'; btnShare.style.display='inline-block'; updateCounter(); });
-btnAnother.addEventListener('click', ()=>{ show(nextMessage()); updateCounter(); });
-btnSave.addEventListener('click', ()=>{ try{ const list=JSON.parse(localStorage.getItem('entre-mundos-oraculo-saves')||'[]'); list.push({text:msgEl.textContent,ts:Date.now()}); localStorage.setItem('entre-mundos-oraculo-saves', JSON.stringify(list)); btnSave.textContent='Guardado ✓'; setTimeout(()=>btnSave.textContent='Guardar',1000);}catch(e){} });
-
-btnShare.addEventListener('click', async ()=>{
-  const plain = (msgEl.textContent || '').trim();
-  if (!plain){ return; }
-  const text = 'Oráculo — Entre Mundos\n\n' + plain;
-  // 1) Web Share API (texto puro)
-  try{
-    if (navigator.share && typeof navigator.share === 'function'){
-      await navigator.share({ title: 'Entre Mundos — Oráculo', text });
-      return;
-    }
-  }catch(e){
-    // continua para fallback
-  }
-  // 2) WhatsApp fallback
-  try{
-    const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
-    window.location.href = wa;
-    return;
-  }catch(e){}
-  // 3) Copiar
-  try{
-    await navigator.clipboard.writeText(text);
-    btnShare.textContent='Copiado ✓';
-    setTimeout(()=>btnShare.textContent='Partilhar',1000);
-  }catch(e){ alert('Mensagem copiada: '+text); }
+btnOpen.addEventListener('click', ()=>{
+  const t=nextMessage(); show(t);
+  btnOpen.style.display='none';
+  btnAnother.style.display='inline-block';
+  btnCopy.style.display='inline-block';
+  btnWaSend.style.display='inline-block';
+  btnWaStatus.style.display='inline-block';
+  hintEl.style.display='block';
+  updateCounter();
 });
+btnAnother.addEventListener('click', ()=>{ show(nextMessage()); updateCounter(); });
+
+async function copyText(text){
+  try{ await navigator.clipboard.writeText(text); return true; }catch(e){ return false; }
+}
+
+btnCopy.addEventListener('click', async ()=>{
+  const text = msgEl.textContent.trim();
+  if (await copyText(text)){ btnCopy.textContent='Copiado ✓'; setTimeout(()=>btnCopy.textContent='Copiar',1000); }
+});
+
+function openWhatsApp(text){
+  // deep link
+  const deep = 'whatsapp://send?text=' + encodeURIComponent(text);
+  const web = 'https://wa.me/?text=' + encodeURIComponent(text);
+  // try deep first
+  const a = document.createElement('a');
+  a.href = deep;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{
+    // fallback to web link (caso deep não seja aceite)
+    window.location.href = web;
+  }, 600);
+}
+
+btnWaSend.addEventListener('click', async ()=>{
+  const text = msgEl.textContent.trim();
+  await copyText(text);
+  openWhatsApp(text);
+});
+
+btnWaStatus.addEventListener('click', async ()=>{
+  const text = msgEl.textContent.trim();
+  await copyText(text);
+  // Não há URL oficial só para "Estado". Abrimos o WhatsApp com o texto;
+  // Na folha de partilha escolhe "My Status" (Estado). Texto já está copiado.
+  openWhatsApp(text + "\n\n— Entre Mundos");
+});
+
 </script>
 </body>
 </html>
