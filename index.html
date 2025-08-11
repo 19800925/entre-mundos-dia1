@@ -10,7 +10,7 @@
   <style>
     :root { --bg:#0a1628; --fg:#e9f0ff; --muted:#9db3ff; --accent:#ffd250; --panel:#0f2342; --ring:#4a6fff; }
     html,body{margin:0;height:100%;font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);background:radial-gradient(1200px 600px at 50% -10%,#123064,var(--bg));}
-    .wrap{max-width:720px;margin:0 auto;padding:24px 16px 32px;}
+    .wrap{max-width:720px;margin:0 auto;padding:24px 16px 100px;}
     header{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
     header img{width:32px;height:32px;border-radius:6px;}
     h1{font-size:22px;margin:0;letter-spacing:.3px;}
@@ -28,6 +28,10 @@
     .row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
     textarea{width:100%;min-height:180px;padding:12px;border-radius:12px;border:1px solid #2b4b82;background:#0f2342;color:var(--fg);}
     .small{font-size:12px;opacity:.9;} footer{margin-top:24px;opacity:.8;font-size:12px;text-align:center;}
+    /* footer oráculo */
+    .footer-oraculo{position:fixed;left:0;right:0;bottom:0;padding:10px 16px;background:radial-gradient(800px 300px at 50% 130%, #1a3564, #0a1628);border-top:1px solid #25406d;display:flex;justify-content:center;box-shadow:0 -10px 30px rgba(0,0,0,.25);}
+    .btn-oraculo{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;background:#193b74;border:1px solid #2b4b82;border-radius:12px;color:var(--fg);font-weight:800;letter-spacing:.3px;text-decoration:none;}
+    .btn-oraculo:active{transform:scale(.98);}
   </style>
 </head>
 <body>
@@ -51,6 +55,7 @@
         <div class="muted">Mensagem de hoje — <span class="accent">Reconexão</span></div>
         <p>Respira e lembra-te: <span class="accent">tu és a casa antes do mundo</span>. O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
       </div>
+
       <div class="card center">
         <div class="muted">Prática — Respiração em 4 tempos (4•4•4•4)</div>
         <div id="circle" class="breath-circle"><div class="breath-text" id="breath-text">Preparar…</div></div>
@@ -60,6 +65,7 @@
         </div>
         <div class="small muted" style="margin-top:8px">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</div>
       </div>
+
       <div class="card center">
         <div class="muted">Frase âncora</div>
         <p class="accent">“Eu volto. Eu volto. Eu volto.”</p>
@@ -70,8 +76,17 @@
       <div class="card center">
         <div class="muted">Momento de silêncio</div>
         <p>Define o tempo e toca em <b>Iniciar</b>. Fica contigo, só a respirar.</p>
+        <div class="row" style="margin-bottom:8px; gap:8px; flex-wrap:wrap">
+          <button class="chip dur-btn" data-mins="1">1 min</button>
+          <button class="chip dur-btn" data-mins="2">2 min</button>
+          <button class="chip dur-btn" data-mins="3">3 min</button>
+          <button class="chip dur-btn" data-mins="5">5 min</button>
+          <label style="margin-left:8px">
+            <span class="small muted">ou</span>
+            <input id="minutes" type="number" min="1" max="30" value="1" style="width:80px">
+          </label>
+        </div>
         <div class="row" style="margin-bottom:8px">
-          <label>Duração (min): <input id="minutes" type="number" min="1" max="30" value="1" style="width:80px"></label>
           <button class="cta" id="start-timer">Iniciar</button>
           <button class="cta" id="stop-timer">Parar</button>
         </div>
@@ -95,6 +110,11 @@
     <footer>Entre Mundos — Dia 1 • feito com verdade 🩵</footer>
   </div>
 
+  <!-- Botão fixo do Oráculo -->
+  <div class="footer-oraculo">
+    <a class="btn-oraculo" href="oraculo.html?v=3">🔮 Oráculo</a>
+  </div>
+
 <script>
   // Tabs
   const tabs = {guia:document.getElementById('guia'), silencio:document.getElementById('silencio'), escrita:document.getElementById('escrita')};
@@ -110,24 +130,43 @@
   document.getElementById('start-breath')?.addEventListener('click', ()=>{ if(breathTimer) return; phase=0; stepPhase(); breathTimer=setInterval(stepPhase,4000); });
   document.getElementById('stop-breath')?.addEventListener('click', ()=>{ clearInterval(breathTimer); breathTimer=null; if(btxt) btxt.textContent='Pausa'; if(circle) circle.style.transform='scale(1)'; });
 
-  // Temporizador do silêncio (guarda última duração)
-  let tInt=null,left=60; const timerEl=document.getElementById('timer'); const minutesInput=document.getElementById('minutes');
-  function fmt(s){ const m=Math.floor(s/60),r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
-  function tick(){ left--; if(left<=0){ clearInterval(tInt); tInt=null; left=0; } timerEl.textContent=fmt(left); }
-  const saved=localStorage.getItem('entre-mundos-dia1-silencio-mins'); if(saved && minutesInput) minutesInput.value=saved;
-  minutesInput?.addEventListener('change',()=> localStorage.setItem('entre-mundos-dia1-silencio-mins', minutesInput.value));
-  document.getElementById('start-timer').onclick=()=>{ const mins=Math.max(1,Math.min(30,parseInt(minutesInput.value||'1',10))); left=mins*60; timerEl.textContent=fmt(left); clearInterval(tInt); tInt=setInterval(tick,1000); };
+  // Silêncio com presets 1/2/3/5 + lembrar última
+  const timerEl=document.getElementById('timer');
+  const minutesInput=document.getElementById('minutes');
+  const durBtns=[...document.querySelectorAll('.dur-btn')];
+  function fmt(s){const m=Math.floor(s/60),r=s%60;return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0');}
+  function setActive(mins){
+    durBtns.forEach(b=>b.classList.toggle('active', Number(b.dataset.mins)===mins));
+    if (minutesInput) minutesInput.value = String(mins);
+    localStorage.setItem('entre-mundos-dia1-silencio-mins', String(mins));
+  }
+  let tInt=null,left=60;
+  function tick(){ left--; if(left<=0){ clearInterval(tInt); tInt=null; left=0; } timerEl.textContent = fmt(left); }
+  document.getElementById('start-timer').onclick=()=>{
+    const mins = Math.max(1, Math.min(30, parseInt(minutesInput.value||'1',10)));
+    left = mins*60; timerEl.textContent = fmt(left);
+    clearInterval(tInt); tInt = setInterval(tick,1000);
+    setActive(mins);
+  };
   document.getElementById('stop-timer').onclick=()=>{ clearInterval(tInt); tInt=null; };
+  durBtns.forEach(b=>b.onclick=()=> setActive(Number(b.dataset.mins)));
+  const savedMins = parseInt(localStorage.getItem('entre-mundos-dia1-silencio-mins')||'1',10);
+  setActive(savedMins); timerEl.textContent = fmt(savedMins*60);
 
   // Escrita
   const area=document.getElementById('journal'), count=document.getElementById('count'), status=document.getElementById('status');
-  function update(){ if(count && area) count.textContent=area.value.length+' caracteres'; }
+  function update(){ count.textContent = (area.value.length) + ' caracteres'; }
   area.addEventListener('input', update);
-  document.getElementById('save').onclick=()=>{ localStorage.setItem('entre-mundos-dia1-journal', area.value); if(status){ status.textContent='Guardado no teu dispositivo.'; setTimeout(()=>status.textContent='',2000); } };
-  const savedJ=localStorage.getItem('entre-mundos-dia1-journal'); if(savedJ){ area.value=savedJ; update(); }
+  document.getElementById('save').onclick = () => {
+    localStorage.setItem('entre-mundos-dia1-journal', area.value);
+    status.textContent = 'Guardado no teu dispositivo.';
+    setTimeout(() => status.textContent = '', 2000);
+  };
+  const savedJournal = localStorage.getItem('entre-mundos-dia1-journal');
+  if (savedJournal) { area.value = savedJournal; update(); }
 
   // PWA
-  if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('./sw.js'); }); }
+  if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
 </script>
 </body>
 </html>
