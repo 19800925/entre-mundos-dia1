@@ -1,218 +1,60 @@
-<!doctype html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0a1628">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entre Mundos - Dia 1</title>
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icon-192.png">
-  <title>Entre Mundos — Dia 1</title>
-  <style>
-    :root {
-      --bg: #0a1628;
-      --fg: #e9f0ff;
-      --muted:#9db3ff;
-      --accent:#ffd250;
-      --panel:#0f2342;
-      --ring: #4a6fff;
-    }
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0; padding: 0; height: 100%;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
-      color: var(--fg); background: radial-gradient(1200px 600px at 50% -10%, #123064, var(--bg));
-    }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 32px; }
-    header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-    header img { width: 32px; height: 32px; border-radius: 6px; }
-    h1 { font-size: 22px; margin: 0; letter-spacing: 0.3px; }
-    nav {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 8px; margin: 12px 0 20px;
-    }
-    nav button {
-      background: var(--panel); color: var(--fg); border: 1px solid #25406d;
-      border-radius: 10px; padding: 12px; font-weight: 600;
-    }
-    nav button.active { outline: 2px solid var(--ring); }
-    section.panel {
-      background: rgba(15,35,66,0.66);
-      border: 1px solid #25406d; border-radius: 14px; padding: 16px; display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 0 40px rgba(255,255,255,0.02);
-    }
-    section.panel.active { display: block; }
-    .card {
-      background: rgba(20,44,84,0.7); border: 1px solid #2b4b82;
-      border-radius: 14px; padding: 14px; margin: 12px 0;
-    }
-    .muted { color: var(--muted); }
-    .accent { color: var(--accent); font-weight: 700; }
-    .cta { display: inline-block; padding: 12px 16px; background: #193b74; border: 1px solid #2b4b82;
-           border-radius: 10px; color: var(--fg); font-weight: 700; }
-    .center { text-align: center; }
-    .breath-circle {
-      width: 180px; height: 180px; border-radius: 50%;
-      margin: 16px auto; background: radial-gradient(closest-side, #21447e, #152b52);
-      display: grid; place-items: center; border: 2px solid #2b4b82;
-      transition: transform 1s ease-in-out;
-    }
-    .breath-text { font-size: 18px; }
-    .row { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    textarea {
-      width: 100%; min-height: 180px; padding: 12px; border-radius: 12px;
-      border: 1px solid #2b4b82; background: #0f2342; color: var(--fg);
-    }
-    .small { font-size: 12px; opacity: 0.9; }
-    footer { margin-top: 24px; opacity: 0.8; font-size: 12px; text-align: center; }
-  </style>
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <img src="assets/icon-192.png" alt="Ícone">
-      <div>
-        <h1>Entre Mundos — Dia 1</h1>
-        <div class="small muted">Mensagem • Respiração • Frase • Silêncio</div>
-      </div>
-    </header>
+  <section id="dia1" role="main" aria-label="Dia 1 - Reconexão">
+    <div class="conteudo">
+      <h1>Dia 1 — Reconexão</h1>
+      <p>Respira fundo, fecha os olhos e sente o regresso a ti mesmo.</p>
+      <button id="respirar">Guiar respiração 5x</button>
+      <p id="contador" aria-live="polite"></p>
+    </div>
+  </section>
 
-    <nav>
-      <button id="tab-guia" class="active">Guia Espiritual</button>
-      <button id="tab-silencio">Silêncio</button>
-      <button id="tab-escrita">Escrita da Alma</button>
-    </nav>
-
-    <section id="guia" class="panel active">
-      <div class="card">
-        <div class="muted">Mensagem de hoje — <span class="accent">Reconexão</span></div>
-        <p>
-          Respira e lembra-te: <span class="accent">tu és a casa antes do mundo</span>. O teu valor não depende da produtividade;
-          a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.
-        </p>
-      </div>
-
-      <div class="card center">
-        <div class="muted">Prática — Respiração em 4 tempos (4•4•4•4)</div>
-        <div id="circle" class="breath-circle"><div class="breath-text" id="breath-text">Preparar…</div></div>
-        <div class="row">
-          <button class="cta" id="start-breath">Começar</button>
-          <button class="cta" id="stop-breath">Parar</button>
-        </div>
-        <div class="small muted" style="margin-top:8px">Inspira 4 • Sustenha 4 • Expira 4 • Pausa 4</div>
-      </div>
-
-      <div class="card center">
-        <div class="muted">Frase âncora</div>
-        <p class="accent">“Eu volto. Eu volto. Eu volto.”</p>
-      </div>
-    </section>
-
-    <section id="silencio" class="panel">
-      <div class="card center">
-        <div class="muted">Momento de silêncio</div>
-        <p>Define o tempo e toca em <b>Iniciar</b>. Fica contigo, só a respirar.</p>
-        <div class="row" style="margin-bottom:8px">
-          <label>Duração (min): <input id="minutes" type="number" min="1" max="30" value="3" style="width:80px"></label>
-          <button class="cta" id="start-timer">Iniciar</button>
-          <button class="cta" id="stop-timer">Parar</button>
-        </div>
-        <div id="timer" class="accent" style="font-size:28px">03:00</div>
-      </div>
-    </section>
-
-    <section id="escrita" class="panel">
-      <div class="card">
-        <div class="muted">Escrita da Alma (fica guardado no teu dispositivo)</div>
-        <p class="small">Sugestões: “Agora, o que dói é…”, “O que ainda me prende é…”, “O que me alivia é…”</p>
-        <textarea id="journal" placeholder="Escreve aqui. Só tu lês."></textarea>
-        <div class="row" style="justify-content: space-between; margin-top:8px">
-          <span class="small muted" id="count">0 caracteres</span>
-          <button class="cta" id="save">Guardar</button>
-        </div>
-        <div class="small" id="status" style="margin-top:6px"></div>
-      </div>
-    </section>
-
-    <footer>Entre Mundos — Dia 1 • feito com verdade 🩵</footer>
-  </div>
-
-<script>
-  // Tabs
-  const tabs = {
-    guia: document.getElementById('guia'),
-    silencio: document.getElementById('silencio'),
-    escrita: document.getElementById('escrita')
-  };
-  function activate(tabId) {
-    for (const [id, el] of Object.entries(tabs)) {
-      el.classList.toggle('active', id === tabId);
-      document.getElementById('tab-' + id).classList.toggle('active', id === tabId);
-    }
-  }
-  document.getElementById('tab-guia').onclick = () => activate('guia');
-  document.getElementById('tab-silencio').onclick = () => activate('silencio');
-  document.getElementById('tab-escrita').onclick = () => activate('escrita');
-
-  // Breathing animation (box breathing 4-4-4-4)
-  let breathTimer = null, breathPhase = 0;
-  const phases = ['Inspira', 'Sustenha', 'Expira', 'Pausa'];
-  const circle = document.getElementById('circle');
-  const btxt = document.getElementById('breath-text');
-  function stepBreath() {
-    const phase = phases[breathPhase % phases.length];
-    btxt.textContent = phase;
-    const scale = (phase === 'Inspira') ? 1.2 : (phase === 'Expira' ? 0.9 : 1.05);
-    circle.style.transform = 'scale(' + scale + ')';
-    breathPhase++;
-  }
-  document.getElementById('start-breath').onclick = () => {
-    if (breathTimer) return;
-    breathPhase = 0;
-    stepBreath();
-    breathTimer = setInterval(stepBreath, 4000);
-  };
-  document.getElementById('stop-breath').onclick = () => {
-    clearInterval(breathTimer); breathTimer = null;
-    btxt.textContent = 'Pausa';
-    circle.style.transform = 'scale(1)';
-  };
-
-  // Silence timer
-  let tInt = null, total = 180, left = 180;
-  const timerEl = document.getElementById('timer');
-  function fmt(s){ const m = Math.floor(s/60), r = s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
-  function tick() {
-    left--; if (left <= 0) { clearInterval(tInt); tInt = null; left = 0; }
-    timerEl.textContent = fmt(left);
-  }
-  document.getElementById('start-timer').onclick = () => {
-    const mins = Math.max(1, Math.min(30, parseInt(document.getElementById('minutes').value || '3', 10)));
-    total = mins*60; left = total; timerEl.textContent = fmt(left);
-    clearInterval(tInt); tInt = setInterval(tick, 1000);
-  };
-  document.getElementById('stop-timer').onclick = () => { clearInterval(tInt); tInt = null; };
-
-  // Journal
-  const area = document.getElementById('journal');
-  const count = document.getElementById('count');
-  const status = document.getElementById('status');
-  function updateCount(){ count.textContent = (area.value.length) + ' caracteres'; }
-  area.addEventListener('input', updateCount);
-  document.getElementById('save').onclick = () => {
-    localStorage.setItem('entre-mundos-dia1-journal', area.value);
-    status.textContent = 'Guardado no teu dispositivo.';
-    setTimeout(() => status.textContent = '', 2000);
-  };
-  // Load saved journal
-  const saved = localStorage.getItem('entre-mundos-dia1-journal');
-  if (saved) { area.value = saved; updateCount(); }
-
-  // PWA
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js');
+  <script>
+    // Respiração simples 5x (4-4-4-4)
+    const btn = document.getElementById('respirar');
+    const contador = document.getElementById('contador');
+    let ativo = false;
+    btn.addEventListener('click', async () => {
+      if (ativo) return;
+      ativo = true;
+      btn.disabled = true;
+      for (let i=1; i<=5; i++) {
+        contador.textContent = `Inspira (${i}/5)`;
+        await new Promise(r => setTimeout(r, 4000));
+        contador.textContent = `Segura (${i}/5)`;
+        await new Promise(r => setTimeout(r, 4000));
+        contador.textContent = `Expira (${i}/5)`;
+        await new Promise(r => setTimeout(r, 4000));
+        contador.textContent = `Pausa (${i}/5)`;
+        await new Promise(r => setTimeout(r, 4000));
+      }
+      contador.textContent = "Feito. Obrigado por voltares a ti 💙";
+      btn.disabled = false;
+      ativo = false;
     });
-  }
-</script>
+
+    // Registo do service worker (PWA)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
 </body>
 </html>
