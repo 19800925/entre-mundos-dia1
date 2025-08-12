@@ -1,72 +1,70 @@
 <!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/style.css?v=1.0.0">
 </head>
 <body>
   <div class="wrap">
     <header class="topbar">
-      <div class="app-icon" aria-hidden="true"></div>
+      <div class="dot"></div>
       <h1>Entre Mundos — Dia 1</h1>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Secções">
-      <button class="tab is-active" role="tab" aria-selected="true" aria-controls="sec-guia" id="tab-guia">Guia Espiritual</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-silencio" id="tab-silencio">Silêncio</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-escrita" id="tab-escrita">Escrita da Alma</button>
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button class="tab active" data-tab="guia" role="tab" aria-selected="true">Guia Espiritual</button>
+      <button class="tab" data-tab="silencio" role="tab" aria-selected="false">Silêncio</button>
+      <button class="tab" data-tab="escrita" role="tab" aria-selected="false">Escrita da Alma</button>
     </nav>
 
-    <!-- Guia Espiritual (ATIVO) -->
-    <section id="sec-guia" class="section" role="tabpanel" aria-labelledby="tab-guia">
-      <div class="card">
-        <h2 class="card-title">Mensagem de hoje — <span class="hl">Reconexão</span></h2>
-        <p class="lead">
-          Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong>
-          O teu valor não depende da produtividade; a tua verdade não precisa gritar.
-          A cor azul é o teu porto — volta a ela quando o ruído te cansar.
-        </p>
-      </div>
+    <!-- Guia Espiritual -->
+    <section class="panel" data-section="guia">
+      <article class="card">
+        <h2>Mensagem de hoje — <span class="hl">Reconexão</span></h2>
+        <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+      </article>
 
-      <div class="card">
-        <h2 class="card-title">Prática — Respiração <span class="mono">4·4·4·4</span></h2>
-
-        <div class="breath-stage" id="stageLabel">Preparar...</div>
-
-        <div class="breath-canvas">
-          <div class="sphere" id="sphere"></div>
+      <article class="card">
+        <header class="card-title">Prática — Respiração 4·4·4·4</header>
+        <div class="orb-wrap">
+          <div id="orb" class="orb" aria-hidden="true"></div>
+          <div id="orbLabel" class="orb-label">Preparar...</div>
         </div>
 
-        <div class="btn-row">
+        <div class="actions">
           <button id="btnStart" class="btn primary">Começar</button>
           <button id="btnStop" class="btn">Parar</button>
         </div>
-
-        <p class="cycle mono">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
-      </div>
+        <p class="hint">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
+      </article>
     </section>
 
     <!-- Silêncio -->
-    <section id="sec-silencio" class="section is-hidden" role="tabpanel" aria-labelledby="tab-silencio">
-      <div class="card">
-        <h2 class="card-title">Silêncio</h2>
-        <p class="lead">Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
-      </div>
+    <section class="panel" data-section="silencio" hidden>
+      <article class="card">
+        <h2>Silêncio</h2>
+        <p>Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
+        <div class="actions">
+          <button id="quietStart" class="btn primary">Iniciar 1 min</button>
+          <button id="quietStop" class="btn">Parar</button>
+        </div>
+        <p class="timer"><span id="quietTime">01:00</span></p>
+      </article>
     </section>
 
     <!-- Escrita -->
-    <section id="sec-escrita" class="section is-hidden" role="tabpanel" aria-labelledby="tab-escrita">
-      <div class="card">
-        <h2 class="card-title">Escrita da Alma</h2>
-        <p class="lead">Coloca no papel aquilo que o coração sussurra. Escreve sem censura, por 3–5 minutos.</p>
-      </div>
+    <section class="panel" data-section="escrita" hidden>
+      <article class="card">
+        <h2>Escrita da Alma</h2>
+        <p>Coloca no papel aquilo que o coração sussurra. Escreve sem censura por 3—5 minutos.</p>
+      </article>
     </section>
 
-    <footer class="site-foot">Entre Mundos — feito com verdade 💙</footer>
+    <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
   </div>
 
-  <script src="assets/js/app.js"></script>
+  <script src="assets/app.js?v=1.0.0"></script>
 </body>
 </html>

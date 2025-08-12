@@ -1,58 +1,66 @@
-// Tabs
-const tabs = document.querySelectorAll('.tab');
-const sections = {
-  guia: document.getElementById('sec-guia'),
-  silencio: document.getElementById('sec-silencio'),
-  escrita: document.getElementById('sec-escrita')
-};
+// Tabs + breathing + 1-min timer
+(function(){
+  const $ = (sel, ctx=document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('is-active'));
-    tab.classList.add('is-active');
-
-    // hide all
-    Object.values(sections).forEach(sec => sec.classList.add('is-hidden'));
-    // show current
-    if (tab.id === 'tab-guia') sections.guia.classList.remove('is-hidden');
-    if (tab.id === 'tab-silencio') sections.silencio.classList.remove('is-hidden');
-    if (tab.id === 'tab-escrita') sections.escrita.classList.remove('is-hidden');
+  // Tabs
+  const tabs = $$('.tab');
+  const panels = $$('.panel');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.tab;
+      tabs.forEach(b => b.classList.toggle('active', b===btn));
+      panels.forEach(p => p.hidden = p.dataset.section !== id);
+    });
   });
-});
 
-// Simple 4-4-4-4 breathing guide
-const stageLabel = document.getElementById('stageLabel');
-const sphere = document.getElementById('sphere');
-const btnStart = document.getElementById('btnStart');
-const btnStop = document.getElementById('btnStop');
+  // Breathing orb 4-4-4-4
+  const orb = $('#orb');
+  const lbl = $('#orbLabel');
+  const start = $('#btnStart');
+  const stop = $('#btnStop');
 
-let timer = null;
-let idx = 0;
-const stages = [
-  {label:'Inspira…', scale:1.35, secs:4},
-  {label:'Sustém…',  scale:1.35, secs:4},
-  {label:'Expira…',  scale:0.95, secs:4},
-  {label:'Pausa…',   scale:0.95, secs:4},
-];
+  const phases = [
+    {name:'Inspira...', scale:1.22, dur:4000},
+    {name:'Sustém...', scale:1.22, dur:4000},
+    {name:'Expira...', scale:0.9,  dur:4000},
+    {name:'Pausa...',  scale:0.9,  dur:4000}
+  ];
+  let idx=0, timer=null;
+  function step(){
+    const p = phases[idx];
+    lbl.textContent = p.name;
+    orb.style.transform = `scale(${p.scale})`;
+    timer = setTimeout(()=>{ idx=(idx+1)%phases.length; step(); }, p.dur);
+  }
+  function startBreath(){
+    if(timer) return;
+    idx = 0; step();
+  }
+  function stopBreath(){
+    clearTimeout(timer); timer=null;
+    lbl.textContent = 'Preparar...';
+    orb.style.transform = 'scale(1)';
+  }
+  start.addEventListener('click', startBreath);
+  stop.addEventListener('click', stopBreath);
 
-function runCycle(){
-  const s = stages[idx % stages.length];
-  stageLabel.textContent = s.label;
-  sphere.style.transform = `scale(${s.scale})`;
-  timer = setTimeout(()=>{
-    idx++; runCycle();
-  }, s.secs * 1000);
-}
+  // Silêncio 1-min timer
+  let qInt=null, remain=60;
+  const qStart = $('#quietStart'), qStop = $('#quietStop'), qTime = $('#quietTime');
+  const fmt = s => String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
 
-btnStart?.addEventListener('click', () => {
-  if (timer) return; // já a correr
-  idx = 0;
-  runCycle();
-});
+  function tick(){
+    remain--; qTime.textContent = fmt(remain);
+    if(remain<=0){ clearInterval(qInt); qInt=null; alert('Tempo concluído.'); remain=60; qTime.textContent=fmt(remain); }
+  }
+  if(qStart){
+    qStart.addEventListener('click', ()=>{
+      if(qInt) return;
+      remain=60; qTime.textContent=fmt(remain);
+      qInt = setInterval(tick, 1000);
+    });
+  }
+  if(qStop){ qStop.addEventListener('click', ()=>{ clearInterval(qInt); qInt=null; remain=60; qTime.textContent=fmt(remain); }); }
 
-btnStop?.addEventListener('click', () => {
-  clearTimeout(timer);
-  timer = null;
-  stageLabel.textContent = 'Preparar…';
-  sphere.style.transform = 'scale(1)';
-});
+})();
