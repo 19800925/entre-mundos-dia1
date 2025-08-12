@@ -81,5 +81,44 @@ h1{font-size:clamp(22px,4.8vw,40px);margin:0 0 8px}
 .anchor{margin:0;font-size:22px}
 
 
-/* Silêncio timer */
-.timer{font-size:28px;font-weight:800;margin:8px 0 0;color:var(--accent)}
+/* --- Patch: Balão 3D suave (respiração) --- */
+.breath-stage{
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(600px 260px at 50% -180px, rgba(255,255,255,.09), rgba(255,255,255,.02)),
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow:
+    inset 0 0 120px rgba(0,0,0,.25),
+    0 20px 40px rgba(0,0,0,.35);
+}
+
+.ball{
+  width: 170px;
+  height: 170px;
+  transform: scale(0.9);
+  border-radius: 50%;
+  background:
+     radial-gradient(120px 100px at 35% 30%, rgba(255,255,255,.75) 0%, rgba(255,255,255,.35) 12%, rgba(255,255,255,0) 38%),
+     radial-gradient(circle at 42% 38%, #9ed9ff 0%, #76c4ff 18%, #2e79be 48%, #155087 78%, #0d3a69 100%);
+  box-shadow:
+     inset 0 -18px 40px rgba(0,0,0,.45),
+     inset 0 20px 30px rgba(255,255,255,.06),
+     0 18px 60px rgba(0,0,0,.45);
+  transition: transform 1.15s cubic-bezier(.22,.61,.36,1), filter .8s ease;
+  will-change: transform;
+  position: relative;
+}
+
+/* Brilho suave para dar profundidade */
+.ball::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(180px 120px at 40% 28%, rgba(255,255,255,.18), rgba(255,255,255,0) 60%),
+    radial-gradient(260px 200px at 70% 80%, rgba(0,0,0,.20), rgba(0,0,0,0) 60%);
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
