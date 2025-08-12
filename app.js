@@ -10,11 +10,11 @@
   };
   function activate(key){
     tabs.forEach(t=>t.classList.remove('is-active'));
-    document.getElementById('tab-'+key).classList.add('is-active');
+    const activeTab = document.getElementById('tab-'+key);
+    if(activeTab) activeTab.classList.add('is-active');
     Object.keys(sections).forEach(k => {
-      sections[k].classList.toggle('is-hidden', k!==key);
+      if(sections[k]) sections[k].classList.toggle('is-hidden', k!==key);
     });
-    // Guardar última aba
     try{ localStorage.setItem('em:lastTab', key); }catch(e){}
   }
   tabs.forEach(btn=>btn.addEventListener('click', ()=>{
@@ -36,18 +36,27 @@
     "Abre espaço: o novo precisa de ar."
   ];
   const elText = document.getElementById('oracle-text');
-  document.getElementById('btn-oracle').addEventListener('click', ()=>{
-    const n = Math.floor(Math.random()*frases.length);
-    elText.textContent = frases[n];
-  });
-  document.getElementById('btn-copy').addEventListener('click', async ()=>{
-    try{ await navigator.clipboard.writeText(elText.textContent.trim()); }catch(e){}
-  });
-  document.getElementById('btn-share').addEventListener('click', ()=>{
-    const msg = elText.textContent.trim();
-    const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
-    window.location.href = url;
-  });
+  const btnOracle = document.getElementById('btn-oracle');
+  if(btnOracle){
+    btnOracle.addEventListener('click', ()=>{
+      const n = Math.floor(Math.random()*frases.length);
+      elText.textContent = frases[n];
+    });
+  }
+  const btnCopy = document.getElementById('btn-copy');
+  if(btnCopy){
+    btnCopy.addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(elText.textContent.trim()); }catch(e){}
+    });
+  }
+  const btnShare = document.getElementById('btn-share');
+  if(btnShare){
+    btnShare.addEventListener('click', ()=>{
+      const msg = elText.textContent.trim();
+      const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+      window.location.href = url;
+    });
+  }
 
   // ----- Respiração 4-4-4-4 -----
   const statusEl = document.getElementById('breathStatus');
@@ -64,8 +73,16 @@
     {label:'Pausa...',    scale:0.85},
   ];
   function animateScale(target, ms){
+    if(!ball) return;
     const start = performance.now();
-    const from = parseFloat(getComputedStyle(ball).getPropertyValue('--_scale')||1) || parseFloat(ball.style.transform.replace('scale(','').replace(')','')) || 1;
+    const currentTransform = window.getComputedStyle(ball).transform;
+    let from = 1;
+    if(currentTransform !== 'none'){
+      const m = currentTransform.split('(')[1].split(')')[0].split(',');
+      // scale from matrix a value if uniform
+      const a = parseFloat(m[0]); 
+      from = a if 'a' else 1
+    }
     const to = target;
     function frame(t){
       const k = Math.min(1, (t-start)/ms);
@@ -76,6 +93,7 @@
     requestAnimationFrame(frame);
   }
   function loop(i=0){
+    if(!statusEl || !ball) return;
     const s = stages[i%stages.length];
     statusEl.textContent = s.label;
     animateScale(s.scale, DUR);
@@ -83,13 +101,12 @@
   }
   function stop(){
     clearTimeout(timer); timer=null;
-    statusEl.textContent = 'Preparar...';
-    ball.style.transform = 'scale(0.85)';
+    if(statusEl) statusEl.textContent = 'Preparar...';
+    if(ball) ball.style.transform = 'scale(0.85)';
   }
-  btnStart.addEventListener('click', ()=>{ if(!timer) loop(0); });
-  btnStop .addEventListener('click', stop);
+  if(btnStart) btnStart.addEventListener('click', ()=>{ if(!timer) loop(0); });
+  if(btnStop)  btnStop .addEventListener('click', stop);
 
-  // Segurança: evitar regressar com BFCache mostrando layout antigo
   window.addEventListener('pageshow', (e)=>{
     if(e.persisted){ window.location.reload(); }
   });
