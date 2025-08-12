@@ -4,70 +4,75 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="styles.css?v=1.0.0">
 </head>
 <body>
   <div class="wrap">
-    <header class="top">
+    <header class="topbar">
       <div class="app-dot" aria-hidden="true"></div>
       <h1>Entre Mundos — Dia 1</h1>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Secções">
-      <button class="tab active" role="tab" aria-selected="true" data-target="#sec-mensagem">Guia Espiritual</button>
-      <button class="tab" role="tab" aria-selected="false" data-target="#sec-silencio">Silêncio</button>
-      <button class="tab" role="tab" aria-selected="false" data-target="#sec-escrita">Escrita da Alma</button>
+    <!-- Abas -->
+    <nav class="tabs" role="tablist" aria-label="Secções principais">
+      <button class="tab is-active" role="tab" aria-selected="true" aria-controls="sec-mensagem" id="tab-mensagem">Mensagem</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-respiracao" id="tab-respiracao">Respiração</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-frase" id="tab-frase">Frase</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-silencio" id="tab-silencio">Silêncio</button>
     </nav>
 
-    <!-- Secção Mensagem / Respiração -->
-    <section id="sec-mensagem" class="section" data-section>
-      <div class="card">
-        <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
-        <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+    <!-- Mensagem -->
+    <section id="sec-mensagem" class="card" role="tabpanel" aria-labelledby="tab-mensagem">
+      <h2 class="card-title">Mensagem de hoje — <span class="hl">Reconexão</span></h2>
+      <p class="card-text">
+        Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong>
+        O teu valor não depende da produtividade; a tua verdade não precisa gritar.
+        A cor azul é o teu porto — volta a ela quando o ruído te cansar.
+      </p>
+
+      <!-- Oráculo integrado (abaixo da mensagem) -->
+      <div class="divider"></div>
+      <h3 class="card-subtitle">Oráculo — Entre Mundos</h3>
+      <p id="oracle-text" class="oracle-text">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</p>
+      <div class="row">
+        <button id="btn-oracle" class="btn">Nova mensagem</button>
+        <button id="btn-copy" class="btn ghost">Copiar</button>
+        <button id="btn-share" class="btn ghost">Partilhar no WhatsApp</button>
       </div>
+      <small class="note">As frases surgem de forma aleatória e sem números.</small>
+    </section>
 
-      <div class="card">
-        <div class="card-title">
-          <h2>Prática — Respiração 4·4·4·4</h2>
+    <!-- Respiração -->
+    <section id="sec-respiracao" class="card is-hidden" role="tabpanel" aria-labelledby="tab-respiracao">
+      <h2 class="card-title">Prática — Respiração 4·4·4·4</h2>
+      <div class="breath-panel">
+        <div class="breath-status" id="breathStatus">Preparar...</div>
+        <div class="breath-stage" aria-hidden="true">
+          <div class="ball" id="ball"></div>
         </div>
-
-        <div class="breath">
-          <div class="ball" id="breathBall" aria-live="polite">Preparar...</div>
+        <div class="actions">
+          <button id="btn-start" class="btn">Começar</button>
+          <button id="btn-stop" class="btn ghost">Parar</button>
         </div>
-
-        <div class="row">
-          <button id="btnStart">Começar</button>
-          <button id="btnStop" class="secondary">Parar</button>
-        </div>
-
-        <p class="note">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
+        <p class="note center">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
       </div>
     </section>
 
-    <!-- Secção Silêncio -->
-    <section id="sec-silencio" class="section" data-section hidden>
-      <div class="card">
-        <h2>Silêncio</h2>
-        <p>Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
-        <div class="row">
-          <button id="btnSilencioStart">Iniciar 1 min</button>
-          <button id="btnSilencioStop" class="secondary">Parar</button>
-        </div>
-        <p id="silencioTimer" class="timer" aria-live="polite">01:00</p>
-      </div>
+    <!-- Frase Âncora -->
+    <section id="sec-frase" class="card is-hidden" role="tabpanel" aria-labelledby="tab-frase">
+      <h2 class="card-title">Frase âncora</h2>
+      <blockquote class="anchor">“Eu volto. Eu volto. Eu volto.”</blockquote>
     </section>
 
-    <!-- Secção Escrita -->
-    <section id="sec-escrita" class="section" data-section hidden>
-      <div class="card">
-        <h2>Escrita da Alma</h2>
-        <p>Coloca no papel aquilo que o coração sussurra. Escreve sem censura por 3–5 minutos.</p>
-      </div>
+    <!-- Silêncio -->
+    <section id="sec-silencio" class="card is-hidden" role="tabpanel" aria-labelledby="tab-silencio">
+      <h2 class="card-title">Silêncio</h2>
+      <p class="card-text">Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
     </section>
 
-    <footer class="foot">Entre Mundos — feito com verdade 💙</footer>
+    <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
   </div>
 
-  <script src="assets/app.js"></script>
+  <script src="app.js?v=1.0.0" defer></script>
 </body>
 </html>
