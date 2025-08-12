@@ -1,0 +1,3 @@
+/* Esconde secções inativas */
+[data-section][hidden]{ display:none !important; }
+.tab-btn{ -webkit-tap-highlight-color: transparent; }

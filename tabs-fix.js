@@ -1,45 +1,47 @@
-/*! Entre Mundos — Tabs Fix (drop‑in) */
+// tabs-fix.js
 (function () {
-  function $$(sel){ return Array.from(document.querySelectorAll(sel)); }
-  function showTab(name){
-    // Show/hide sections
-    $$('[data-section]').forEach(sec => {
-      const active = sec.dataset.section === name;
-      sec.hidden = !active;
-      sec.setAttribute('aria-hidden', (!active).toString());
+  function showTab(name, pushHash=true){
+    const sections = document.querySelectorAll('[data-section]');
+    const tabs = document.querySelectorAll('.tab-btn[data-tab]');
+    sections.forEach(s => {
+      if (s.dataset.section === name) s.removeAttribute('hidden');
+      else s.setAttribute('hidden','');
     });
-    // Update buttons state
-    $$('[data-tab]').forEach(btn => {
-      const active = btn.dataset.tab === name;
-      btn.classList.toggle('active', active);
-      btn.setAttribute('aria-selected', active ? 'true' : 'false');
-      btn.setAttribute('tabindex', active ? '0' : '-1');
+    tabs.forEach(t => {
+      const active = t.dataset.tab === name;
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      t.classList.toggle('is-active', active);
     });
-    // Keep URL hash in sync (no scroll jump)
-    const hash = '#' + name;
-    if (location.hash !== hash) history.replaceState(null, '', hash);
+    if (pushHash) {
+      const newUrl = `${location.pathname}#${name}`;
+      if (location.hash !== `#${name}`) history.replaceState(null,'',newUrl);
+    }
   }
 
-  function onClick(e){
-    const btn = e.target.closest('[data-tab]');
-    if(!btn) return;
-    e.preventDefault();
-    showTab(btn.dataset.tab);
-  }
+  function initTabs(){
+    const tabs = document.querySelectorAll('.tab-btn[data-tab]');
+    if (!tabs.length) return;
+    tabs.forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        showTab(btn.dataset.tab);
+      }, {passive:true});
+    });
 
-  function init(){
-    document.addEventListener('click', onClick);
-    // Initial tab: hash -> existing tab -> "mensagem"
-    const all = $$('[data-tab]');
-    const hash = location.hash.replace('#','');
-    const first = all.length ? all[0].dataset.tab : 'mensagem';
-    const start = all.some(b => b.dataset.tab === hash) ? hash : first;
-    showTab(start);
+    const fromHash = (location.hash || '').replace('#','');
+    const first = tabs[0]?.dataset.tab || 'mensagem';
+    const valid = t => ['mensagem','respiracao','frase','silencio'].includes(t);
+    showTab(valid(fromHash) ? fromHash : first, false);
+
+    window.addEventListener('hashchange', ()=>{
+      const name = (location.hash || '').replace('#','');
+      if (name) showTab(name, false);
+    });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', initTabs);
   } else {
-    init();
+    initTabs();
   }
 })();
