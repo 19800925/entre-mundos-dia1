@@ -1,77 +1,112 @@
 <!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entre Mundos — Dia 1</title>
-  <style>
-    :root{
-      --bg:#0b2238;
-      --card:#112c4a;
-      --card-edge:#1a3a5a;
-      --text:#e8f0fb;
-      --muted:#a9bed9;
-      --accent:#ffd85b;
-      --btn:#214f85;
-      --btn-text:#ffffff;
-      --btn-soft:#173a63;
-      --shadow:0 10px 24px rgba(0,0,0,.35);
-      --radius:20px;
-    }
-    html,body{margin:0;background:radial-gradient(1200px 600px at 50% -100px, #173455 0%, #0b2238 60%, #07192b 100%);color:var(--text);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
-    .wrap{max-width:860px;margin:24px auto;padding:0 16px}
-    header{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
-    header .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%, #3ea7ff, #0e4379 60%, #0a2a4a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
-    h1{font-size:32px;margin:0 0 10px}
-    nav{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 14px}
-    .chip{padding:10px 16px;border-radius:16px;background:rgba(255,255,255,.06);color:var(--muted);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,.07)}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid var(--card-edge);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px;margin:16px 0}
-    .card h2{margin:0 0 10px;font-size:18px;color:var(--muted);font-weight:600}
-    .highlight{color:var(--accent);font-weight:700}
-    #oracleMsg{font-size:22px;margin:12px 0 16px;color:var(--text)}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    button{appearance:none;border:0;border-radius:14px;padding:12px 18px;background:var(--btn);color:var(--btn-text);font-weight:700;box-shadow:0 6px 14px rgba(13,86,164,.35);cursor:pointer}
-    button.secondary{background:var(--btn-soft)}
-    .note{color:var(--muted);font-size:14px;margin-top:8px}
-    footer{color:var(--muted);text-align:center;margin:22px 0}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entre Mundos — Dia 1</title>
+<style>
+:root{
+  --bg:#0b2238;
+  --card:#112c4a;
+  --card-edge:#1a3a5a;
+  --text:#e8f0fb;
+  --muted:#a9bed9;
+  --accent:#ffd85b;
+  --btn:#214f85;
+  --btn-text:#ffffff;
+  --btn-soft:#173a63;
+  --shadow:0 10px 24px rgba(0,0,0,.35);
+  --radius:20px;
+}
+html,body{
+  margin:0;
+  background:radial-gradient(1200px 600px at 50% -100px, #173455 0%, #0b2238 60%, #07192b 100%);
+  color:var(--text);
+  font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5
+}
+.wrap{max-width:860px;margin:24px auto;padding:0 16px}
+header{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
+header .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%, #3ea7ff, #0e4379 60%, #0a2a4a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
+h1{font-size:32px;margin:0 0 10px}
+nav{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 14px}
+.chip{
+  padding:10px 16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  color:var(--muted);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,.07);
+  cursor:pointer;
+}
+.chip.active{background:var(--btn);color:var(--btn-text)}
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border:1px solid var(--card-edge);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px 18px;
+  margin:16px 0
+}
+.card h2{margin:0 0 10px;font-size:18px;color:var(--muted);font-weight:600}
+.highlight{color:var(--accent);font-weight:700}
+#oracleMsg{font-size:22px;margin:12px 0 16px;color:var(--text)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+button{appearance:none;border:0;border-radius:14px;padding:12px 18px;background:var(--btn);color:var(--btn-text);font-weight:700;box-shadow:0 6px 14px rgba(13,86,164,.35);cursor:pointer}
+button.secondary{background:var(--btn-soft)}
+.note{color:var(--muted);font-size:14px;margin-top:8px}
+footer{color:var(--muted);text-align:center;margin:22px 0}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="dot"></div>
-      <h1>Entre Mundos — Dia 1</h1>
-    </header>
+<div class="wrap">
+  <header>
+    <div class="dot"></div>
+    <h1>Entre Mundos — Dia 1</h1>
+  </header>
 
-    <nav>
-      <div class="chip">Mensagem</div>
-      <div class="chip">•</div>
-      <div class="chip">Respiração</div>
-      <div class="chip">•</div>
-      <div class="chip">Frase</div>
-      <div class="chip">•</div>
-      <div class="chip">Silêncio</div>
-    </nav>
+  <nav>
+    <div class="chip active" data-tab="mensagem">Mensagem</div>
+    <div class="chip" data-tab="respiracao">Respiração</div>
+    <div class="chip" data-tab="frase">Frase</div>
+    <div class="chip" data-tab="silencio">Silêncio</div>
+  </nav>
 
-    <section class="card" id="cardMensagem">
-      <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
-      <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-    </section>
+  <section class="card tab-content" id="tab-mensagem">
+    <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
+    <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+  </section>
 
-    <section class="card" id="cardOraculo">
-      <h2>Oráculo — Entre Mundos</h2>
-      <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
-      <div class="row">
-        <button id="btnNova">Nova mensagem</button>
-        <button class="secondary" id="btnCopiar">Copiar</button>
-        <button class="secondary" id="btnWhats">Partilhar no WhatsApp</button>
-      </div>
-      <div class="note">As frases surgem de forma aleatória e sem números.</div>
-    </section>
+  <section class="card tab-content" id="tab-respiracao" style="display:none">
+    <h2>Respiração</h2>
+    <p>Inspira profundamente por 4 segundos, segura por 4 segundos, expira lentamente por 6 segundos. Repete 5 vezes.</p>
+  </section>
 
-    <footer>Entre Mundos — feito com verdade 💙</footer>
-  </div>
+  <section class="card tab-content" id="tab-frase" style="display:none">
+    <h2>Frase Inspiradora</h2>
+    <p>"A luz que procuras está no silêncio que evitas."</p>
+  </section>
 
-  <script src="./app.js?v=1"></script>
+  <section class="card tab-content" id="tab-silencio" style="display:none">
+    <h2>Silêncio</h2>
+    <p>Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
+  </section>
+
+  <footer>Entre Mundos — feito com verdade 💙</footer>
+</div>
+
+<script>
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const tab = chip.getAttribute('data-tab');
+    document.querySelectorAll('.tab-content').forEach(tc => {
+      tc.style.display = tc.id === 'tab-' + tab ? 'block' : 'none';
+    });
+  });
+});
+</script>
 </body>
 </html>
