@@ -1,58 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Entre Mundos — Dia 1</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entre Mundos — Dia 1</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Entre Mundos — Dia 1</h1>
-    </header>
-
-    <nav class="tabs">
-        <button class="tablink active" onclick="openTab(event, 'mensagem')">Mensagem</button>
-        <button class="tablink" onclick="openTab(event, 'respiracao')">Respiração</button>
-        <button class="tablink" onclick="openTab(event, 'frase')">Frase</button>
-        <button class="tablink" onclick="openTab(event, 'silencio')">Silêncio</button>
-    </nav>
-
-    <section id="mensagem" class="tabcontent" style="display: block;">
-        <h2>Mensagem de Hoje</h2>
-        <p id="oraculo-texto">Segue o brilho que só tu vês. Hoje é o dia.</p>
-        <div class="oraculo-botoes">
-            <button onclick="novaMensagem()">Nova mensagem</button>
-            <button onclick="copiarMensagem()">Copiar</button>
-            <a id="whatsapp-share" href="#" target="_blank">Partilhar no WhatsApp</a>
-        </div>
+  <main>
+    <section class="card msg-card" id="cardMensagem">
+      <h2 class="card-title"><span>Mensagem de Hoje</span></h2>
+      <p id="mensagemHoje" class="msg-text">Segue o brilho que só tu vês. Hoje é o dia.</p>
+      <div class="btn-row">
+        <button id="btnNovaMensagem" class="btn primary">Nova mensagem</button>
+        <button id="btnCopiar" class="btn">Copiar</button>
+        <a id="btnWhats" class="btn whats" href="#" rel="noopener">Partilhar no WhatsApp</a>
+      </div>
     </section>
-
-    <section id="respiracao" class="tabcontent">
-        <h2>Prática — Respiração 4•4•4•4</h2>
-        <div class="balloon-container">
-            <div id="balloon"></div>
-            <p id="breath-text">Preparar...</p>
-        </div>
-        <div class="breath-buttons">
-            <button onclick="startBreathing()">Começar</button>
-            <button onclick="stopBreathing()">Parar</button>
-        </div>
-        <p>Ciclo: Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
-    </section>
-
-    <section id="frase" class="tabcontent">
-        <h2>Frase Inspiradora</h2>
-        <p>"Eu escuto com luz, mas fico em mim. O que é dor, devolvo à Terra. O que é luz, deixo fluir."</p>
-    </section>
-
-    <section id="silencio" class="tabcontent">
-        <h2>Silêncio</h2>
-        <p>Fecha os olhos por um momento. Respira. Sente o espaço dentro de ti.</p>
-    </section>
-
-<script src="tabs.js"></script>
-<script src="oraculo.js"></script>
-<script src="breath-balloon.js"></script>
+  </main>
+  <script src="app.js"></script>
 </body>
 </html>
