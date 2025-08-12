@@ -1,1 +1,39 @@
-<!doctype html><meta charset='utf-8'><title>Oráculo — Entre Mundos</title><meta name=viewport content='width=device-width,initial-scale=1'><style>body{margin:0;font-family:system-ui;background:#0a1628;color:#e6f0ff} .w{max-width:860px;margin:0 auto;padding:28px 18px 80px} a.b{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid #ffffff33;border-radius:12px;color:#e6f0ff;text-decoration:none;background:#ffffff10} h1{margin:10px 0} .panel{background:#10233e55;border:1px solid #ffffff22;border-radius:18px;padding:22px} .msg{min-height:220px;display:grid;place-items:center;text-align:center;font-size:28px;line-height:1.35} .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px} button{border:0;border-radius:12px;color:#fff;background:#184a8c;padding:14px 18px;font-weight:700}</style><div class=w><a class=b href='/entre-mundos-dia1/index.html?v=34'>← Voltar</a><h1>Oráculo — Entre Mundos</h1><div class=panel><div id=msg class=msg>Pronto para abrir o oráculo?</div><div class=row><button id=btnNova>Abrir Oráculo</button><button id=btnCopiar>Copiar</button><button id=btnWhats>Partilhar no WhatsApp</button></div><div id=count style='color:#a9bbd6;margin-top:8px'>0 de 400</div><div style='color:#a9bbd6;margin-top:8px;text-align:center'>Dica: se o WhatsApp não abrir, a mensagem já está copiada — é só colar.</div></div></div><script>if('serviceWorker'in navigator){navigator.serviceWorker.register('/entre-mundos-dia1/sw.js?v=34')} let frases=[];let ultimo=-1;let vistos=new Set(); async function load(){try{const r=await fetch('/entre-mundos-dia1/oraculo.json?v=34',{cache:'no-store'});const d=await r.json();frases=(d.mensagens||[]).filter(Boolean)}catch(e){frases=['Não foi possível carregar o oráculo agora. Tenta novamente.']} upd()} function upd(){document.getElementById('count').textContent=`${vistos.size} de ${frases.length||400}`} function pick(){if(frases.length==0)return'…'; if(vistos.size>=frases.length)vistos.clear(); let i=0,idx; do{idx=Math.floor(Math.random()*frases.length); i++; if(i>50)break;}while(vistos.has(idx)||idx===ultimo); ultimo=idx; vistos.add(idx); upd(); return frases[idx]} function nova(){const t=pick(); document.getElementById('msg').textContent=t; navigator.clipboard&&navigator.clipboard.writeText(t).catch(()=>{})} document.getElementById('btnNova').onclick=nova; document.getElementById('btnCopiar').onclick=()=>{const t=document.getElementById('msg').textContent.trim(); navigator.clipboard.writeText(t).then(()=>{btnCopiar.textContent='Copiado ✔'; setTimeout(()=>btnCopiar.textContent='Copiar',1200)})}; document.getElementById('btnWhats').onclick=()=>{const t=document.getElementById('msg').textContent.trim(); const u='https://wa.me/?text='+encodeURIComponent(t); navigator.clipboard&&navigator.clipboard.writeText(t).catch(()=>{}); location.href=u}; load()</script>
+
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oráculo — Entre Mundos</title>
+  <link rel="stylesheet" href="oraculo.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <a class="back" href="index.html">← Voltar ao menu</a>
+      <div>
+        <div class="title">Oráculo — Entre Mundos</div>
+        <div class="subtitle">Toca em “Abrir Oráculo” e recebe a tua mensagem.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div id="message" class="msg">Pronto para abrir o oráculo?</div>
+
+      <div class="btns">
+        <button id="open" class="btn-ghost">Abrir Oráculo</button>
+        <button id="copy" class="btn-ghost">Copiar</button>
+        <a id="shareWA" class="btn whats" href="#" role="button">
+          <img alt="" src="assets/whatsapp.svg" aria-hidden="true">
+          <span>Partilhar no WhatsApp</span>
+        </a>
+      </div>
+      <div id="counter" class="counter"></div>
+    </div>
+
+    <div class="footer">Entre Mundos — <b>Oráculo</b></div>
+  </div>
+
+  <script src="oraculo.js"></script>
+</body>
+</html>

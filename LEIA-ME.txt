@@ -1,0 +1,17 @@
+
+Patch do Oráculo — Entre Mundos (v2)
+------------------------------------
+Ficheiros:
+- oraculo.html   -> página do oráculo com layout azul cósmico, sem números
+- oraculo.css    -> estilos (botões "pill", cartão, ícone WhatsApp branco)
+- oraculo.js     -> lógica: carrega 'oraculo.json' (se existir), remove números, mostra frases aleatórias e únicas por sessão, copiar e partilhar
+- /assets/whatsapp.svg -> ícone branco do WhatsApp
+
+Como instalar no GitHub Pages:
+1) Substitui os ficheiros atuais pelos deste patch (mantém o teu oraculo.json com as ~400 frases).
+2) Garante que existe um 'index.html' na raiz do repositório e que o botão 'Abrir Oráculo' aponta para 'oraculo.html'.
+3) Faz commit em 'main'. Aguarda 1–2 minutos e força refresh no iPhone (arrasta para baixo) ou limpa cache.
+
+Notas:
+- O botão 'Voltar ao menu' no topo aponta para 'index.html'. Altera o href se o teu caminho for diferente.
+- O botão Partilhar usa o link oficial 'wa.me' (funciona em iOS/Android). Se o WhatsApp não abrir, a mensagem fica copiada.
