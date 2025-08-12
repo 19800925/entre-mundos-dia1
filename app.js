@@ -1,116 +1,155 @@
-
 /* Tabs */
 const tabs = document.querySelectorAll('.tab');
 const panels = {
-  guia: document.getElementById('tab-guia'),
-  silencio: document.getElementById('tab-silencio'),
-  escrita: document.getElementById('tab-escrita')
+  mensagem: document.getElementById('panel-mensagem'),
+  respiracao: document.getElementById('panel-respiracao'),
+  frase: document.getElementById('panel-frase'),
+  silencio: document.getElementById('panel-silencio'),
 };
+
 tabs.forEach(btn => {
   btn.addEventListener('click', () => {
     tabs.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     Object.values(panels).forEach(p => p.classList.remove('active'));
     panels[btn.dataset.tab].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
-/* Respiração 4-4-4-4 */
+/* Oráculo */
+const oracleMsgs = [
+  "A vida fala em sinais, aprende a escutar.",
+  "Nem todos vão entender-te, mas todos vão sentir a tua energia.",
+  "Onde pões atenção, pões a tua luz.",
+  "Quando respiras, o mundo respira contigo.",
+  "Segue o brilho que só tu vês. Hoje é o dia.",
+  "Volta a ti. A resposta já vive no teu peito.",
+  "Tu és a casa antes do mundo.",
+  "Confia no tempo divino, ele nunca se atrasa.",
+  "A tua verdade não precisa gritar.",
+  "A tua calma é magia em movimento."
+];
+let lastIndex = -1;
+const oracleMsgEl = document.getElementById('oracle-msg');
+
+function pickRandomMessage() {
+  if (!oracleMsgs.length) return "Respira. Confia.";
+  let idx = Math.floor(Math.random() * oracleMsgs.length);
+  if (idx === lastIndex) { // evitar repetição imediata
+    idx = (idx + 1) % oracleMsgs.length;
+  }
+  lastIndex = idx;
+  return oracleMsgs[idx];
+}
+
+function showNewOracleMessage() {
+  const msg = pickRandomMessage();
+  oracleMsgEl.textContent = msg;
+  navigator.clipboard?.writeText(msg).catch(()=>{});
+}
+document.getElementById('btn-nova').addEventListener('click', showNewOracleMessage);
+document.getElementById('btn-copiar').addEventListener('click', () => {
+  const txt = oracleMsgEl.textContent.trim();
+  navigator.clipboard?.writeText(txt);
+});
+
+document.getElementById('btn-whatsapp').addEventListener('click', () => {
+  const txt = oracleMsgEl.textContent.trim() || "Entre Mundos";
+  const url = "https://wa.me/?text=" + encodeURIComponent(txt);
+  window.location.href = url;
+});
+
+/* Respiração — animação simples */
+const circle = document.getElementById('breath-circle');
+const label = document.getElementById('breath-label');
 let breathTimer = null;
-const circle = document.getElementById('breathCircle');
-const label = document.getElementById('breathLabel');
-const startBreath = document.getElementById('startBreath');
-const stopBreath = document.getElementById('stopBreath');
+const phases = [
+  { name:'Inspira', seconds:4, hint:'Inspira…' },
+  { name:'Sustém', seconds:4, hint:'Sustém…' },
+  { name:'Expira', seconds:4, hint:'Expira…' },
+  { name:'Pausa', seconds:4, hint:'Pausa…' },
+];
+let phaseIdx = 0, phaseRemaining = 0;
 
-function runBreathCycle() {
-  const phases = [
-    {t: 'Inspira', cls: 'grow'},
-    {t: 'Sustém', cls: ''},
-    {t: 'Expira', cls: 'shrink'},
-    {t: 'Pausa', cls: ''},
-  ];
-  let i = 0;
-  const step = () => {
-    if (!breathTimer) return;
-    const p = phases[i % phases.length];
-    label.textContent = p.t;
-    circle.classList.remove('grow','shrink');
-    if (p.cls) circle.classList.add(p.cls);
-    setTimeout(() => {
-      if (!breathTimer) return;
-      i++;
-      step();
-    }, 4000);
-  };
-  step();
+function startBreath() {
+  phaseIdx = 0;
+  phaseRemaining = phases[0].seconds;
+  stepBreath();
+  if (breathTimer) clearInterval(breathTimer);
+  breathTimer = setInterval(stepBreath, 1000);
 }
-
-startBreath.addEventListener('click', () => {
-  if (breathTimer) return;
-  label.textContent = 'Preparar…';
-  // tiny delay then start
-  breathTimer = true;
-  setTimeout(runBreathCycle, 800);
-});
-
-stopBreath.addEventListener('click', () => {
+function stopBreath() {
+  if (breathTimer) clearInterval(breathTimer);
   breathTimer = null;
-  label.textContent = 'Preparar…';
-  circle.classList.remove('grow','shrink');
-});
+  label.textContent = "Preparar…";
+  circle.classList.remove('expanded');
+}
+function stepBreath() {
+  const p = phases[phaseIdx];
+  label.textContent = p.hint + " " + phaseRemaining + "s";
+  if (p.name === 'Inspira') circle.classList.add('expanded');
+  if (p.name === 'Expira') circle.classList.remove('expanded');
 
-/* Silêncio — contador */
-let silentInterval = null;
+  phaseRemaining--;
+  if (phaseRemaining < 0) {
+    phaseIdx = (phaseIdx + 1) % phases.length;
+    phaseRemaining = phases[phaseIdx].seconds;
+  }
+}
+document.getElementById('breath-start').addEventListener('click', startBreath);
+document.getElementById('breath-stop').addEventListener('click', stopBreath);
+
+/* Momento de silêncio — temporizador */
 const chips = document.querySelectorAll('.chip');
-const customMin = document.getElementById('customMin');
-const startSilent = document.getElementById('startSilent');
-const stopSilent = document.getElementById('stopSilent');
-const silentTimer = document.getElementById('silentTimer');
-
-chips.forEach(c => {
-  c.addEventListener('click', () => {
-    chips.forEach(x => x.classList.remove('selected'));
-    c.classList.add('selected');
-    customMin.value = c.dataset.min;
-    updateTimerDisplay(parseInt(customMin.value,10) * 60);
+const customMin = document.getElementById('custom-min');
+const timerEl = document.getElementById('timer');
+let silenceInterval = null;
+let totalSeconds = 60;
+chips.forEach(ch => {
+  ch.addEventListener('click', () => {
+    chips.forEach(c => c.classList.remove('active'));
+    ch.classList.add('active');
+    const m = parseInt(ch.dataset.min, 10) || 1;
+    totalSeconds = m * 60;
+    customMin.value = m;
+    renderTimer(totalSeconds);
   });
 });
-
 customMin.addEventListener('input', () => {
-  let v = parseInt(customMin.value || '1', 10);
-  if (isNaN(v) || v < 1) v = 1;
-  if (v > 180) v = 180;
-  customMin.value = v;
-  chips.forEach(x => x.classList.remove('selected'));
-  updateTimerDisplay(v * 60);
+  const val = Math.max(1, parseInt(customMin.value||"1",10));
+  totalSeconds = val * 60;
+  chips.forEach(c => c.classList.remove('active'));
+  renderTimer(totalSeconds);
 });
 
-function updateTimerDisplay(totalSeconds){
-  const m = Math.floor(totalSeconds / 60).toString().padStart(2,'0');
-  const s = Math.floor(totalSeconds % 60).toString().padStart(2,'0');
-  silentTimer.textContent = `${m}:${s}`;
+function renderTimer(sec) {
+  const m = String(Math.floor(sec/60)).padStart(2,'0');
+  const s = String(sec%60).padStart(2,'0');
+  timerEl.textContent = `${m}:${s}`;
 }
 
-startSilent.addEventListener('click', () => {
-  let secs = parseInt(customMin.value,10) * 60;
-  if (silentInterval) clearInterval(silentInterval);
-  updateTimerDisplay(secs);
-  silentInterval = setInterval(() => {
-    secs--;
-    if (secs <= 0){
-      clearInterval(silentInterval);
-      silentInterval = null;
-      updateTimerDisplay(0);
-      try { new AudioContext(); } catch(e) {}
-    } else {
-      updateTimerDisplay(secs);
+function startSilence() {
+  if (silenceInterval) clearInterval(silenceInterval);
+  let remaining = totalSeconds;
+  renderTimer(remaining);
+  silenceInterval = setInterval(() => {
+    remaining--;
+    renderTimer(remaining);
+    if (remaining <= 0) {
+      clearInterval(silenceInterval);
+      silenceInterval = null;
+      // vibração leve (em alguns browsers)
+      if (navigator.vibrate) navigator.vibrate(200);
     }
   }, 1000);
-});
+}
+function stopSilence() {
+  if (silenceInterval) clearInterval(silenceInterval);
+  silenceInterval = null;
+}
+document.getElementById('silence-start').addEventListener('click', startSilence);
+document.getElementById('silence-stop').addEventListener('click', stopSilence);
 
-stopSilent.addEventListener('click', () => {
-  if (silentInterval) clearInterval(silentInterval);
-  silentInterval = null;
-});
-// init
-updateTimerDisplay(60);
+// Estado inicial
+renderTimer(totalSeconds);
