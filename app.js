@@ -92,5 +92,32 @@
   // Segurança: evitar regressar com BFCache mostrando layout antigo
   window.addEventListener('pageshow', (e)=>{
     if(e.persisted){ window.location.reload(); }
-  });
+  
+  // ----- Silêncio 1 minuto -----
+  const tLabel = document.getElementById('silencioTimer');
+  const tStart = document.getElementById('btn-silencio-start');
+  const tStop  = document.getElementById('btn-silencio-stop');
+  let tInt = null, tLeft = 60;
+  function drawT(){ 
+    const m = String(Math.floor(tLeft/60)).padStart(2,'0');
+    const s = String(tLeft%60).padStart(2,'0');
+    if(tLabel) tLabel.textContent = m+':'+s;
+  }
+  function tickT(){
+    tLeft--; drawT();
+    if(tLeft<=0){ clearInterval(tInt); tInt=null; tLeft=60; drawT(); }
+  }
+  if(tStart){
+    tStart.addEventListener('click', ()=>{
+      if(tInt) return;
+      tLeft=60; drawT();
+      tInt = setInterval(tickT, 1000);
+    });
+  }
+  if(tStop){
+    tStop.addEventListener('click', ()=>{
+      clearInterval(tInt); tInt=null; tLeft=60; drawT();
+    });
+  }
+  drawT();
 })();
