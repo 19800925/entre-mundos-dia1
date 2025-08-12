@@ -24,7 +24,7 @@
     header .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%, #3ea7ff, #0e4379 60%, #0a2a4a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
     h1{font-size:32px;margin:0 0 10px}
     nav{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 14px}
-    .chip{padding:10px 16px;border-radius:16px;background:rgba(255,255,255,.06);color:var(--muted);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,.07)}
+    .chip{padding:10px 16px;border-radius:16px;background:rgba(255,255,255,.06);color:var(--muted);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,.07);cursor:pointer}
     .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid var(--card-edge);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px;margin:16px 0}
     .card h2{margin:0 0 10px;font-size:18px;color:var(--muted);font-weight:600}
     .highlight{color:var(--accent);font-weight:700}
@@ -44,18 +44,30 @@
     </header>
 
     <nav>
-      <div class="chip">Mensagem</div>
-      <div class="chip">•</div>
-      <div class="chip">Respiração</div>
-      <div class="chip">•</div>
-      <div class="chip">Frase</div>
-      <div class="chip">•</div>
-      <div class="chip">Silêncio</div>
+      <div class="chip" data-tab="tabMensagem">Mensagem</div>
+      <div class="chip" data-tab="tabRespiracao">Respiração</div>
+      <div class="chip" data-tab="tabFrase">Frase</div>
+      <div class="chip" data-tab="tabSilencio">Silêncio</div>
     </nav>
 
-    <section class="card" id="cardMensagem">
+    <section class="card" id="tabMensagem">
       <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
       <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+    </section>
+
+    <section class="card" id="tabRespiracao" style="display:none">
+      <h2>Exercício de Respiração</h2>
+      <p>Inspira profundamente contando até 4, segura por 4, expira por 6. Repete 5 vezes.</p>
+    </section>
+
+    <section class="card" id="tabFrase" style="display:none">
+      <h2>Frase Inspiradora</h2>
+      <p>"Mesmo no escuro, a tua luz interior sabe o caminho."</p>
+    </section>
+
+    <section class="card" id="tabSilencio" style="display:none">
+      <h2>Prática de Silêncio</h2>
+      <p>Fecha os olhos, escuta o som da tua respiração e deixa que o mundo desapareça por 1 minuto.</p>
     </section>
 
     <section class="card" id="cardOraculo">
@@ -71,6 +83,19 @@
 
     <footer>Entre Mundos — feito com verdade 💙</footer>
   </div>
+
+  <script>
+    // Alternar abas
+    document.querySelectorAll('.chip[data-tab]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
+        document.getElementById(chip.dataset.tab).style.display = 'block';
+        if (chip.dataset.tab !== 'cardOraculo') {
+          document.getElementById('cardOraculo').style.display = 'block';
+        }
+      });
+    });
+  </script>
 
   <script src="./app.js?v=1"></script>
 </body>
