@@ -1,59 +1,8 @@
 
-:root{
-  --bg:#071c2c;
-  --bg2:#0b2740;
-  --card:#0e2e4d;
-  --text:#e8f1ff;
-  --muted:#a6c2de;
-  --accent:#ffc21a;
-  --primary:#1f4f8a;
-  --primary-2:#1b4476;
-  --chip:#143757;
-  --chip-sel:#112e48;
-  --ring: rgba(255,255,255,.12);
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:radial-gradient(1200px 600px at 50% -200px,#0c2b49 0%, var(--bg) 60%), var(--bg); color:var(--text); font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;}
-.appbar{display:flex;align-items:center;gap:.75rem;padding:1rem 1rem .25rem}
-.appbar .logo{font-size:1.25rem}
-.appbar h1{font-size:1.8rem;margin:0;font-weight:800;letter-spacing:.5px}
-
-.tabs{display:flex;gap:.75rem; padding:.5rem 1rem 1rem; flex-wrap:wrap}
-.tab{background:transparent;border:none;color:var(--muted);padding:.55rem .9rem;border-radius:.9rem;border:1px solid transparent}
-.tab.active{color:var(--text); box-shadow:0 0 0 2px var(--ring) inset; background:rgba(255,255,255,.04)}
-
-main{padding:0 1rem 6rem}
-.panel{display:none}
-.panel.active{display:block}
-.card{background:linear-gradient(180deg, var(--bg2), var(--card)); border-radius:1.1rem; padding:1rem; margin:1rem 0; box-shadow:0 6px 20px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06)}
-.card-title{font-size:1.05rem; color:var(--muted); display:flex; gap:.35rem; align-items:baseline}
-.card-title strong{color:var(--accent)}
-.card-text{line-height:1.6; font-size:1.05rem}
-.card-text mark{background:transparent; color:var(--accent); font-weight:800}
-
-.breath-wrap{display:grid; place-items:center; padding:1rem 0 0}
-.circle{width:300px; height:300px; border-radius:50%; background:radial-gradient(circle at 50% 40%, rgba(255,255,255,.08), rgba(255,255,255,.02) 60%, transparent 70%), #103354;
-        box-shadow:inset 0 0 0 4px rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
-        display:grid; place-items:center; transform:scale(1); transition:transform 1s ease-in-out}
-.circle.grow{transform:scale(1.14)}
-.circle.shrink{transform:scale(0.92)}
-.circle-label{font-size:1.4rem; color:var(--text); opacity:.95}
-
-.actions{display:flex; gap:.75rem; padding:1rem 0 .25rem}
-.btn{background:rgba(255,255,255,.08); color:var(--text); border:none; border-radius:.8rem; padding:.75rem 1rem; font-weight:600}
-.btn.primary{background:var(--primary)}
-.btn.primary:active{background:var(--primary-2)}
-
-.legend{color:var(--muted); font-size:.95rem; padding-bottom:.5rem}
-
-.chips{display:flex; gap:.5rem; flex-wrap:wrap; margin:.5rem 0}
-.chip{background:var(--chip); color:var(--text); border:none; padding:.6rem .9rem; border-radius:.9rem; opacity:.9}
-.chip.selected{outline:2px solid rgba(255,255,255,.18); background:var(--chip-sel)}
-.inline{display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1rem}
-.inline input{width:70px; border-radius:.6rem; padding:.5rem .6rem; background:#0c2136; color:var(--text); border:1px solid rgba(255,255,255,.1)}
-.timer{font-size:3rem; font-weight:800; color:var(--accent); text-align:center; padding:.5rem 0}
-.muted{color:var(--muted)}
-.hint{color:var(--muted); font-size:.9rem}
-
-.footer{position:fixed; left:0; right:0; bottom:0; padding:1rem; text-align:center; color:var(--muted); background:linear-gradient(180deg, transparent, rgba(0,0,0,.35))}
-.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+body { font-family: Arial, sans-serif; background: #0a1a2f; color: white; margin: 0; padding: 0; }
+h1 { text-align: center; padding: 1rem; }
+.tabs { display: flex; justify-content: center; gap: 0.5rem; padding: 1rem; }
+.tab-btn { background: #123456; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+.tab-btn[aria-selected="true"] { background: #1e90ff; }
+[data-section][hidden] { display: none; }
+main { padding: 1rem; }

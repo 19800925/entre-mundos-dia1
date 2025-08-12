@@ -1,24 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Entre Mundos — Dia 1</title>
-<link rel="stylesheet" href="styles.css">
-<script defer src="app.js"></script>
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <header>
-    <h1>Entre Mundos — Dia 1</h1>
-  </header>
-  <nav>
-    <div class="chip">Mensagem</div>
-    <div class="chip">Respiração</div>
-    <div class="chip">Frase</div>
-    <div class="chip">Silêncio</div>
-  </nav>
-  <main id="content">
-    <!-- Conteúdo dinâmico será carregado aqui -->
-  </main>
+  <div class="wrap">
+    <header class="hdr">
+      <div class="dot" aria-hidden="true"></div>
+      <h1>Entre Mundos — Dia 1</h1>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Seções principais">
+      <button class="tab active" data-tab="mensagem" role="tab" aria-selected="true">Mensagem</button>
+      <button class="tab" data-tab="respiracao" role="tab" aria-selected="false">Respiração</button>
+      <button class="tab" data-tab="frase" role="tab" aria-selected="false">Frase</button>
+      <button class="tab" data-tab="silencio" role="tab" aria-selected="false">Silêncio</button>
+    </nav>
+
+    <!-- MENSAGEM + ORÁCULO -->
+    <section class="pane" id="pane-mensagem" data-section="mensagem">
+      <article class="card">
+        <h2>Mensagem de hoje — <span class="hi">Reconexão</span></h2>
+        <p>Respira e lembra‑te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+      </article>
+
+      <article class="card">
+        <h3>Oráculo — Entre Mundos</h3>
+        <p id="ora-msg" class="ora-msg">Toca em “Nova mensagem”.</p>
+        <div class="row">
+          <button id="btn-nova" class="btn">Nova mensagem</button>
+          <button id="btn-copiar" class="btn ghost">Copiar</button>
+          <button id="btn-whats" class="btn ghost">
+            <img src="assets/wa.svg" class="wa" alt="" aria-hidden="true"> Partilhar no WhatsApp
+          </button>
+        </div>
+        <p class="note">As frases surgem de forma aleatória e sem números.</p>
+      </article>
+    </section>
+
+    <!-- RESPIRAÇÃO -->
+    <section class="pane" id="pane-respiracao" data-section="respiracao" hidden>
+      <article class="card">
+        <h2>Respiração</h2>
+        <p>Inspira 4s · sustém 4s · expira 6s. Repete 5 vezes. Mantém os ombros soltos e a atenção no ar a entrar e a sair.</p>
+      </article>
+    </section>
+
+    <!-- FRASE ÂNCORA -->
+    <section class="pane" id="pane-frase" data-section="frase" hidden>
+      <article class="card">
+        <h2>Frase âncora</h2>
+        <p class="anchor">“Eu volto. Eu volto. Eu volto.”</p>
+      </article>
+    </section>
+
+    <!-- SILÊNCIO -->
+    <section class="pane" id="pane-silencio" data-section="silencio" hidden>
+      <article class="card">
+        <h2>Silêncio</h2>
+        <p>Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
+      </article>
+    </section>
+
+    <footer class="ft">Entre Mundos — feito com verdade 💙</footer>
+  </div>
+
+<script src="app.js"></script>
 </body>
 </html>
