@@ -1,9 +1,75 @@
-.chip {
-  display: inline-block;
-  padding: 8px 12px;
-  margin: 5px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: white;
-  cursor: pointer;
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #082032;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header {
+    padding: 1rem;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #0d3b66;
+}
+
+.tablink {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.tablink.active {
+    background-color: #145DA0;
+}
+
+.tabcontent {
+    display: none;
+    padding: 2rem;
+}
+
+.balloon-container {
+    margin: 2rem auto;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#balloon {
+    width: 100px;
+    height: 100px;
+    background-color: #1E90FF;
+    border-radius: 50%;
+    transition: transform 4s ease-in-out;
+}
+
+button {
+    padding: 0.6rem 1rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.oraculo-botoes button,
+.oraculo-botoes a {
+    background-color: #145DA0;
+    color: white;
+    text-decoration: none;
+}
+
+.breath-buttons button {
+    background-color: #145DA0;
+    color: white;
 }
