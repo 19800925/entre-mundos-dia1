@@ -1,91 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entre Mundos — Dia 1</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <header class="hdr">
-      <div class="dot" aria-hidden="true"></div>
-      <h1>Entre Mundos — Dia 1</h1>
+    <header>
+        <h1>Entre Mundos — Dia 1</h1>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Áreas">
-      <button class="chip is-active" role="tab" aria-selected="true" aria-controls="sec-mensagem" id="tab-mensagem" data-target="sec-mensagem">Mensagem</button>
-      <button class="chip" role="tab" aria-selected="false" aria-controls="sec-respiracao" id="tab-respiracao" data-target="sec-respiracao">Respiração</button>
-      <button class="chip" role="tab" aria-selected="false" aria-controls="sec-frase" id="tab-frase" data-target="sec-frase">Frase</button>
-      <button class="chip" role="tab" aria-selected="false" aria-controls="sec-silencio" id="tab-silencio" data-target="sec-silencio">Silêncio</button>
-    </nav>
+    <main>
+        <section class="breath-wrap">
+            <div class="breath-stage" id="breathStage" aria-live="polite">Preparar…</div>
+            <div class="breath-bubble">
+                <svg viewBox="0 0 200 200" class="breath-svg" aria-hidden="true">
+                    <defs>
+                        <radialGradient id="grad" cx="35%" cy="35%">
+                            <stop offset="0%" stop-color="#53a7ff" />
+                            <stop offset="65%" stop-color="#1f5fa3" />
+                            <stop offset="100%" stop-color="#123a63" />
+                        </radialGradient>
+                    </defs>
+                    <circle id="bubble" cx="100" cy="100" r="38" fill="url(#grad)"/>
+                </svg>
+            </div>
+            <div class="breath-controls">
+                <button id="btnBreathStart" class="btn-primary">Começar</button>
+                <button id="btnBreathStop"  class="btn-muted">Parar</button>
+            </div>
+            <div class="breath-guide">Ciclo: Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</div>
+        </section>
+    </main>
 
-    <!-- MENSAGEM + ORÁCULO -->
-    <section id="sec-mensagem" class="section is-active" role="tabpanel" aria-labelledby="tab-mensagem">
-      <div class="card">
-        <h2 class="card-title">Mensagem de hoje — <span class="accent">Reconexão</span></h2>
-        <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-      </div>
-
-      <div class="card">
-        <h2 class="card-title">Oráculo — Entre Mundos</h2>
-        <p id="oracle-text" class="oracle-text">O silêncio também responde.</p>
-        <div class="row">
-          <button id="btn-oracle-new" class="btn">Nova mensagem</button>
-          <button id="btn-oracle-copy" class="btn ghost">Copiar</button>
-          <button id="btn-oracle-share" class="btn ghost wa">Partilhar no WhatsApp</button>
-        </div>
-        <p class="note">As frases surgem de forma aleatória e sem números.</p>
-      </div>
-    </section>
-
-    <!-- RESPIRAÇÃO -->
-    <section id="sec-respiracao" class="section" role="tabpanel" aria-labelledby="tab-respiracao" hidden>
-      <div class="card">
-        <h2 class="card-title">Respiração 4 • 4 • 4 • 4</h2>
-        <div class="breath-stage" id="breath-stage">Preparar…</div>
-        <div class="row">
-          <button id="btn-breath-start" class="btn">Começar</button>
-          <button id="btn-breath-stop" class="btn ghost">Parar</button>
-        </div>
-        <p class="note">Ciclo: Inspira 4 • Sustém 4 • Expira 4 • Pausa 4.</p>
-      </div>
-    </section>
-
-    <!-- FRASE ÂNCORA (apenas mostra uma) -->
-    <section id="sec-frase" class="section" role="tabpanel" aria-labelledby="tab-frase" hidden>
-      <div class="card">
-        <h2 class="card-title">Frase âncora</h2>
-        <blockquote class="anchor-phrase">“Eu volto. Eu volto. Eu volto.”</blockquote>
-      </div>
-    </section>
-
-    <!-- SILÊNCIO -->
-    <section id="sec-silencio" class="section" role="tabpanel" aria-labelledby="tab-silencio" hidden>
-      <div class="card">
-        <h2 class="card-title">Momento de silêncio</h2>
-        <p>Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
-        <div class="row presets" role="group" aria-label="Duração">
-          <button class="chip small preset is-active" data-min="1">1 min</button>
-          <button class="chip small preset" data-min="2">2 min</button>
-          <button class="chip small preset" data-min="3">3 min</button>
-          <button class="chip small preset" data-min="5">5 min</button>
-        </div>
-        <div class="row">
-          <label class="input-wrap">ou
-            <input id="custom-min" type="number" min="1" max="60" step="1" value="1" inputmode="numeric" pattern="[0-9]*" aria-label="Minutos personalizados">
-          </label>
-          <button id="btn-silence-start" class="btn">Iniciar</button>
-          <button id="btn-silence-stop" class="btn ghost">Parar</button>
-        </div>
-        <div class="timer" id="silence-timer">01:00</div>
-        <p class="note">Dica: o ecrã pode bloquear, mas a contagem continua enquanto o separador estiver ativo.</p>
-      </div>
-    </section>
-
-    <footer class="ft">Entre Mundos — feito com verdade 💙</footer>
-  </div>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

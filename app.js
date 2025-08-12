@@ -1,129 +1,53 @@
-// app.js — Entre Mundos
-// Tabs
-const tabs = document.querySelectorAll('.tabs .chip');
-const sections = document.querySelectorAll('.section');
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('is-active'));
-    sections.forEach(s => s.hidden = true);
-    tab.classList.add('is-active');
-    document.getElementById(tab.dataset.target).hidden = false;
-  });
-});
+(() => {
+  const cfg = { insp: 4, hold: 4, exp: 4, pause: 4, minR: 38, maxR: 86 };
+  const bubble = document.getElementById('bubble');
+  const stageEl = document.getElementById('breathStage');
+  const btnStart = document.getElementById('btnBreathStart');
+  const btnStop  = document.getElementById('btnBreathStop');
+  if (!bubble || !btnStart || !btnStop) return;
 
-// Oráculo
-const phrases = [
-  "A tua luz guia-te no silêncio.",
-  "O teu ritmo é sagrado. Honra-o.",
-  "Tudo chega no seu tempo certo.",
-  "És mais vast@ do que o medo.",
-  "Há respostas na tua respiração.",
-  "A vida fala em sinais — escuta.",
-  "Confia no tempo divino; ele não se atrasa.",
-  "Aprende a descansar, não a desistir."
-];
-let lastIndex = -1;
-const oracleText = document.getElementById('oracle-text');
-function randomPhrase() {
-  if (!phrases.length) return "";
-  let i = Math.floor(Math.random() * phrases.length);
-  if (i === lastIndex) { i = (i + 1) % phrases.length; }
-  lastIndex = i;
-  return phrases[i];
-}
-document.getElementById('btn-oracle-new').addEventListener('click', () => {
-  oracleText.textContent = randomPhrase();
-});
-document.getElementById('btn-oracle-copy').addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(oracleText.textContent.trim());
-    toast('Mensagem copiada.');
-  } catch(e) { alert('Não foi possível copiar.'); }
-});
-document.getElementById('btn-oracle-share').addEventListener('click', async () => {
-  const text = oracleText.textContent.trim();
-  const wa = "https://wa.me/?text=" + encodeURIComponent(text);
-  if (navigator.share) {
-    try { await navigator.share({ text }); } catch(e){}
-  } else {
-    window.location.href = wa;
+  let raf = 0, running = false, t0 = 0, phase = 0;
+  const phases = [
+    { key:'inspira',  dur: cfg.insp,  from: cfg.minR, to: cfg.maxR, text:'Inspira…'  },
+    { key:'sustem',   dur: cfg.hold,  from: cfg.maxR, to: cfg.maxR, text:'Sustém…'   },
+    { key:'expira',   dur: cfg.exp,   from: cfg.maxR, to: cfg.minR, text:'Expira…'   },
+    { key:'pausa',    dur: cfg.pause, from: cfg.minR, to: cfg.minR, text:'Pausa…'    },
+  ];
+
+  const ease = x => x<.5 ? 2*x*x : 1 - Math.pow(-2*x+2,2)/2;
+
+  function step(ts){
+    if (!running) return;
+    if (!t0) t0 = ts;
+    const p = phases[phase];
+    const elapsed = (ts - t0)/1000;
+    const ratio = Math.min(1, elapsed / Math.max(0.0001, p.dur));
+    const eased = p.from === p.to ? 1 : ease(ratio);
+    const r = p.from + (p.to - p.from) * eased;
+    bubble.setAttribute('r', r.toFixed(2));
+    stageEl.textContent = p.text;
+
+    if (ratio >= 1){
+      phase = (phase + 1) % phases.length;
+      t0 = ts;
+    }
+    raf = requestAnimationFrame(step);
   }
-});
 
-// Respiração — ciclo 4•4•4•4
-const stageEl = document.getElementById('breath-stage');
-const stages = [
-  { label: 'Inspira', secs: 4 },
-  { label: 'Sustém', secs: 4 },
-  { label: 'Expira', secs: 4 },
-  { label: 'Pausa',  secs: 4 },
-];
-let breathTimer=null, stageIndex=0, stageLeft=0;
-function breathTick(){
-  if (stageLeft <= 0){
-    stageIndex = (stageIndex + 1) % stages.length;
-    stageLeft = stages[stageIndex].secs;
+  function start(){
+    if (running) return;
+    running = true; phase = 0; t0 = 0;
+    btnStart.disabled = true; btnStop.disabled = false;
+    raf = requestAnimationFrame(step);
   }
-  stageEl.textContent = stages[stageIndex].label + '… ' + stageLeft + 's';
-  stageLeft--;
-}
-document.getElementById('btn-breath-start').addEventListener('click', () => {
-  clearInterval(breathTimer);
-  stageIndex = -1; stageLeft = 0;
-  breathTick();
-  breathTimer = setInterval(breathTick, 1000);
-});
-document.getElementById('btn-breath-stop').addEventListener('click', () => {
-  clearInterval(breathTimer);
-  stageEl.textContent = 'Preparar…';
-});
+  function stop(){
+    running = false; cancelAnimationFrame(raf);
+    bubble.setAttribute('r', cfg.minR);
+    stageEl.textContent = 'Preparar…';
+    btnStart.disabled = false; btnStop.disabled = true;
+  }
 
-// Silêncio — temporizador
-const presets = document.querySelectorAll('.preset');
-const customMin = document.getElementById('custom-min');
-const timerEl = document.getElementById('silence-timer');
-let silenceTimer=null, targetTime=0;
-presets.forEach(p => p.addEventListener('click', () => {
-  presets.forEach(x => x.classList.remove('is-active'));
-  p.classList.add('is-active');
-  customMin.value = p.dataset.min;
-  renderTimer(parseInt(customMin.value,10)*60);
-}));
-function renderTimer(total){
-  const m = Math.floor(total/60).toString().padStart(2,'0');
-  const s = Math.floor(total%60).toString().padStart(2,'0');
-  timerEl.textContent = `${m}:${s}`;
-}
-function silenceTick(){
-  const left = Math.max(0, Math.round((targetTime - Date.now())/1000));
-  renderTimer(left);
-  if (left <= 0){ clearInterval(silenceTimer); toast('Tempo concluído.'); }
-}
-document.getElementById('btn-silence-start').addEventListener('click', () => {
-  const mins = Math.max(1, parseInt(customMin.value,10) || 1);
-  targetTime = Date.now() + mins*60*1000 + 999;
-  clearInterval(silenceTimer);
-  silenceTick();
-  silenceTimer = setInterval(silenceTick, 500);
-});
-document.getElementById('btn-silence-stop').addEventListener('click', () => {
-  clearInterval(silenceTimer);
-});
-// iniciar com preset 1 min
-renderTimer(60);
-
-// Mini toast
-function toast(msg){
-  let el = document.createElement('div');
-  el.className = 'toast';
-  el.textContent = msg;
-  document.body.appendChild(el);
-  requestAnimationFrame(()=> el.classList.add('show'));
-  setTimeout(()=>{
-    el.classList.remove('show');
-    setTimeout(()=> el.remove(), 200);
-  }, 1500);
-}
-const toastStyle = document.createElement('style');
-toastStyle.textContent = `.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) scale(.96);background:#173a63;color:#fff;padding:10px 14px;border-radius:12px;opacity:0;transition:all .2s;box-shadow:0 6px 16px rgba(0,0,0,.35);z-index:9999}.toast.show{opacity:1;transform:translateX(-50%) scale(1)}`;
-document.head.appendChild(toastStyle);
+  stop();
+  btnStart.addEventListener('click', start);
+  btnStop .addEventListener('click', stop);
+})();
