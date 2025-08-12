@@ -1,0 +1,33 @@
+<!-- Bloco do Temporizador — Silêncio -->
+<div class="panel panel-silencio" id="silencio-panel">
+  <div class="panel-header">
+    <h3 class="panel-title">Momento de silêncio</h3>
+    <p class="panel-subtitle">Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
+  </div>
+
+  <div class="quick-buttons" role="group" aria-label="Durações rápidas">
+    <button type="button" class="chip" data-min="1">1 min</button>
+    <button type="button" class="chip" data-min="2">2 min</button>
+    <button type="button" class="chip" data-min="3">3 min</button>
+    <button type="button" class="chip" data-min="5">5 min</button>
+  </div>
+
+  <div class="custom-duration">
+    <span class="ou">ou</span>
+    <div class="custom-input">
+      <input id="silencioMin" type="number" min="1" step="1" value="1" inputmode="numeric" aria-label="Minutos personalizados">
+      <span class="suf">min</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="btnIniciarSilencio" class="btn primary">Iniciar</button>
+    <button id="btnPararSilencio" class="btn ghost">Parar</button>
+  </div>
+
+  <div class="timer">
+    <div id="silencioDisplay" class="display">01:00</div>
+  </div>
+
+  <p class="hint">Dica: o ecrã pode bloquear, mas a contagem continua (o iOS pode pausar em 2º plano).</p>
+</div>

@@ -1,0 +1,21 @@
+PASSOS RÁPIDOS — Instalar o temporizador de silêncio na aba *Silêncio*
+
+1) Sobe os ficheiros para o repositório (mesma pasta do `index.html`):
+   - silencio.html
+   - silencio.css
+   - silencio.js
+
+2) Liga os ficheiros novos:
+   - No `<head>` do teu HTML principal, adiciona:
+       <link rel="stylesheet" href="silencio.css">
+   - Antes do `</body>`, adiciona:
+       <script src="silencio.js"></script>
+
+3) Abre o ficheiro onde está o conteúdo da aba **Silêncio** (geralmente `index.html`):
+   - Localiza o painel/card da secção "Silêncio".
+   - Apaga o conteúdo INTERNO atual do painel (mantém o `container`/card se preferires).
+   - Cola o conteúdo do ficheiro `silencio.html` dentro desse painel.
+
+4) Publica as mudanças. Faz refresh no telefone. Se precisares, faz um “hard refresh” para limpar cache.
+
+— Entre Mundos

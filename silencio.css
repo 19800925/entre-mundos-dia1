@@ -1,0 +1,63 @@
+:root{
+  --bg: #0b1730;
+  --panel: rgba(21,40,68,0.75);
+  --panel-stroke: rgba(70,107,173,0.35);
+  --text: #e6eefc;
+  --muted: #a9bbd8;
+  --brand: #193b74;
+  --brand-2: #2357a3;
+  --yellow: #ffd257;
+  --chip-bg: rgba(255,255,255,0.07);
+  --chip-border: rgba(255,255,255,0.18);
+}
+.panel-silencio{
+  color: var(--text);
+  background: linear-gradient(145deg, rgba(21,40,68,.65), rgba(12,25,47,.65));
+  border: 1px solid var(--panel-stroke);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.panel-silencio .panel-title{
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+.panel-silencio .panel-subtitle{
+  margin: 0 0 14px 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.quick-buttons{
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+.chip{
+  appearance:none; border:1px solid var(--chip-border);
+  background: var(--chip-bg); color: var(--text);
+  border-radius: 14px; padding: 8px 14px; font-size: 15px;
+}
+.chip.active{ outline:2px solid rgba(255,210,87,.6); }
+.custom-duration{ display:flex; align-items:center; gap:12px; margin:14px 0 6px; }
+.custom-duration .ou{ color: var(--muted); }
+.custom-input{ position:relative; width: 140px; }
+.custom-input input{
+  width:100%; font-size:16px; color:var(--text);
+  background: rgba(255,255,255,0.05); border:1px solid var(--chip-border);
+  padding:10px 40px 10px 14px; border-radius:12px; outline:none;
+}
+.custom-input .suf{ position:absolute; right:12px; top:9px; color:var(--muted); }
+.controls{ display:flex; gap:12px; margin:10px 0 6px; }
+.btn{
+  appearance:none; border:0; border-radius:12px; padding:12px 18px;
+  font-weight:700; font-size:16px;
+}
+.btn.primary{ background: linear-gradient(180deg, var(--brand-2), var(--brand)); color:#fff; }
+.btn.ghost{ background: rgba(255,255,255,0.08); color:#dce7fb; border:1px solid var(--chip-border); }
+.timer{ display:flex; justify-content:center; margin:8px 0 2px; }
+.display{
+  font-variant-numeric: tabular-nums;
+  font-size: 44px; font-weight: 800; letter-spacing: 1px; color: var(--yellow);
+  text-shadow: 0 2px 0 rgba(0,0,0,.4), 0 8px 22px rgba(255,210,87,.15);
+}
+.hint{ color: var(--muted); font-size: 12px; margin: 8px 0 0; }
