@@ -1,138 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="app-header">
-    <div class="brand">
-      <div class="orb"></div>
-      <h1>Entre Mundos — Dia 1</h1>
-    </div>
-
-    <nav class="tabs">
-      <button class="tab active" data-tab="mensagem">Mensagem</button>
-      <span class="dot">•</span>
-      <button class="tab" data-tab="respiracao">Respiração</button>
-      <span class="dot">•</span>
-      <button class="tab" data-tab="frase">Frase</button>
-      <span class="dot">•</span>
-      <button class="tab" data-tab="silencio">Silêncio</button>
-    </nav>
+  <header class="topbar">
+    <div class="logo-dot"></div>
+    <h1>Entre Mundos — Dia 1</h1>
   </header>
 
-  <main id="content">
-    <!-- Mensagem -->
-    <section class="tab-panel active" id="panel-mensagem">
+  <nav class="tabs">
+    <button class="tab active" data-target="#mensagem">Mensagem</button>
+    <span class="dot">•</span>
+    <button class="tab" data-target="#respiracao">Respiração</button>
+    <span class="dot">•</span>
+    <button class="tab" data-target="#frase">Frase</button>
+    <span class="dot">•</span>
+    <button class="tab" data-target="#silencio">Silêncio</button>
+  </nav>
+
+  <main>
+    <section id="mensagem" class="panel show">
       <div class="card">
-        <h2 class="card-title">Mensagem de hoje — <span id="tema-dia">Reconexão</span></h2>
-        <p class="card-text" id="mensagem-dia">
-          Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong>
-          O teu valor não depende da produtividade; a tua verdade não precisa gritar.
-          A cor azul é o teu porto — volta a ela quando o ruído te cansar.
+        <h2 class="card-title">Mensagem de hoje — <span class="accent">Reconexão</span></h2>
+        <p class="card-text">
+          Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade;
+          a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.
         </p>
       </div>
+    </section>
 
-      <!-- Oráculo (embutido nesta página) -->
+    <section id="respiracao" class="panel">
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title small">Oráculo — Entre Mundos</h3>
-          <p class="hint">Toca em “Nova mensagem” para receber a tua frase.</p>
+        <h2 class="card-title">Prática — Respiração 4·4·4·4</h2>
+        <div class="breath-circle">
+          <div class="breath-status" id="breathStatus">Preparar…</div>
         </div>
-
-        <div class="oracle-display" id="oracle-display">
-          <p class="oracle-msg" id="oracle-msg">Pronto para abrir o oráculo?</p>
+        <div class="actions">
+          <button class="btn primary" id="btnBreathStart">Começar</button>
+          <button class="btn" id="btnBreathStop">Parar</button>
         </div>
-
-        <div class="btn-row">
-          <button id="btn-nova" class="btn primary">Nova mensagem</button>
-          <button id="btn-copiar" class="btn">Copiar</button>
-          <button id="btn-whatsapp" class="btn whatsapp">
-            <span class="wa"></span> Partilhar no WhatsApp
-          </button>
-        </div>
-
-        <p class="tip">Dica: se o WhatsApp não abrir, a mensagem já fica copiada — é só colar.</p>
+        <p class="muted">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
       </div>
     </section>
 
-    <!-- Respiração -->
-    <section class="tab-panel" id="panel-respiracao">
+    <section id="frase" class="panel">
       <div class="card">
-        <h2 class="card-title">Prática — Respiração 4•4•4•4</h2>
-
-        <div class="breath">
-          <div class="breath-circle" id="breath-circle">
-            <span id="breath-label">Preparar…</span>
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <button id="breath-start" class="btn primary">Começar</button>
-          <button id="breath-stop" class="btn">Parar</button>
-        </div>
-
-        <p class="legend">
-          Inspira 4 • Sustém 4 • Expira 4 • Pausa 4
-        </p>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title small">Frase âncora</h3>
-        <blockquote class="quote" id="frase-ancora">“Eu volto. Eu volto. Eu volto.”</blockquote>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title small">Momento de silêncio</h3>
-        <p>Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
-
-        <div class="silence-grid">
-          <div class="chips">
-            <button class="chip active" data-min="1">1 min</button>
-            <button class="chip" data-min="2">2 min</button>
-            <button class="chip" data-min="3">3 min</button>
-            <button class="chip" data-min="5">5 min</button>
-          </div>
-
-          <div class="custom-time">
-            <span>ou</span>
-            <input type="number" id="custom-min" min="1" value="1" />
-            <span>min</span>
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <button id="silence-start" class="btn primary">Iniciar</button>
-          <button id="silence-stop" class="btn">Parar</button>
-        </div>
-
-        <div class="timer" id="timer">01:00</div>
+        <h2 class="card-title">Frase âncora</h2>
+        <blockquote class="quote">“Eu volto. Eu volto. Eu volto.”</blockquote>
       </div>
     </section>
 
-    <!-- Frase -->
-    <section class="tab-panel" id="panel-frase">
+    <section id="silencio" class="panel">
       <div class="card">
-        <h2 class="card-title">Frase</h2>
-        <p>Em breve: espaço para a tua frase pessoal do dia.</p>
-      </div>
-    </section>
+        <h2 class="card-title">Momento de silêncio</h2>
+        <p class="card-text">Escolhe a duração e toca em <strong>Iniciar</strong>. Fica contigo, só a respirar.</p>
 
-    <!-- Silêncio (página dedicada) -->
-    <section class="tab-panel" id="panel-silencio">
-      <div class="card">
-        <h2 class="card-title">Silêncio</h2>
-        <p>Usa o temporizador na área de <em>Respiração</em> para um minuto de silêncio consciente.</p>
+        <div class="chips">
+          <button class="chip" data-min="1">1 min</button>
+          <button class="chip" data-min="2">2 min</button>
+          <button class="chip" data-min="3">3 min</button>
+          <button class="chip" data-min="5">5 min</button>
+        </div>
+
+        <div class="custom-time">
+          <label for="minutos">ou</label>
+          <input id="minutos" type="number" inputmode="numeric" min="1" max="60" value="1" aria-label="Minutos personalizados">
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="btnSilencioStart">Iniciar</button>
+          <button class="btn" id="btnSilencioStop">Parar</button>
+        </div>
+
+        <div class="timer" id="timerDisplay">01:00</div>
+
+        <p class="hint">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
       </div>
     </section>
   </main>
 
-  <footer class="app-footer">
-    Entre Mundos — feito com verdade 💙
-  </footer>
+  <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
 
   <script src="app.js"></script>
 </body>
