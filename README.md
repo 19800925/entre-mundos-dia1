@@ -1,37 +1,16 @@
+# Entre Mundos — Layout Base (congelado)
+Esta é a **versão base oficial** do layout (igual ao screenshot que enviaste).
+Sempre que fizermos novas alterações, começamos **a partir destes ficheiros** para evitar regressões.
 
-# Entre Mundos — Tabs Fix (Patch)
+## Estrutura
+- `index.html` — marcação das três abas (Guia Espiritual, Silêncio, Escrita da Alma)
+- `assets/css/style.css` — estilos (cartões, gradientes, tipografia, botões)
+- `assets/js/app.js` — tabs + guia de respiração 4·4·4·4 (começar/parar)
 
-Este patch corrige as **abas que não mudam de conteúdo** ao tocar.
+## Como publicar no GitHub Pages
+1. Sobe o conteúdo do ZIP para o teu repositório (raiz).
+2. Garante que a página publica `index.html` na raiz (Settings → Pages → Source: main / root).
 
-## Como usar (2 passos)
-
-1) **No HTML**, garanta que os botões das abas têm `data-tab` e as secções têm `data-section`:
-
-```html
-<nav class="tabs">
-  <button class="tab-btn" data-tab="mensagem">Mensagem</button>
-  <button class="tab-btn" data-tab="respiracao">Respiração</button>
-  <button class="tab-btn" data-tab="frase">Frase</button>
-  <button class="tab-btn" data-tab="silencio">Silêncio</button>
-</nav>
-
-<section data-section="mensagem" id="mensagem">…</section>
-<section data-section="respiracao" id="respiracao">…</section>
-<section data-section="frase" id="frase">…</section>
-<section data-section="silencio" id="silencio">…</section>
-```
-
-Adicione também uma regra CSS (se ainda não tem):
-```css
-[data-section][hidden]{ display:none; }
-```
-
-2) **Inclua o JS** ao final do `body` (ou com `defer`):
-```html
-<script src="tabs-fix.js" defer></script>
-```
-
-Pronto. As abas ficam a funcionar, com estado visual (classe `active`), `aria-selected`
-e sincronização do `#hash` sem saltos na página.
-
-> Dica: se já tem um script próprio para abas, remova ou comente para evitar conflitos.
+## Notas
+- Para manter o layout estável, edita **apenas** estes ficheiros ou cria outros *novos* sem substituir esta base.
+- A guia de respiração usa animação simples de escala para simular o “balão”.

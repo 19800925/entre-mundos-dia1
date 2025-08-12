@@ -1,82 +1,58 @@
-// app.js
-(() => {
-  // Tabs
-  const tabs = document.querySelectorAll('.tab');
-  const sections = document.querySelectorAll('[data-section]');
-  function activate(targetId){
-    sections.forEach(s => s.hidden = s.id !== targetId);
-    tabs.forEach(b => b.classList.toggle('is-active', b.dataset.target === targetId));
-  }
-  tabs.forEach(b => b.addEventListener('click', () => activate(b.dataset.target)));
-  // default
-  activate('sec-mensagem');
+// Tabs
+const tabs = document.querySelectorAll('.tab');
+const sections = {
+  guia: document.getElementById('sec-guia'),
+  silencio: document.getElementById('sec-silencio'),
+  escrita: document.getElementById('sec-escrita')
+};
 
-  // Oracle messages (random, no numbers, no repeats within a session)
-  const messages = [
-    "A tua luz guia-te no silêncio.",
-    "Confia no tempo divino, ele nunca se atrasa.",
-    "Segue o brilho que só tu vês. Hoje é o dia.",
-    "A vida fala em sinais; aprende a escutar.",
-    "O mar dentro de ti conhece o caminho."
-  ];
-  let pool = shuffle([...messages]);
-  const oracleText = document.getElementById('oracleText');
-  document.getElementById('btnNova').addEventListener('click', () => {
-    if (pool.length === 0) pool = shuffle([...messages]);
-    oracleText.textContent = pool.pop();
-  });
-  document.getElementById('btnCopiar').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(oracleText.textContent.trim());
-      flash('Copiado!');
-    } catch(e){ alert('Não foi possível copiar.'); }
-  });
-  document.getElementById('btnWhats').addEventListener('click', () => {
-    const txt = encodeURIComponent(oracleText.textContent.trim());
-    const url = `https://wa.me/?text=${txt}`;
-    window.location.href = url;
-  });
-  function shuffle(a){
-    for (let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-    return a;
-  }
-  function flash(msg){
-    const el = document.createElement('div');
-    el.textContent = msg;
-    el.style.position='fixed'; el.style.bottom='24px'; el.style.left='50%'; el.style.transform='translateX(-50%)';
-    el.style.background='rgba(0,0,0,.7)'; el.style.color='#fff'; el.style.padding='10px 14px'; el.style.borderRadius='10px';
-    el.style.zIndex=9999; document.body.appendChild(el);
-    setTimeout(()=>el.remove(),1200);
-  }
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('is-active'));
+    tab.classList.add('is-active');
 
-  // Breathing bubble 4-4-4-4
-  const bubble = document.getElementById('bubble');
-  const phaseEl = document.getElementById('phase');
-  const startBtn = document.getElementById('breathStart');
-  const stopBtn = document.getElementById('breathStop');
-  let timer = null, running = false;
-  const phases = [
-    {name:'Inspira…', scale:1.3, sec:4},
-    {name:'Sustém…', scale:1.3, sec:4},
-    {name:'Expira…', scale:0.9, sec:4},
-    {name:'Pausa…', scale:0.9, sec:4},
-  ];
-  function runCycle(i=0){
-    if(!running) return;
-    const p = phases[i];
-    phaseEl.textContent = p.name;
-    bubble.style.transform = `scale(${p.scale})`;
-    bubble.style.filter = p.scale>1 ? 'saturate(1.1) brightness(1.05)' : 'saturate(0.9) brightness(0.95)';
-    timer = setTimeout(()=> runCycle((i+1)%phases.length), p.sec*1000);
-  }
-  startBtn.addEventListener('click', ()=>{
-    if(running) return;
-    running = true; runCycle(0);
+    // hide all
+    Object.values(sections).forEach(sec => sec.classList.add('is-hidden'));
+    // show current
+    if (tab.id === 'tab-guia') sections.guia.classList.remove('is-hidden');
+    if (tab.id === 'tab-silencio') sections.silencio.classList.remove('is-hidden');
+    if (tab.id === 'tab-escrita') sections.escrita.classList.remove('is-hidden');
   });
-  stopBtn.addEventListener('click', ()=>{
-    running = false; clearTimeout(timer);
-    phaseEl.textContent = 'Preparar…';
-    bubble.style.transform='scale(1)';
-    bubble.style.filter='';
-  });
-})();
+});
+
+// Simple 4-4-4-4 breathing guide
+const stageLabel = document.getElementById('stageLabel');
+const sphere = document.getElementById('sphere');
+const btnStart = document.getElementById('btnStart');
+const btnStop = document.getElementById('btnStop');
+
+let timer = null;
+let idx = 0;
+const stages = [
+  {label:'Inspira…', scale:1.35, secs:4},
+  {label:'Sustém…',  scale:1.35, secs:4},
+  {label:'Expira…',  scale:0.95, secs:4},
+  {label:'Pausa…',   scale:0.95, secs:4},
+];
+
+function runCycle(){
+  const s = stages[idx % stages.length];
+  stageLabel.textContent = s.label;
+  sphere.style.transform = `scale(${s.scale})`;
+  timer = setTimeout(()=>{
+    idx++; runCycle();
+  }, s.secs * 1000);
+}
+
+btnStart?.addEventListener('click', () => {
+  if (timer) return; // já a correr
+  idx = 0;
+  runCycle();
+});
+
+btnStop?.addEventListener('click', () => {
+  clearTimeout(timer);
+  timer = null;
+  stageLabel.textContent = 'Preparar…';
+  sphere.style.transform = 'scale(1)';
+});
