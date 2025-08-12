@@ -1,15 +1,37 @@
-# Silêncio — Timer com Som e Vibração
 
-Este patch adiciona o temporizador de silêncio à tua aba **Silêncio**,
-com botões rápidos (1/2/3/5 min), valor personalizado, e efeitos ao terminar:
-beep curto (WebAudio) e vibração (quando suportado).
+# Entre Mundos — Tabs Fix (Patch)
 
-## Ficheiros
-- `silencio.html` — markup do painel.
-- `silencio.css` — estilos.
-- `silencio.js` — lógica do temporizador (som + vibração).
-- `COMO_INSTALAR.txt` — guia rápido.
+Este patch corrige as **abas que não mudam de conteúdo** ao tocar.
 
-## Notas
-- O som usa a WebAudio API; em iOS, o áudio só toca após uma interação do utilizador (clicar Iniciar).
-- A vibração funciona em Android e alguns browsers; no iOS Safari pode não vibrar.
+## Como usar (2 passos)
+
+1) **No HTML**, garanta que os botões das abas têm `data-tab` e as secções têm `data-section`:
+
+```html
+<nav class="tabs">
+  <button class="tab-btn" data-tab="mensagem">Mensagem</button>
+  <button class="tab-btn" data-tab="respiracao">Respiração</button>
+  <button class="tab-btn" data-tab="frase">Frase</button>
+  <button class="tab-btn" data-tab="silencio">Silêncio</button>
+</nav>
+
+<section data-section="mensagem" id="mensagem">…</section>
+<section data-section="respiracao" id="respiracao">…</section>
+<section data-section="frase" id="frase">…</section>
+<section data-section="silencio" id="silencio">…</section>
+```
+
+Adicione também uma regra CSS (se ainda não tem):
+```css
+[data-section][hidden]{ display:none; }
+```
+
+2) **Inclua o JS** ao final do `body` (ou com `defer`):
+```html
+<script src="tabs-fix.js" defer></script>
+```
+
+Pronto. As abas ficam a funcionar, com estado visual (classe `active`), `aria-selected`
+e sincronização do `#hash` sem saltos na página.
+
+> Dica: se já tem um script próprio para abas, remova ou comente para evitar conflitos.
