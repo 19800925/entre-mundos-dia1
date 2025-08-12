@@ -1,13 +1,6 @@
-Entre Mundos — Oráculo na Home (vfinal)
-===================================
-- Oráculo colocado logo abaixo da “Mensagem de hoje”
-- Gera frase apenas quando clicas em “Nova mensagem”
-- Remove numeração final (ex.: “(94)”) automaticamente
-- Silêncio: temporizador com presets, beep + vibração
+# Entre Mundos — Página inicial
+Cola este `index.html` na raiz do teu repositório (substitui o existente).
+Depois faz commit e confirma que o GitHub Pages recompilou.
 
-Como instalar
-1) Faz upload de `index.html`, `styles.css`, `app.js` e `oraculo.json` para o teu repositório.
-2) Substitui os ficheiros existentes (se houver).
-3) Abre `index.html?v=final` para forçar refresh de cache.
-
-Se algo correr mal, usa o ZIP de backup que criámos antes.
+> Importante: mantém o `app.js` que já tens — o botão "Nova mensagem"
+usa o mesmo ficheiro para gerar as frases aleatórias e as ações de copiar/partilhar.
