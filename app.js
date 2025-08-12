@@ -1,6 +1,5 @@
-
+// Tabs
 (function(){
-  // Tabs
   const tabs = document.querySelectorAll('.tab');
   const panels = document.querySelectorAll('.panel');
   tabs.forEach(t => t.addEventListener('click', () => {
@@ -9,88 +8,143 @@
     panels.forEach(p => p.classList.remove('show'));
     const target = document.querySelector(t.dataset.target);
     if (target) target.classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
   }));
+})();
 
-  // Simple breath mock
-  const breathStatus = document.getElementById('breathStatus');
-  let breathTimer = null, breathPhase = 0;
-  document.getElementById('btnBreathStart').addEventListener('click', () => {
-    if (breathTimer) return;
-    const phases = ['Inspira 4', 'Sustém 4', 'Expira 4', 'Pausa 4'];
-    breathPhase = 0;
-    breathStatus.textContent = phases[breathPhase];
-    breathTimer = setInterval(() => {
-      breathPhase = (breathPhase + 1) % phases.length;
-      breathStatus.textContent = phases[breathPhase];
-    }, 4000);
-  });
-  document.getElementById('btnBreathStop').addEventListener('click', () => {
-    clearInterval(breathTimer); breathTimer = null; breathStatus.textContent = 'Preparar…';
-  });
+// Oráculo na Home (gera só ao clicar)
+(function(){
+  const textEl = document.getElementById('oracleTxt');
+  const btnNew = document.getElementById('btnNova');
+  const btnCopy= document.getElementById('btnCopiar');
+  const btnWA  = document.getElementById('btnWA');
+  let frases = []; let last = -1;
 
-  // Silêncio timer
-  const timerDisplay = document.getElementById('timerDisplay');
-  const inputMin = document.getElementById('minutos');
-  let countdown = null, endAt = 0, audioCtx = null;
+  const limpa = s => String(s||'').replace(/\s*\(\s*\d+\s*\)\s*$/,'').trim();
 
-  // quick chips
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      inputMin.value = chip.dataset.min;
-      updateTimerDisplay(parseInt(inputMin.value,10) * 60);
-    });
-  });
-
-  function updateTimerDisplay(totalSecs){
-    const m = Math.floor(totalSecs/60).toString().padStart(2,'0');
-    const s = Math.floor(totalSecs%60).toString().padStart(2,'0');
-    timerDisplay.textContent = `${m}:${s}`;
+  async function load(){
+    try{
+      const r = await fetch('oraculo.json?v=' + Date.now());
+      const data = await r.json();
+      frases = (Array.isArray(data)?data:(data.frases||data.mensagens||[])).map(limpa).filter(Boolean);
+    }catch(e){
+      // fallback curto
+      frases = [
+        "Confia no tempo divino, ele nunca se atrasa.",
+        "A tua luz guia-te no silêncio.",
+        "Segue o brilho que só tu vês. Hoje é o dia.",
+        "Tu és a casa antes do mundo."
+      ];
+    }
   }
-  updateTimerDisplay(parseInt(inputMin.value,10) * 60);
+
+  function pick(){
+    if(!frases.length) return "Respira. Confia.";
+    let i = Math.floor(Math.random()*frases.length);
+    if (frases.length>1 && i===last) i = (i+1)%frases.length;
+    last = i;
+    return frases[i];
+  }
+
+  btnNew?.addEventListener('click', ()=>{
+    textEl.textContent = pick();
+  });
+
+  btnCopy?.addEventListener('click', async ()=>{
+    const t = textEl.textContent.trim();
+    if(!t) return;
+    try{ await navigator.clipboard.writeText(t); btnCopy.textContent='Copiado ✓'; setTimeout(()=>btnCopy.textContent='Copiar',1200);}catch(e){}
+  });
+
+  btnWA?.addEventListener('click', ()=>{
+    const t = (textEl.textContent||'').trim();
+    if(!t) return;
+    const url = "https://wa.me/?text=" + encodeURIComponent(t + " — Entre Mundos");
+    window.location.href = url;
+  });
+
+  load();
+})();
+
+// Respiração 4-4-4-4
+(function(){
+  const circle = document.getElementById('breathCircle');
+  const label  = document.getElementById('breathLabel');
+  let timer=null, idx=0, secs=4;
+  const phases=[ 'Inspira', 'Sustém', 'Expira', 'Pausa' ];
+
+  function step(){
+    label.textContent = phases[idx] + ' ' + secs + 's';
+    if(phases[idx]==='Inspira'){ circle.classList.add('expand'); }
+    if(phases[idx]==='Expira'){ circle.classList.remove('expand'); }
+    secs--;
+    if(secs<0){ idx=(idx+1)%4; secs=4; }
+  }
+
+  document.getElementById('breathStart').addEventListener('click', ()=>{
+    clearInterval(timer); idx=0; secs=4; step(); timer=setInterval(step,1000);
+  });
+  document.getElementById('breathStop').addEventListener('click', ()=>{
+    clearInterval(timer); timer=null; label.textContent='Preparar…'; circle.classList.remove('expand');
+  });
+})();
+
+// Silêncio timer (com beep + vibração)
+(function(){
+  const chips = document.querySelectorAll('.chip');
+  const input = document.getElementById('minutos');
+  const display = document.getElementById('timerDisplay');
+  const btnStart = document.getElementById('silenceStart');
+  const btnStop  = document.getElementById('silenceStop');
+  let raf=null, endAt=0, audioCtx=null;
+
+  function setFromMin(m){
+    m = Math.max(1, Math.min(60, parseInt(m||1,10)));
+    input.value = m;
+    update(m*60);
+  }
+
+  function update(total){
+    const m = Math.floor(total/60).toString().padStart(2,'0');
+    const s = Math.floor(total%60).toString().padStart(2,'0');
+    display.textContent = `${m}:${s}`;
+  }
 
   function beep(){
     try{
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
       const o = audioCtx.createOscillator();
       const g = audioCtx.createGain();
-      o.type = 'sine';
-      o.frequency.value = 880; // A5
-      g.gain.value = 0.001;
+      o.type='sine'; o.frequency.value = 880;
       o.connect(g); g.connect(audioCtx.destination);
-      o.start(); 
-      g.gain.exponentialRampToValueAtTime(0.2, audioCtx.currentTime + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.25);
-      o.stop(audioCtx.currentTime + 0.26);
-    }catch(e){/* noop */}
-  }
-  function vibrate(pattern=[180,80,180]){
-    if (navigator.vibrate) navigator.vibrate(pattern);
+      g.gain.value=0.0001;
+      o.start();
+      g.gain.exponentialRampToValueAtTime(0.15, audioCtx.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.28);
+      o.stop(audioCtx.currentTime + 0.3);
+    }catch(e){}
   }
 
-  function startTimer(mins){
-    const total = Math.max(1, Math.min(60, mins)) * 60;
-    endAt = Date.now() + total*1000 + 50;
-    clearInterval(countdown);
-    countdown = setInterval(tick, 200);
-    tick(); // paint immediately
+  function vibrate(){ if(navigator.vibrate) navigator.vibrate([160,80,160]); }
+
+  function start(){
+    const mins = Math.max(1, parseInt(input.value||'1',10));
+    endAt = Date.now() + mins*60*1000 + 50;
+    if(raf) cancelAnimationFrame(raf);
+    tick();
   }
-  function stopTimer(){
-    clearInterval(countdown); countdown = null;
-  }
+  function stop(){ if(raf) cancelAnimationFrame(raf); raf=null; }
+
   function tick(){
-    const remaining = Math.max(0, Math.ceil((endAt - Date.now())/1000));
-    updateTimerDisplay(remaining);
-    if (remaining <= 0){
-      stopTimer();
-      // feedback
-      beep(); vibrate();
-    }
+    const left = Math.max(0, Math.ceil((endAt - Date.now())/1000));
+    update(left);
+    if(left<=0){ stop(); beep(); vibrate(); return; }
+    raf = requestAnimationFrame(tick);
   }
 
-  document.getElementById('btnSilencioStart').addEventListener('click', () => {
-    const mins = parseInt(inputMin.value,10) || 1;
-    startTimer(mins);
-  });
-  document.getElementById('btnSilencioStop').addEventListener('click', stopTimer);
+  chips.forEach(c => c.addEventListener('click', ()=>{ setFromMin(c.dataset.min); }));
+  btnStart.addEventListener('click', start);
+  btnStop.addEventListener('click', stop);
 
+  setFromMin(1);
 })();

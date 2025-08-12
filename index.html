@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Entre Mundos — Dia 1</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="topbar">
@@ -26,37 +23,61 @@
   </nav>
 
   <main>
+    <!-- Mensagem -->
     <section id="mensagem" class="panel show">
       <div class="card">
         <h2 class="card-title">Mensagem de hoje — <span class="accent">Reconexão</span></h2>
         <p class="card-text">
-          Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade;
-          a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.
+          Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong>
+          O teu valor não depende da produtividade; a tua verdade não precisa gritar.
+          A cor azul é o teu porto — volta a ela quando o ruído te cansar.
         </p>
+      </div>
+
+      <!-- Oráculo logo abaixo (gera apenas ao clicar) -->
+      <div class="card" id="oraculo-card">
+        <div class="row between">
+          <h3 class="card-title small">Oráculo — Entre Mundos</h3>
+          <button class="btn ghost" id="btnCopiar">Copiar</button>
+        </div>
+
+        <div class="oracle-box">
+          <p id="oracleTxt" class="oracle-text">Toca em “Nova mensagem”.</p>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="btnNova">Nova mensagem</button>
+          <button class="btn wa" id="btnWA">Partilhar no WhatsApp</button>
+        </div>
+
+        <p class="hint">As frases surgem de forma aleatória e sem números.</p>
       </div>
     </section>
 
+    <!-- Respiração -->
     <section id="respiracao" class="panel">
       <div class="card">
         <h2 class="card-title">Prática — Respiração 4·4·4·4</h2>
-        <div class="breath-circle">
-          <div class="breath-status" id="breathStatus">Preparar…</div>
+        <div class="breath">
+          <div class="breath-circle" id="breathCircle"><span id="breathLabel">Preparar…</span></div>
         </div>
         <div class="actions">
-          <button class="btn primary" id="btnBreathStart">Começar</button>
-          <button class="btn" id="btnBreathStop">Parar</button>
+          <button class="btn primary" id="breathStart">Começar</button>
+          <button class="btn" id="breathStop">Parar</button>
         </div>
         <p class="muted">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
       </div>
     </section>
 
+    <!-- Frase -->
     <section id="frase" class="panel">
       <div class="card">
-        <h2 class="card-title">Frase âncora</h2>
-        <blockquote class="quote">“Eu volto. Eu volto. Eu volto.”</blockquote>
+        <h2 class="card-title">Frase</h2>
+        <p>Em breve: espaço para a tua frase pessoal do dia.</p>
       </div>
     </section>
 
+    <!-- Silêncio -->
     <section id="silencio" class="panel">
       <div class="card">
         <h2 class="card-title">Momento de silêncio</h2>
@@ -71,17 +92,16 @@
 
         <div class="custom-time">
           <label for="minutos">ou</label>
-          <input id="minutos" type="number" inputmode="numeric" min="1" max="60" value="1" aria-label="Minutos personalizados">
+          <input id="minutos" type="number" inputmode="numeric" min="1" max="60" value="1">
         </div>
 
         <div class="actions">
-          <button class="btn primary" id="btnSilencioStart">Iniciar</button>
-          <button class="btn" id="btnSilencioStop">Parar</button>
+          <button class="btn primary" id="silenceStart">Iniciar</button>
+          <button class="btn" id="silenceStop">Parar</button>
         </div>
 
         <div class="timer" id="timerDisplay">01:00</div>
-
-        <p class="hint">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
+        <p class="hint">No fim há beep e vibração (se o dispositivo permitir).</p>
       </div>
     </section>
   </main>
