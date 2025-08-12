@@ -1,23 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main>
-    <section class="card msg-card" id="cardMensagem">
-      <h2 class="card-title"><span>Mensagem de Hoje</span></h2>
-      <p id="mensagemHoje" class="msg-text">Segue o brilho que só tu vês. Hoje é o dia.</p>
+  <header class="top">
+    <div class="dot"></div>
+    <h1>Entre Mundos — Dia 1</h1>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Secções">
+    <button class="tab is-active" data-target="sec-mensagem" role="tab" aria-selected="true">Mensagem</button>
+    <button class="tab" data-target="sec-respiracao" role="tab" aria-selected="false">Respiração</button>
+    <button class="tab" data-target="sec-frase" role="tab" aria-selected="false">Frase</button>
+    <button class="tab" data-target="sec-silencio" role="tab" aria-selected="false">Silêncio</button>
+  </nav>
+
+  <main class="wrap">
+    <!-- Mensagem / Oráculo -->
+    <section id="sec-mensagem" class="card" data-section>
+      <h2 class="card-title">Mensagem de Hoje</h2>
+      <p id="oracleText" class="oracle-text">Segue o brilho que só tu vês. Hoje é o dia.</p>
       <div class="btn-row">
-        <button id="btnNovaMensagem" class="btn primary">Nova mensagem</button>
+        <button id="btnNova" class="btn primary">Nova mensagem</button>
         <button id="btnCopiar" class="btn">Copiar</button>
-        <a id="btnWhats" class="btn whats" href="#" rel="noopener">Partilhar no WhatsApp</a>
       </div>
+      <button id="btnWhats" class="btn whats">Partilhar no WhatsApp</button>
+    </section>
+
+    <!-- Respiração -->
+    <section id="sec-respiracao" class="card" data-section hidden>
+      <h2 class="card-title">Respiração 4 • 4 • 4 • 4</h2>
+      <p id="phase" class="phase">Preparar…</p>
+      <div class="bubble-box">
+        <div id="bubble" class="bubble"></div>
+      </div>
+      <div class="btn-row">
+        <button id="breathStart" class="btn primary">Começar</button>
+        <button id="breathStop" class="btn">Parar</button>
+      </div>
+      <p class="note">Ciclo: Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
+    </section>
+
+    <!-- Frase Âncora -->
+    <section id="sec-frase" class="card" data-section hidden>
+      <h2 class="card-title">Frase âncora</h2>
+      <p class="oracle-text">“Eu volto. Eu volto. Eu volto.”</p>
+    </section>
+
+    <!-- Silêncio -->
+    <section id="sec-silencio" class="card" data-section hidden>
+      <h2 class="card-title">Silêncio</h2>
+      <p class="oracle-text">Fecha os olhos e ouve a tua respiração por 1 minuto.</p>
     </section>
   </main>
+
+  <footer class="foot">Entre Mundos — feito com verdade 💙</footer>
+
   <script src="app.js"></script>
 </body>
 </html>
