@@ -1,9 +1,6 @@
 /* styles-snippet.css — Entre Mundos */
-/* Garante que secções inativas não ocupem espaço */
 [data-section][hidden] { display: none !important; }
-/* Estado visual opcional para a aba ativa (ajusta às tuas classes) */
-[data-tab].active {
-  /* Exemplo de realce — substitui pelas tuas variáveis/cores */
+[data-tab].active, .chip.active {
   box-shadow: 0 0 0 2px rgba(255,255,255,.15) inset, 0 8px 24px rgba(0,0,0,.25);
   opacity: 1;
 }
