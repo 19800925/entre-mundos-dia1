@@ -4,67 +4,70 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="assets/style.css?v=1.0.0">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <div class="wrap">
-    <header class="topbar">
-      <div class="dot"></div>
+    <header class="top">
+      <div class="app-dot" aria-hidden="true"></div>
       <h1>Entre Mundos — Dia 1</h1>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Seções">
-      <button class="tab active" data-tab="guia" role="tab" aria-selected="true">Guia Espiritual</button>
-      <button class="tab" data-tab="silencio" role="tab" aria-selected="false">Silêncio</button>
-      <button class="tab" data-tab="escrita" role="tab" aria-selected="false">Escrita da Alma</button>
+    <nav class="tabs" role="tablist" aria-label="Secções">
+      <button class="tab active" role="tab" aria-selected="true" data-target="#sec-mensagem">Guia Espiritual</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="#sec-silencio">Silêncio</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="#sec-escrita">Escrita da Alma</button>
     </nav>
 
-    <!-- Guia Espiritual -->
-    <section class="panel" data-section="guia">
-      <article class="card">
-        <h2>Mensagem de hoje — <span class="hl">Reconexão</span></h2>
+    <!-- Secção Mensagem / Respiração -->
+    <section id="sec-mensagem" class="section" data-section>
+      <div class="card">
+        <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
         <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-      </article>
+      </div>
 
-      <article class="card">
-        <header class="card-title">Prática — Respiração 4·4·4·4</header>
-        <div class="orb-wrap">
-          <div id="orb" class="orb" aria-hidden="true"></div>
-          <div id="orbLabel" class="orb-label">Preparar...</div>
+      <div class="card">
+        <div class="card-title">
+          <h2>Prática — Respiração 4·4·4·4</h2>
         </div>
 
-        <div class="actions">
-          <button id="btnStart" class="btn primary">Começar</button>
-          <button id="btnStop" class="btn">Parar</button>
+        <div class="breath">
+          <div class="ball" id="breathBall" aria-live="polite">Preparar...</div>
         </div>
-        <p class="hint">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
-      </article>
+
+        <div class="row">
+          <button id="btnStart">Começar</button>
+          <button id="btnStop" class="secondary">Parar</button>
+        </div>
+
+        <p class="note">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
+      </div>
     </section>
 
-    <!-- Silêncio -->
-    <section class="panel" data-section="silencio" hidden>
-      <article class="card">
+    <!-- Secção Silêncio -->
+    <section id="sec-silencio" class="section" data-section hidden>
+      <div class="card">
         <h2>Silêncio</h2>
         <p>Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
-        <div class="actions">
-          <button id="quietStart" class="btn primary">Iniciar 1 min</button>
-          <button id="quietStop" class="btn">Parar</button>
+        <div class="row">
+          <button id="btnSilencioStart">Iniciar 1 min</button>
+          <button id="btnSilencioStop" class="secondary">Parar</button>
         </div>
-        <p class="timer"><span id="quietTime">01:00</span></p>
-      </article>
+        <p id="silencioTimer" class="timer" aria-live="polite">01:00</p>
+      </div>
     </section>
 
-    <!-- Escrita -->
-    <section class="panel" data-section="escrita" hidden>
-      <article class="card">
+    <!-- Secção Escrita -->
+    <section id="sec-escrita" class="section" data-section hidden>
+      <div class="card">
         <h2>Escrita da Alma</h2>
-        <p>Coloca no papel aquilo que o coração sussurra. Escreve sem censura por 3—5 minutos.</p>
-      </article>
+        <p>Coloca no papel aquilo que o coração sussurra. Escreve sem censura por 3–5 minutos.</p>
+      </div>
     </section>
 
-    <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
+    <footer class="foot">Entre Mundos — feito com verdade 💙</footer>
   </div>
 
-  <script src="assets/app.js?v=1.0.0"></script>
+  <script src="assets/app.js"></script>
 </body>
 </html>

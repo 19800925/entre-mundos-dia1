@@ -1,66 +1,70 @@
-// Tabs + breathing + 1-min timer
+// assets/app.js — tabs + respiração + silêncio
 (function(){
-  const $ = (sel, ctx=document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
 
   // Tabs
-  const tabs = $$('.tab');
-  const panels = $$('.panel');
-  tabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.tab;
-      tabs.forEach(b => b.classList.toggle('active', b===btn));
-      panels.forEach(p => p.hidden = p.dataset.section !== id);
+  $$('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      $$('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      $$('.section').forEach(sec => sec.hidden = true);
+      const target = document.querySelector(tab.dataset.target);
+      if (target) target.hidden = false;
+      // scroll to top of content
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
 
-  // Breathing orb 4-4-4-4
-  const orb = $('#orb');
-  const lbl = $('#orbLabel');
-  const start = $('#btnStart');
-  const stop = $('#btnStop');
-
+  // Respiração 4-4-4-4
+  let breathTimer = null, phase = 0, seconds = 0;
   const phases = [
-    {name:'Inspira...', scale:1.22, dur:4000},
-    {name:'Sustém...', scale:1.22, dur:4000},
-    {name:'Expira...', scale:0.9,  dur:4000},
-    {name:'Pausa...',  scale:0.9,  dur:4000}
+    { label: 'Inspira...', len: 4, cls: 'grow'   },
+    { label: 'Sustém...', len: 4, cls: ''       },
+    { label: 'Expira...', len: 4, cls: 'shrink' },
+    { label: 'Pausa...',  len: 4, cls: ''       }
   ];
-  let idx=0, timer=null;
-  function step(){
-    const p = phases[idx];
-    lbl.textContent = p.name;
-    orb.style.transform = `scale(${p.scale})`;
-    timer = setTimeout(()=>{ idx=(idx+1)%phases.length; step(); }, p.dur);
-  }
-  function startBreath(){
-    if(timer) return;
-    idx = 0; step();
-  }
-  function stopBreath(){
-    clearTimeout(timer); timer=null;
-    lbl.textContent = 'Preparar...';
-    orb.style.transform = 'scale(1)';
-  }
-  start.addEventListener('click', startBreath);
-  stop.addEventListener('click', stopBreath);
+  const ball = $('#breathBall');
 
-  // Silêncio 1-min timer
-  let qInt=null, remain=60;
-  const qStart = $('#quietStart'), qStop = $('#quietStop'), qTime = $('#quietTime');
-  const fmt = s => String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
-
-  function tick(){
-    remain--; qTime.textContent = fmt(remain);
-    if(remain<=0){ clearInterval(qInt); qInt=null; alert('Tempo concluído.'); remain=60; qTime.textContent=fmt(remain); }
+  function stepBreath(){
+    const p = phases[phase];
+    ball.textContent = p.label;
+    ball.classList.remove('grow','shrink');
+    if (p.cls) ball.classList.add(p.cls);
+    seconds = p.len;
   }
-  if(qStart){
-    qStart.addEventListener('click', ()=>{
-      if(qInt) return;
-      remain=60; qTime.textContent=fmt(remain);
-      qInt = setInterval(tick, 1000);
-    });
+  function tickBreath(){
+    seconds--;
+    if (seconds <= 0){
+      phase = (phase + 1) % phases.length;
+      stepBreath();
+    }
   }
-  if(qStop){ qStop.addEventListener('click', ()=>{ clearInterval(qInt); qInt=null; remain=60; qTime.textContent=fmt(remain); }); }
+  $('#btnStart').addEventListener('click', () => {
+    if (breathTimer) return;
+    phase = 0; stepBreath();
+    breathTimer = setInterval(tickBreath, 1000);
+  });
+  $('#btnStop').addEventListener('click', () => {
+    clearInterval(breathTimer); breathTimer = null;
+    ball.textContent = 'Preparar...'; ball.classList.remove('grow','shrink');
+  });
 
+  // Silêncio 1 minuto
+  let sTimer = null, sLeft = 60;
+  const sLbl = $('#silencioTimer');
+  function fmt(n){ return n.toString().padStart(2,'0'); }
+  function drawSilencio(){ sLbl.textContent = `0${Math.floor(sLeft/60)}:${fmt(sLeft%60)}`; }
+  $('#btnSilencioStart').addEventListener('click', () => {
+    if (sTimer) return;
+    sLeft = 60; drawSilencio();
+    sTimer = setInterval(() => {
+      sLeft--; drawSilencio();
+      if (sLeft <= 0){ clearInterval(sTimer); sTimer = null; }
+    }, 1000);
+  });
+  $('#btnSilencioStop').addEventListener('click', () => {
+    clearInterval(sTimer); sTimer = null; sLeft = 60; drawSilencio();
+  });
+  drawSilencio();
 })();
