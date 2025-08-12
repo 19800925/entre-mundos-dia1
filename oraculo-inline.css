@@ -1,0 +1,40 @@
+/* Oráculo inline — estilos */
+#oraculo-inline{margin-top:16px;}
+.oraculo-card{
+  background: rgba(16,40,70,0.55);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 18px 18px 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.35);
+}
+.oraculo-title{
+  font-weight: 700;
+  font-size: 16px;
+  color: #cfe7ff;
+  margin: 0 0 12px 0;
+}
+.oraculo-msg{
+  font-size: 18px;
+  line-height: 1.5;
+  color: #eaf3ff;
+  min-height: 72px;
+  margin: 8px 0 12px;
+}
+.oraculo-actions{display:flex; gap:10px; flex-wrap:wrap}
+.oraculo-actions button{
+  appearance:none; border:0; outline:0;
+  padding:12px 16px; border-radius:12px;
+  background:#1e3a66; color:#fff; font-weight:700; font-size:16px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+.oraculo-actions button:active{transform:translateY(1px)}
+#btnOraculoWA{display:flex; align-items:center; gap:10px}
+#btnOraculoWA .wa{
+  width:18px; height:18px; display:inline-block;
+  -webkit-mask:url('assets/wa-white.svg') no-repeat center / contain;
+  mask:url('assets/wa-white.svg') no-repeat center / contain;
+  background:#fff;
+}
+.oraculo-tip{
+  color:#9fbbe0; opacity:.85; font-size:13px; margin-top:8px;
+}
