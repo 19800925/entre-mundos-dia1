@@ -4,30 +4,38 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=inline1" />
   <meta name="theme-color" content="#0a1628" />
 </head>
 <body>
-<header class="app-header">
-  <div class="brand">
-    <div class="brand-icon" aria-hidden="true"></div>
-    <h1>Entre Mundos — Dia 1</h1>
-  </div>
-  <p class="subnav"><button class="tab-link active" data-tab="mensagem">Mensagem</button><span>•</span><button class="tab-link" data-tab="respiracao">Respiração</button><span>•</span><button class="tab-link" data-tab="frase">Frase</button><span>•</span><button class="tab-link" data-tab="silencio">Silêncio</button></p>
-</header>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true"></div>
+      <h1>Entre Mundos — Dia 1</h1>
+    </div>
+    <p class="subnav">Mensagem • Respiração • Frase • Silêncio</p>
+  </header>
 
-<main>
-  <!-- Mensagem -->
-  <section id="mensagem" class="tab-section active">
-    <div class="card">
+  <main class="wrap">
+    <section class="card">
       <h2>Mensagem de hoje — <span class="accent">Reconexão</span></h2>
       <p>Respira e lembra-te: <b>tu és a casa antes do mundo.</b> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- Respiração -->
-  <section id="respiracao" class="tab-section">
-    <div class="card">
+    <section class="card">
+      <h2>Oráculo</h2>
+      <div id="oracleBox" class="oracle-box">Pronto para abrir o oráculo?</div>
+      <div class="actions">
+        <button id="oracleNew" class="btn">Nova mensagem</button>
+        <button id="oracleCopy" class="btn btn-ghost">Copiar</button>
+        <button id="oracleWA" class="btn btn-wa">
+          <img class="ico" src="assets/whatsapp.svg" alt=""> Partilhar no WhatsApp
+        </button>
+      </div>
+      <p class="hint">Sem números, aleatório e pronto a partilhar.</p>
+    </section>
+
+    <section class="card">
       <h2>Prática — Respiração <span class="dot">4</span>·<span class="dot">4</span>·<span class="dot">4</span>·<span class="dot">4</span></h2>
       <div class="breath-wrap">
         <div id="breathCircle" class="breath-circle" aria-live="polite">Preparar…</div>
@@ -37,56 +45,36 @@
         <button id="stopBreath" class="btn btn-ghost">Parar</button>
       </div>
       <p class="hint">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- Frase Âncora -->
-  <section id="frase" class="tab-section">
-    <div class="card">
+    <section class="card">
       <h2>Frase âncora</h2>
-      <blockquote class="anchor-quote">“Eu volto. Eu volto. Eu volto. Eu volto.”</blockquote>
-    </div>
-  </section>
+      <blockquote class="anchor-quote">“Eu volto. Eu volto. Eu volto.”</blockquote>
+    </section>
 
-  <!-- Silêncio -->
-  <section id="silencio" class="tab-section">
-    <div class="card">
+    <section class="card">
       <h2>Momento de silêncio</h2>
       <p>Escolhe a duração e toca em <b>Iniciar</b>. Fica contigo, só a respirar.</p>
-
       <div class="preset-row">
         <button class="chip selected" data-min="1">1 min</button>
         <button class="chip" data-min="2">2 min</button>
         <button class="chip" data-min="3">3 min</button>
         <button class="chip" data-min="5">5 min</button>
       </div>
-
       <div class="inline-input">
         <span>ou</span>
         <input id="customMin" type="number" min="1" max="60" value="1" aria-label="Minutos">
       </div>
-
       <div class="actions">
         <button id="startTimer" class="btn">Iniciar</button>
         <button id="stopTimer" class="btn btn-ghost">Parar</button>
       </div>
-
       <div id="timerDisplay" class="timer">01:00</div>
-      <p class="hint">Dica: o ecrã pode bloquear, mas a contagem continua.</p>
-    </div>
+      <p class="hint">O ecrã pode bloquear, mas a contagem continua.</p>
+    </section>
+  </main>
 
-    <div class="card">
-      <h2>Oráculo</h2>
-      <p>Recebe uma mensagem no silêncio.</p>
-      <a class="btn btn-wide" href="oraculo.html">🔮 Abrir Oráculo</a>
-    </div>
-  </section>
-</main>
-
-<footer class="app-footer">
-  Entre Mundos — feito com verdade 💙
-</footer>
-
-<script src="script.js?v=2"></script>
+  <footer class="app-footer">Entre Mundos — feito com verdade 💙</footer>
+  <script src="script.js?v=inline1"></script>
 </body>
 </html>

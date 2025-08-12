@@ -1,91 +1,77 @@
-// Tabs
-document.querySelectorAll('.tab-link').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab-link').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const tab = btn.dataset.tab;
-    document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
-    document.getElementById(tab).classList.add('active');
-  });
-});
-
-// Timer (keeps running even if screen locks; uses Date math)
-let timerId = null, endAt = null;
-const display = document.getElementById('timerDisplay');
-const customMin = document.getElementById('customMin');
-
-function setSelected(min){
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
-  const chosen = Array.from(document.querySelectorAll('.chip')).find(c=>+c.dataset.min===+min);
-  if(chosen) chosen.classList.add('selected');
-  customMin.value = min;
-  updateTimer(min*60);
+// Oracle inline
+const oracleBox = document.getElementById('oracleBox');
+const oracleNew = document.getElementById('oracleNew');
+const oracleCopy = document.getElementById('oracleCopy');
+const oracleWA = document.getElementById('oracleWA');
+let frases = []; let cursor = -1;
+function cleanTail(s){ return (s||'').toString().replace(/\s*\(\d+\)\s*$/,'').trim(); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+async function loadOracle(){
+  try{
+    const res = await fetch('oraculo.json', {cache:'no-store'});
+    const data = await res.json();
+    frases = shuffle((Array.isArray(data)?data:(data.mensagens||data.frases||[])).map(cleanTail).filter(Boolean));
+  }catch(e){
+    frases = ['Confia no tempo divino.', 'A vida fala em sinais.', 'Tu és a casa antes do mundo.', 'O silêncio também é resposta.'];
+  }
+  novaFrase(true);
 }
-
-function updateTimer(s){
-  const m = Math.floor(s/60).toString().padStart(2,'0');
-  const r = Math.floor(s%60).toString().padStart(2,'0');
-  display.textContent = `${m}:${r}`;
+function novaFrase(first=false){
+  if(!frases.length) return;
+  cursor = (cursor+1) % frases.length;
+  oracleBox.textContent = frases[cursor];
+  if(!first){ try{ navigator.vibrate && navigator.vibrate(15);}catch(e){} }
 }
+function copyFrase(){
+  const t = oracleBox.textContent.trim(); if(!t) return;
+  navigator.clipboard?.writeText(t);
+  oracleCopy.textContent = 'Copiado ✓'; setTimeout(()=>oracleCopy.textContent='Copiar', 1200);
+}
+function shareWA(){
+  const t = oracleBox.textContent.trim() || '';
+  const url = 'https://wa.me/?text=' + encodeURIComponent(t);
+  copyFrase(); window.location.href = url;
+}
+oracleNew.addEventListener('click', ()=> novaFrase());
+oracleCopy.addEventListener('click', copyFrase);
+oracleWA.addEventListener('click', shareWA);
 
-document.querySelectorAll('.chip').forEach(chip=>{
-  chip.addEventListener('click', ()=> setSelected(chip.dataset.min));
-});
-
-document.getElementById('startTimer').addEventListener('click', ()=>{
-  const mins = Math.max(1, Math.min(60, parseInt(customMin.value || '1',10)));
-  setSelected(mins);
-  const now = Date.now();
-  endAt = now + mins*60*1000;
-  if(timerId) cancelAnimationFrame(timerId);
-  const tick = ()=>{
-    const left = Math.max(0, Math.round((endAt - Date.now())/1000));
-    updateTimer(left);
-    if(left>0){ timerId = requestAnimationFrame(tick); } else {
-      display.textContent = '00:00';
-      navigator.vibrate?.(200);
-    }
-  };
-  tick();
-});
-
-document.getElementById('stopTimer').addEventListener('click', ()=>{
-  if(timerId) cancelAnimationFrame(timerId);
-  timerId = null; endAt = null;
-});
-
-// Breathing coach 4•4•4•4
+// Respiração 4-4-4-4
 const circle = document.getElementById('breathCircle');
-let breathRAF = null, phase = 0, phaseNames=['Inspira','Sustém','Expira','Pausa'];
+let breathRAF=null, phase=0, names=['Inspira','Sustém','Expira','Pausa'];
 function runBreath(){
-  const steps = [4,4,4,4]; // seconds
-  let started = performance.now();
+  const steps=[4,4,4,4]; let start=performance.now();
   function frame(t){
-    const elapsed = (t-started)/1000;
-    const total = steps.reduce((a,b)=>a+b,0);
-    const e = elapsed % total;
-    // determine phase
-    let acc = 0, p = 0;
-    for(let i=0;i<steps.length;i++){ acc += steps[i]; if(e<acc){ p=i; break; } }
-    if(p!==phase){
-      phase = p;
-      circle.classList.toggle('expanding', phase===0); // expand on inspire
-    }
-    const name = phaseNames[phase];
-    circle.textContent = name;
+    const e=(t-start)/1000, total=steps.reduce((a,b)=>a+b,0), m=e%total;
+    let acc=0, p=0; for(let i=0;i<steps.length;i++){ acc+=steps[i]; if(m<acc){ p=i; break; }}
+    if(p!==phase){ phase=p; circle.classList.toggle('expanding', phase===0); }
+    circle.textContent = names[phase];
     breathRAF = requestAnimationFrame(frame);
   }
   breathRAF = requestAnimationFrame(frame);
 }
+document.getElementById('startBreath').addEventListener('click', ()=>{ if(breathRAF) cancelAnimationFrame(breathRAF); runBreath(); });
+document.getElementById('stopBreath').addEventListener('click', ()=>{ if(breathRAF) cancelAnimationFrame(breathRAF); breathRAF=null; phase=0; circle.textContent='Preparar…'; circle.classList.remove('expanding'); });
 
-document.getElementById('startBreath').addEventListener('click', ()=>{
-  if(breathRAF) cancelAnimationFrame(breathRAF);
-  runBreath();
+// Silêncio
+let rafId=null, endAt=null;
+const display=document.getElementById('timerDisplay'), customMin=document.getElementById('customMin');
+function setSelected(min){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  const chosen=[...document.querySelectorAll('.chip')].find(c=>+c.dataset.min===+min);
+  chosen && chosen.classList.add('selected'); customMin.value=min; updateTimer(min*60);
+}
+function updateTimer(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const r=Math.floor(s%60).toString().padStart(2,'0'); display.textContent=`${m}:${r}`; }
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>setSelected(c.dataset.min)));
+document.getElementById('startTimer').addEventListener('click',()=>{
+  const mins=Math.max(1, Math.min(60, parseInt(customMin.value||'1',10)));
+  setSelected(mins); endAt=Date.now()+mins*60*1000;
+  if(rafId) cancelAnimationFrame(rafId);
+  const step=()=>{ const left=Math.max(0, Math.round((endAt-Date.now())/1000)); updateTimer(left); if(left>0){ rafId=requestAnimationFrame(step); } };
+  step();
 });
-document.getElementById('stopBreath').addEventListener('click', ()=>{
-  if(breathRAF) cancelAnimationFrame(breathRAF);
-  breathRAF = null; phase=0; circle.textContent='Preparar…'; circle.classList.remove('expanding');
-});
+document.getElementById('stopTimer').addEventListener('click',()=>{ if(rafId) cancelAnimationFrame(rafId); rafId=null; });
 
-// Initialize defaults
+// Init
 setSelected(1);
+loadOracle();
