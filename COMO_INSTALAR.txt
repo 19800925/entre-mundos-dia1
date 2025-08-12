@@ -1,21 +1,17 @@
-PASSOS RÁPIDOS — Instalar o temporizador de silêncio na aba *Silêncio*
+COMO INSTALAR — Silêncio (timer com som e vibração)
 
-1) Sobe os ficheiros para o repositório (mesma pasta do `index.html`):
+1) Copia estes ficheiros para a raiz do teu site/app (ao lado do index.html):
    - silencio.html
    - silencio.css
    - silencio.js
 
-2) Liga os ficheiros novos:
-   - No `<head>` do teu HTML principal, adiciona:
-       <link rel="stylesheet" href="silencio.css">
-   - Antes do `</body>`, adiciona:
-       <script src="silencio.js"></script>
+2) No <head> do teu HTML principal, adiciona a folha de estilos:
+   <link rel="stylesheet" href="silencio.css">
 
-3) Abre o ficheiro onde está o conteúdo da aba **Silêncio** (geralmente `index.html`):
-   - Localiza o painel/card da secção "Silêncio".
-   - Apaga o conteúdo INTERNO atual do painel (mantém o `container`/card se preferires).
-   - Cola o conteúdo do ficheiro `silencio.html` dentro desse painel.
+3) Na secção/aba "Silêncio" da tua página, cola TODO o conteúdo de `silencio.html`
+   exatamente onde queres que o painel apareça.
 
-4) Publica as mudanças. Faz refresh no telefone. Se precisares, faz um “hard refresh” para limpar cache.
+4) Antes de fechar o </body>, inclui o script:
+   <script src="silencio.js"></script>
 
-— Entre Mundos
+5) Publica e faz refresh forçado (limpa cache se necessário).
