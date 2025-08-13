@@ -1,78 +1,73 @@
-<!doctype html>
-<html lang="pt">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entre Mundos — Dia 1</title>
-  <link rel="stylesheet" href="styles.css?v=1755034929">
-</head>
-<body>
-  <div class="wrap">
-    <header class="topbar">
-      <div class="app-dot" aria-hidden="true"></div>
-      <h1>Entre Mundos — Dia 1</h1>
-    </header>
+<script>
+/*! Oráculo — fixo, autodetecção de IDs, sem mexer no layout */
+(() => {
+  // 1) Tenta encontrar os elementos com os IDs mais comuns no teu projeto
+  const $ = s => document.querySelector(s);
+  const elText =
+    $('#oracleMsg') || $('#oracleText') || $('#oracle-msg') || $('#oracle_text');
+  const btnNova =
+    $('#btnNova') || $('#btnNovaMensagem') || $('#oracle-new') || $('#btn-oraculo-nova');
+  const btnCopiar =
+    $('#btnCopiar') || $('#oracle-copy') || $('#btn-oraculo-copiar');
+  const btnWhats =
+    $('#btnWhats') || $('#oracle-wa') || $('#btn-oraculo-wa');
 
-    <!-- Abas -->
-    <nav class="tabs" role="tablist" aria-label="Secções principais">
-      <button class="tab is-active" role="tab" aria-selected="true" aria-controls="sec-mensagem" id="tab-mensagem">Mensagem</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-respiracao" id="tab-respiracao">Respiração</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-frase" id="tab-frase">Frase</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="sec-silencio" id="tab-silencio">Silêncio</button>
-    </nav>
+  // 2) Se não encontrou o contentor de texto, não faz nada (não quebra layout)
+  if (!elText) {
+    console.warn('[Oráculo] Não encontrei o elemento de texto (oracleMsg/oracleText).');
+    return;
+  }
 
-    <!-- Mensagem -->
-    <section id="sec-mensagem" class="card" role="tabpanel" aria-labelledby="tab-mensagem">
-      <h2 class="card-title">Mensagem de hoje — <span class="hl">Reconexão</span></h2>
-      <p class="card-text">
-        Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong>
-        O teu valor não depende da produtividade; a tua verdade não precisa gritar.
-        A cor azul é o teu porto — volta a ela quando o ruído te cansar.
-      </p>
+  // 3) Gera 1000 frases internamente (sem ficheiros externos, sem números)
+  const INTROS = ["Respira e","Fecha os olhos e","Sente o corpo e","Pousa o peso e","Abaixa os ombros e","Repara no coração e","Lembra-te de quem és e","Volta a ti e","Entrega o controlo e","Confia no caminho e","Acolhe o silêncio e","Abraça a pausa e","Aceita o agora e","Sorri por dentro e","Escuta com calma e","Honra a tua verdade e","Agradece o que tens e","Sê gentil contigo e","Solta o que pesa e","Descansa por um momento e"];
+  const VERBS  = ["permite que a paz te encontre","deixa que a respiração te guie","escuta o que não precisa de palavras","recorda a tua própria luz","abre espaço para o simples","acolhe o que é sem resistência","confia no tempo do coração","sente o chão que te sustenta","reconhece o que já é suficiente","permite que o corpo te conte a verdade","abraça o começo que se insinua","permite que a mente descanse","volta ao porto azul dentro de ti","permite que o amor te atravesse","ouve o sussurro da alma","descobre o que fica quando tudo cala","deixa o mar dentro de ti acalmar","encosta a cabeça no céu por um segundo","permite que o coração responda","fica com o que é vivo em ti"];
+  const ENDS   = ["agora.","com suavidade.","sem pressa.","em silêncio.","com gratidão.","a partir do peito.","como quem regressa a casa.","com presença.","sem te cobrar nada.","como quem confia.","na luz do teu próprio ritmo.","com ternura.","de olhos abertos para dentro.","de mãos dadas contigo.","com humildade.","a partir do que sentes.","no tempo certo.","até te encontrares.","com coragem mansa.","com verdade."];
+  const SINGLES= ["Tu és a casa antes do mundo.","O azul lembra-te: tudo volta ao lugar.","O que é teu por verdade não faz barulho.","O silêncio também responde.","Há um porto seguro dentro de ti.","Hoje escolhe a gentileza contigo.","A respiração abre portas que a mente não vê.","Onde pões a atenção, pões a vida.","Tudo o que procuras pede-te presença.","A alma sussurra quando o ruído descansa.","Aceitar também é movimento.","A pausa é sagrada.","És suficiente tal como és.","Volta, quantas vezes for preciso.","O amor sabe o caminho.","Confia no passo pequeno e verdadeiro.","A tua voz interior é clara quando escutas.","Respirar é regressar.","Luz não grita; ilumina.","O coração entende o simples."];
 
-      <!-- Oráculo integrado (abaixo da mensagem) -->
-      <div class="divider"></div>
-      <h3 class="card-subtitle">Oráculo — Entre Mundos</h3>
-      <p id="oracle-text" class="oracle-text">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</p>
-      <div class="row">
-        <button id="btn-oracle" class="btn">Nova mensagem</button>
-        <button id="btn-copy" class="btn ghost">Copiar</button>
-        <button id="btn-share" class="btn ghost">Partilhar no WhatsApp</button>
-      </div>
-      <small class="note">As frases surgem de forma aleatória e sem números.</small>
-    </section>
+  function gerarFrases(n=1000){
+    const set = new Set(SINGLES);
+    outer: for (let i=0;i<INTROS.length;i++){
+      for (let j=0;j<VERBS.length;j++){
+        for (let k=0;k<ENDS.length;k++){
+          set.add(`${INTROS[i]} ${VERBS[j]} ${ENDS[k]}`);
+          if (set.size >= n) break outer;
+        }
+      }
+    }
+    return Array.from(set).slice(0, n);
+  }
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]] } return a; }
 
-    <!-- Respiração -->
-    <section id="sec-respiracao" class="card is-hidden" role="tabpanel" aria-labelledby="tab-respiracao">
-      <h2 class="card-title">Prática — Respiração 4·4·4·4</h2>
-      <div class="breath-panel">
-        <div class="breath-status" id="breathStatus">Preparar...</div>
-        <div class="breath-stage" aria-hidden="true">
-          <div class="ball" id="ball"></div>
-        </div>
-        <div class="actions">
-          <button id="btn-start" class="btn">Começar</button>
-          <button id="btn-stop" class="btn ghost">Parar</button>
-        </div>
-        <p class="note center">Inspira 4 • Sustém 4 • Expira 4 • Pausa 4</p>
-      </div>
-    </section>
+  const DECK = shuffle(gerarFrases(1000));
+  let idx = 0, last = "";
 
-    <!-- Frase Âncora -->
-    <section id="sec-frase" class="card is-hidden" role="tabpanel" aria-labelledby="tab-frase">
-      <h2 class="card-title">Frase âncora</h2>
-      <blockquote class="anchor">“Eu volto. Eu volto. Eu volto.”</blockquote>
-    </section>
+  function novaFrase(){
+    if (!DECK.length) return;
+    if (idx >= DECK.length){ shuffle(DECK); idx = 0; }
+    let f = DECK[idx++];
+    if (f === last && idx < DECK.length) f = DECK[idx++]; // evita repetir a mesma de seguida
+    last = f;
+    elText.textContent = f;
+  }
+  function copiar(){
+    const t = (elText.textContent||"").trim();
+    if (!t) return;
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(t).catch(()=>{});
+    else { const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch{} ta.remove(); }
+  }
+  function whats(){
+    const t = encodeURIComponent((elText.textContent||"").trim());
+    if (!t) return;
+    location.href = 'https://wa.me/?text=' + t;
+  }
 
-    <!-- Silêncio -->
-    <section id="sec-silencio" class="card is-hidden" role="tabpanel" aria-labelledby="tab-silencio">
-      <h2 class="card-title">Silêncio</h2>
-      <p class="card-text">Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
-    </section>
+  // 4) Liga só o que existir (não mexe na tua UI)
+  btnNova   && btnNova  .addEventListener('click', novaFrase);
+  btnCopiar && btnCopiar.addEventListener('click', copiar);
+  btnWhats  && btnWhats .addEventListener('click', whats);
 
-    <footer class="footer">Entre Mundos — feito com verdade 💙</footer>
-  </div>
-
-  <script src="app.js?v=1755034929" defer></script>
-</body>
-</html>
+  // 5) Mensagem inicial (se estiver vazio)
+  if (!elText.textContent || /Nova mensagem/i.test(elText.textContent))
+    elText.textContent = 'Toca em “Nova mensagem” para receber a tua mensagem.';
+})();
+</script>
