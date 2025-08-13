@@ -1,66 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Entre Mundos — Dia 1</title>
-  <meta name="theme-color" content="#0b2238">
-  <style>
-    :root{
-      --bg:#0b2238; --ink:#e8f0fb; --muted:#a9bed9; --accent:#ffd85b;
-      --card:#112c4a; --edge:#1a3a5a; --btn:#214f85; --btn2:#173a63;
-      --shadow:0 10px 24px rgba(0,0,0,.35); --r:20px;
-    }
-    html,body{margin:0;background:radial-gradient(1200px 600px at 50% -100px,#173455 0%,#0b2238 60%,#07192b 100%);
-      color:var(--ink);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
-    .wrap{max-width:860px;margin:24px auto;padding:0 16px}
-    header{display:flex;align-items:center;gap:12px;margin:8px 0 18px}
-    header .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%,#3ea7ff,#0e4379 60%,#0a2a4a);
-      box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
-    h1{font-size:28px;margin:0}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-      border:1px solid var(--edge);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin:16px 0}
-    .card h2{margin:0 0 10px;font-size:18px;color:var(--muted);font-weight:600}
-    .highlight{color:var(--accent);font-weight:700}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    button{appearance:none;border:0;border-radius:14px;padding:12px 18px;background:var(--btn);color:#fff;font-weight:700;
-      box-shadow:0 6px 14px rgba(13,86,164,.35);cursor:pointer}
-    button.secondary{background:var(--btn2)}
-    #oracleMsg{font-size:20px;margin:10px 0 14px}
-    .note{color:var(--muted);font-size:14px;margin-top:8px}
-    footer{color:var(--muted);text-align:center;margin:22px 0}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oráculo — Entre Mundos</title>
+  <link rel="stylesheet" href="oraculo.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="dot"></div>
-      <h1>Entre Mundos — Dia 1</h1>
-    </header>
 
-    <!-- Secção informativa (opcional) -->
-    <section class="card">
-      <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
-      <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-    </section>
+  <!-- ✅ ORÁCULO: IDs padronizados -->
+  <section class="card" id="cardOraculo">
+    <h2>Oráculo — Entre Mundos</h2>
+    <p id="oracleMsg" aria-live="polite">Toca no botão para receber a tua mensagem.</p>
+    <div class="row">
+      <button id="btnNova">Nova mensagem</button>
+      <button id="btnCopiar" class="secondary">Copiar</button>
+      <button id="btnWhats" class="secondary">Partilhar no WhatsApp</button>
+    </div>
+    <p class="note">As frases surgem de forma aleatória.</p>
+  </section>
 
-    <!-- ✅ ORÁCULO: IDs padronizados -->
-    <section class="card" id="cardOraculo">
-      <h2>Oráculo — Entre Mundos</h2>
-      <p id="oracleMsg" aria-live="polite">Toca em “Nova mensagem” para receber a tua mensagem.</p>
-      <div class="row">
-        <button id="btnNova">Nova mensagem</button>
-        <button id="btnCopiar" class="secondary">Copiar</button>
-        <button id="btnWhats"  class="secondary">Partilhar no WhatsApp</button>
-      </div>
-      <p class="note">As frases surgem de forma aleatória e sem números. Podes partilhar no WhatsApp ou copiar.</p>
-    </section>
+  <footer>Entre Mundos — feito com verdade 💙</footer>
 
-    <footer>Entre Mundos — feito com verdade 💙</footer>
-  </div>
+  <!-- ⚡ Apenas uma versão do JS -->
+  <script src="oraculo.js?v=8" defer></script>
 
-  <!-- ⚠️ No fim do body e APENAS este JS, para não haver conflitos -->
-<script src="oraculo.js?v=8"></script>
 </body>
 </html>
-
