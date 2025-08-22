@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teste Oráculo — 509</title>
+  <style>
+    body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b2238;color:#e8f0fb;margin:0;padding:24px}
+    .card{max-width:780px;margin:0 auto;background:#112c4a;border:1px solid #1a3a5a;border-radius:16px;padding:20px}
+    h1{margin:0 0 14px}
+    #oracleMsg{font-size:22px;margin:12px 0 16px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    button{appearance:none;border:0;border-radius:12px;padding:10px 16px;background:#214f85;color:#fff;font-weight:700}
+    button.secondary{background:#173a63}
+  </style>
+  <script src="oraculo.js?v=prod509" defer></script>
+</head>
+<body>
+  <div class="card">
+    <h1>Oráculo — Entre Mundos</h1>
+    <div id="oracleMsg" aria-live="polite">Toca em “Nova mensagem” para receber a tua mensagem.</div>
+    <div class="row">
+      <button id="btnNova">Nova mensagem</button>
+      <button id="btnCopiar" class="secondary">Copiar</button>
+      <button id="btnWhats" class="secondary">Partilhar no WhatsApp</button>
+    </div>
+    <p style="opacity:.65">Teste isolado. Usa apenas para verificar o baralho de 509 frases.</p>
+  </div>
+</body>
+</html>
