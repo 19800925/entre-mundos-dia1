@@ -1,4 +1,4 @@
-/*! Oráculo — 509 frases internas, numeradas internamente (não aparecem), offline */
+/*! Oráculo — 509 frases (produção), offline, sem números e sem debug */
 (() => {
   const $ = (s) => document.querySelector(s);
   const elText =
@@ -11,7 +11,7 @@
     $('#btnWhats') || $('#oracle-wa') || $('#btn-oraculo-wa');
   if (!elText) return;
 
-  // ------- Bancos de texto (variedade alta, estilo "Entre Mundos") -------
+  // Bancos de texto (variedade alta, estilo "Entre Mundos")
   const OPEN = [
     "Respira fundo","Fica perto de ti","Volta a ti","Abranda","Olha por dentro",
     "Sê gentil contigo","Agradece o agora","Celebra o simples","Confia no processo",
@@ -82,14 +82,13 @@
     "Que promessa podes fazer a ti hoje?","Qual é a escolha que te devolve paz?"
   ];
 
-  // ------- Gerar 509 únicas -------
   const EXPECTED = 509;
   const set = new Set();
-  // singles primeiro
   SINGLES.forEach(s => set.add(s));
 
-  function cap(s){ return s.replace(/\s+/g,' ').replace(/\s([.,;:!?])/g,'$1')
-    .replace(/^./, c => c.toUpperCase()); }
+  function cap(s){
+    return s.replace(/\s+/g,' ').replace(/\s([.,;:!?])/g,'$1').replace(/^./, c => c.toUpperCase());
+  }
 
   let guard = 0;
   while (set.size < EXPECTED && guard < 40000){
@@ -100,29 +99,17 @@
     set.add(cap(tpl.replace("{o}", o).replace("{v}", v).replace("{t}", t)));
     guard++;
   }
-  // se ainda faltar, perguntas/reflexões
   let qi = 0;
   while (set.size < EXPECTED){
     set.add(EXTRA_Q[qi++ % EXTRA_Q.length]);
   }
 
-  // cria array e numera internamente [001], [002], ...
-  const RAW = Array.from(set).slice(0, EXPECTED).map((txt, i) => {
-    const n = String(i+1).padStart(3,'0');
-    return `[${n}] ${txt}`;
-  });
+  const DECK = Array.from(set).slice(0, EXPECTED);
 
-  // embaralha
-  for (let i=RAW.length-1; i>0; i--){
-    const j = (Math.random()*(i+1))|0; [RAW[i], RAW[j]] = [RAW[j], RAW[i]];
+  // Fisher–Yates shuffle
+  for (let i=DECK.length-1; i>0; i--){
+    const j = (Math.random()*(i+1))|0; [DECK[i], DECK[j]] = [DECK[j], DECK[i]];
   }
-
-  // deck para exibir (sem numeração)
-  const DECK = RAW.map(s => s.replace(/^\[\d+\]\s*/, ""));
-
-  // diagnóstico não intrusivo
-  elText.setAttribute('data-deck', String(DECK.length));
-  console.log("[Oráculo 509] deck =", DECK.length);
 
   let idx = 0, last = "";
   function novaFrase(){
