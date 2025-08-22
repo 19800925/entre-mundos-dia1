@@ -1,29 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oráculo — Entre Mundos</title>
-  <link rel="stylesheet" href="oraculo.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entre Mundos — Dia 1</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app.css">
 </head>
 <body>
+  <div class="wrap">
+    <header class="app-header">
+      <div class="dot"></div>
+      <h1>Entre Mundos — Dia 1</h1>
+    </header>
 
-  <!-- ✅ ORÁCULO: IDs padronizados -->
-  <section class="card" id="cardOraculo">
-    <h2>Oráculo — Entre Mundos</h2>
-    <p id="oracleMsg" aria-live="polite">Toca no botão para receber a tua mensagem.</p>
-    <div class="row">
-      <button id="btnNova">Nova mensagem</button>
-      <button id="btnCopiar" class="secondary">Copiar</button>
-      <button id="btnWhats" class="secondary">Partilhar no WhatsApp</button>
-    </div>
-    <p class="note">As frases surgem de forma aleatória.</p>
-  </section>
+    <nav class="tabs">
+      <button class="chip is-active" data-tab="mensagem">Mensagem</button>
+      <button class="chip" data-tab="respiracao">Respiração</button>
+      <button class="chip" data-tab="frase">Frase</button>
+      <button class="chip" data-tab="silencio">Silêncio</button>
+    </nav>
 
-  <footer>Entre Mundos — feito com verdade 💙</footer>
+    <!-- Cartão: Mensagem -->
+    <section class="card tab-content is-active" id="tab-mensagem">
+      <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
+      <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
 
-  <!-- ⚡ Apenas uma versão do JS -->
+      <hr class="soft">
+
+      <!-- ✅ ORÁCULO: IDs padrão -->
+      <section class="card inner" id="cardOraculo">
+        <h3>Oráculo — Entre Mundos</h3>
+        <p id="oracleMsg" aria-live="polite">Toca em “Nova mensagem” para receber a tua mensagem.</p>
+        <div class="row">
+          <button id="btnNova" class="btn">Nova mensagem</button>
+          <button id="btnCopiar" class="btn secondary">Copiar</button>
+          <button id="btnWhats" class="btn secondary">Partilhar no WhatsApp</button>
+        </div>
+        <p class="note">As frases surgem de forma aleatória e sem números.</p>
+      </section>
+    </section>
+
+    <!-- Cartão: Respiração (placeholder, reusa o teu JS/CSS actuais) -->
+    <section class="card tab-content" id="tab-respiracao">
+      <h2>Prática — Respiração 4·4·4·4</h2>
+      <div id="breath-balloon" class="balloon"></div>
+      <div class="row">
+        <button class="btn">Começar</button>
+        <button class="btn secondary">Parar</button>
+      </div>
+      <p class="note">Ciclo: Inspira 4 • Sustém 4 • Expira 4 • Pausa 4.</p>
+    </section>
+
+    <!-- Cartão: Frase -->
+    <section class="card tab-content" id="tab-frase">
+      <h2>Frase Âncora</h2>
+      <p>“Eu volto. Eu volto. Eu volto.”</p>
+    </section>
+
+    <!-- Cartão: Silêncio -->
+    <section class="card tab-content" id="tab-silencio">
+      <h2>Silêncio</h2>
+      <p>Fecha os olhos e ouve apenas o som da tua respiração. Fica assim por 1 minuto.</p>
+    </section>
+
+    <footer class="app-footer">Entre Mundos — feito com verdade 💙</footer>
+  </div>
+
+  <!-- Tabs mínima (não conflita com o teu tabs.js; remove se já tiveres) -->
+  <script>
+  (function(){
+    const tabs = document.querySelectorAll('.tabs .chip');
+    const panes = document.querySelectorAll('.tab-content');
+    tabs.forEach(btn=>btn.addEventListener('click',()=>{
+      tabs.forEach(b=>b.classList.remove('is-active'));
+      panes.forEach(p=>p.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const id = btn.dataset.tab;
+      const pane = document.querySelector('#tab-'+id);
+      if(pane) pane.classList.add('is-active');
+    }));
+  })();
+  </script>
+
+  <!-- ✅ Oráculo v8 -->
   <script src="oraculo.js?v=8" defer></script>
-
 </body>
 </html>

@@ -1,4 +1,4 @@
-/*! Oráculo — v8: 1000 frases internas, sem layout, com diagnóstico */
+/*! Oráculo — v8: 1000 frases internas, aleatório, sem números, sem mexer no layout */
 (() => {
   const $ = (s) => document.querySelector(s);
 
@@ -13,7 +13,6 @@
 
   if (!elText) { console.warn('[Oráculo v8] container não encontrado.'); return; }
 
-  // ---- base de frases + gerador até ~1000 (sem números) ----
   const SINGLES = [
     "Tu és a casa antes do mundo.","O azul lembra-te: tudo volta ao lugar.",
     "O que é teu por verdade não faz barulho.","O silêncio também responde.",
@@ -45,7 +44,7 @@
 
   const DECK = shuffle(gerarFrases(1000));
   console.log('[Oráculo v8] deck size =', DECK.length);
-  elText.setAttribute('data-deck', String(DECK.length)); // diagnóstico visível no HTML (não muda o estilo)
+  elText.setAttribute('data-deck', String(DECK.length));
 
   let idx = 0, last = "";
 
@@ -67,12 +66,10 @@
     location.href = 'https://wa.me/?text=' + t;
   }
 
-  // ligar eventos apenas se existirem (não mexe no layout)
   btnNova   && btnNova  .addEventListener('click', novaFrase);
   btnCopiar && btnCopiar.addEventListener('click', copiar);
   btnWhats  && btnWhats .addEventListener('click', whats);
 
-  // mensagem inicial
   if (!elText.textContent || /Nova mensagem/i.test(elText.textContent))
     elText.textContent = 'Toca em “Nova mensagem” para receber a tua mensagem.';
 })();
