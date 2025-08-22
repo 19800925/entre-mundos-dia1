@@ -1,0 +1,83 @@
+name: Repo Cleanup (arquivar duplicados)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar pasta de arquivo
+        run: mkdir -p _archive
+
+      - name: Mover duplicados/antigos para _archive
+        shell: bash
+        run: |
+          set -e
+
+          keep_list="index.html app.js tabs-hotfix.js oraculo.js respiracao.js respiracao.css silencio.js silencio.css app.css style.css styles.css manifest.json sw.js assets"
+
+          keep_match() {
+            for k in $keep_list; do
+              [[ "$1" == "$k" || "$1" == $k/* ]] && return 0
+            done
+            return 1
+          }
+
+          move_file() {
+            src="$1"
+            [ -e "$src" ] || return 0
+            if keep_match "$src"; then
+              echo "Manter: $src"
+            else
+              echo "Arquivar: $src"
+              mkdir -p "_archive/$(dirname "$src")"
+              git mv -k "$src" "_archive/$src" 2>/dev/null || mv "$src" "_archive/$src"
+            fi
+          }
+
+          # Padrões típicos que geram conflitos
+          for f in \
+            index-*.html index_* *.test.html *teste*.html *debug*.html *oraculo*inline*.html *silencio*.html \
+            oraculo-*.html oraculo-*.js oraculo-*.css oraculo.json messages.json \
+            tabs.js tabs-fix*.js tabs-*.js tabs-hotfix-*.js share-oraculo*.js \
+            styles-snippet.css *inline*.css old*.css *patch*.html *patch*.js *patch*.css ; do
+            for hit in $f; do
+              [ -e "$hit" ] && move_file "$hit"
+            done
+          done
+
+          # Qualquer outro HTML solto (mantém só o index.html principal)
+          for hit in *.html; do
+            [ "$hit" != "index.html" ] && move_file "$hit"
+          done
+
+      - name: Criar branch
+        run: |
+          BR="cleanup-archive-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BR"
+          git add -A
+          git config user.name  "cleanup-bot"
+          git config user.email "cleanup-bot@users.noreply.github.com"
+          if git diff --cached --quiet; then
+            echo "Sem alterações para commitar."
+            echo "branch_name=" >> $GITHUB_OUTPUT
+          else
+            git commit -m "Arquivar duplicados em _archive/ (limpeza automática)"
+            git push --set-upstream origin "$BR"
+            echo "branch_name=$BR" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Abrir Pull Request
+        if: steps.create_branch.outputs.branch_name != ''
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ steps.create_branch.outputs.branch_name }}
+          title: "Limpeza: mover duplicados para _archive/"
+          body: |
+            Este PR moveu ficheiros antigos/duplicados para `_archive/` para evitar conflitos.
+            Revê e faz merge quando estiveres satisfeito. Podes reverter movendo-os de volta.
+          labels: cleanup
