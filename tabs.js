@@ -1,14 +1,18 @@
-
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+/*! tabs.js – simples e estável */
+(function(){
+  function show(id){
+    document.querySelectorAll('section.card').forEach(s=>s.style.display='none');
+    const el = document.getElementById(id);
+    if (el) el.style.display='block';
+    // o oráculo deve estar sempre visível juntamente com a aba escolhida
+    if (id !== 'cardOraculo'){
+      const orac = document.getElementById('cardOraculo');
+      if (orac) orac.style.display='block';
     }
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
+  }
+  document.querySelectorAll('.chip[data-tab]').forEach(chip=>{
+    chip.addEventListener('click', ()=> show(chip.dataset.tab));
+  });
+  // estado inicial
+  show('tabMensagem');
+})();
