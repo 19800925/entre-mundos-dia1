@@ -1,6 +1,7 @@
-/*! Oráculo — 509 frases (produção), offline, sem números e sem debug */
+/*! Oráculo — v8: 1000 frases internas, aleatório, sem números, sem mexer no layout */
 (() => {
   const $ = (s) => document.querySelector(s);
+
   const elText =
     $('#oracleMsg') || $('#oracleText') || $('#oracle-msg') || $('#oracle_text');
   const btnNova =
@@ -9,112 +10,47 @@
     $('#btnCopiar') || $('#oracle-copy') || $('#btn-oraculo-copiar');
   const btnWhats =
     $('#btnWhats') || $('#oracle-wa') || $('#btn-oraculo-wa');
-  if (!elText) return;
 
-  // Bancos de texto (variedade alta, estilo "Entre Mundos")
-  const OPEN = [
-    "Respira fundo","Fica perto de ti","Volta a ti","Abranda","Olha por dentro",
-    "Sê gentil contigo","Agradece o agora","Celebra o simples","Confia no processo",
-    "Diz sim ao que é","Permite-te sentir","Entrega o controlo","Aceita o silêncio",
-    "Faz espaço","Abraça a pausa","Escuta o corpo","Sente o chão","Honra o teu ritmo",
-    "Sorri por dentro","Permite-te recomeçar","Oferece-te descanso","Sê presença",
-    "Pousa os ombros","Aquece o coração","Leva a mão ao peito","Reconhece a verdade",
-    "Cuida do que é vivo","Lembra-te de respirar","Mantém-te humilde","Fica no essencial"
-  ];
-  const VERB = [
-    "a tua coragem cresce","a clareza chega","o coração responde","o medo diminui",
-    "a mente sossega","a paz encontra-te","a intuição fala","a luz expande",
-    "o corpo sabe","a alma acalma","o caminho aparece","a ternura conduz",
-    "o amor organiza","o silêncio explica","a presença cura","a confiança floresce",
-    "a vergonha solta-se","a esperança renasce","a dúvida abre espaço","o cansaço descansa",
-    "a paciência aprende","o espírito recorda","o tempo certo chega","o futuro desanuvia"
-  ];
-  const TAIL = [
-    "sem pressa","com suavidade","em pequenas ações","no teu tempo","devagar e bem",
-    "sem te cobrares","com pés no chão","de olhos abertos","com verdade","com gratidão",
-    "sem barulho","em silêncio","com presença","com ternura","a partir do peito",
-    "como quem regressa a casa","com respeito por ti","com curiosidade","com amor manso",
-    "como quem confia","na direção do simples","um passo de cada vez"
-  ];
-  const TPL = [
-    "{o}, e {v} {t}.",
-    "{o}. Deixa que {v} {t}.",
-    "{o} até que {v} {t}.",
-    "{o}; {v} {t}.",
-    "Hoje, {o} — {v} {t}.",
-    "Quando te esqueceres, {o} e {v} {t}.",
-    "Sem te apressares, {o}; {v} {t}.",
-    "Se doer, {o}: {v} {t}.",
-    "Antes de responderes, {o}; {v} {t}.",
-    "Mesmo cansado, {o} e {v} {t}."
-  ];
+  if (!elText) { console.warn('[Oráculo v8] container não encontrado.'); return; }
+
   const SINGLES = [
-    "Tu és casa antes do mundo.","Não precisas provar nada para merecer descanso.",
-    "A tua sensibilidade é força, não falha.","Quando soltas, a vida encontra-te.",
-    "O essencial não grita.","Sê fiel ao que te mantém vivo.",
-    "A respiração é uma porta que nunca fecha.","O azul lembra-te: estás a salvo.",
-    "O teu ritmo não é atraso, é sabedoria.","Há respostas que só o silêncio entrega.",
-    "A ternura também é coragem.","Podes começar pequeno e ainda assim começar.",
-    "A tua presença muda a sala.","O coração entende antes de explicar.",
-    "A paz não é meta; é caminho.","Permitir é diferente de desistir.",
-    "O corpo não mente; escuta-o.","Nem tudo pede solução; algumas coisas pedem colo.",
-    "Volta quantas vezes for preciso.","És suficiente agora.",
-    "A intuição fala baixo — aproxima-te.","Escolhe o que te devolve a ti.",
-    "O amor reorganiza o caos.","A pausa é parte da música.",
-    "Há mar entre um pensamento e outro.","Aceitar não te diminui, liberta-te.",
-    "O que é verdadeiro permanece simples.","O teu ‘não’ também é sagrado.",
-    "O amanhã não precisa de pressa hoje.","A luz não exige; oferece.",
-    "Estás a aprender a pertencer a ti.","O caminho abre onde pousas atenção.",
-    "Descansar também é trabalho de alma.","Sente orgulho do que já curaste.",
-    "A tua voz interna é nítida quando confias.","Há beleza no intervalo.",
-    "Respirar é regressar.","Mesmo no escuro, continuas inteiro.",
-    "Se te perderes, volta ao corpo.","A bondade é a tua revolução.",
-    "A coragem pode ser mansa.","O cuidado contigo é trabalho divino.",
-    "O amor-próprio não é ego, é raiz.","A presença afina o mundo.",
-    "Há bênçãos discretas a acontecer.","Quando sabes pausar, sabes viver.",
-    "A vida também te escolhe.","Deixar ir abre espaço para chegar.",
-    "Toma o teu lugar com quietude.","O teu coração sabe o caminho curto."
+    "Tu és a casa antes do mundo.","O azul lembra-te: tudo volta ao lugar.",
+    "O que é teu por verdade não faz barulho.","O silêncio também responde.",
+    "Há um porto seguro dentro de ti.","Hoje escolhe a gentileza contigo.",
+    "A respiração abre portas que a mente não vê.","Onde pões a atenção, pões a vida.",
+    "Tudo o que procuras pede-te presença.","A alma sussurra quando o ruído descansa.",
+    "Aceitar também é movimento.","A pausa é sagrada.","És suficiente tal como és.",
+    "Volta, quantas vezes for preciso.","O amor sabe o caminho.",
+    "Confia no passo pequeno e verdadeiro.","A tua voz interior é clara quando escutas.",
+    "Respirar é regressar.","Luz não grita; ilumina.","O coração entende o simples."
   ];
-  const EXTRA_Q = [
-    "O que precisas de largar agora?","Qual é o gesto pequeno que muda o dia?",
-    "Que verdade pede espaço em ti?","Onde o teu corpo diz não?",
-    "Qual é a parte tua que pede colo?","O que o silêncio te está a ensinar?",
-    "Que promessa podes fazer a ti hoje?","Qual é a escolha que te devolve paz?"
-  ];
+  const INTROS = ["Respira e","Fecha os olhos e","Sente o corpo e","Pousa o peso e","Abaixa os ombros e","Repara no coração e","Lembra-te de quem és e","Volta a ti e","Entrega o controlo e","Confia no caminho e","Acolhe o silêncio e","Abraça a pausa e","Aceita o agora e","Sorri por dentro e","Escuta com calma e","Honra a tua verdade e","Agradece o que tens e","Sê gentil contigo e","Solta o que pesa e","Descansa por um momento e"];
+  const VERBS  = ["permite que a paz te encontre","deixa que a respiração te guie","escuta o que não precisa de palavras","recorda a tua própria luz","abre espaço para o simples","acolhe o que é sem resistência","confia no tempo do coração","sente o chão que te sustenta","reconhece o que já é suficiente","permite que o corpo te conte a verdade","abraça o começo que se insinua","permite que a mente descanse","volta ao porto azul dentro de ti","permite que o amor te atravesse","ouve o sussurro da alma","descobre o que fica quando tudo cala","deixa o mar dentro de ti acalmar","encosta a cabeça no céu por um segundo","permite que o coração responda","fica com o que é vivo em ti"];
+  const ENDS   = ["agora.","com suavidade.","sem pressa.","em silêncio.","com gratidão.","a partir do peito.","como quem regressa a casa.","com presença.","sem te cobrar nada.","como quem confia.","na luz do teu próprio ritmo.","com ternura.","de olhos abertos para dentro.","de mãos dadas contigo.","com humildade.","a partir do que sentes.","no tempo certo.","até te encontrares.","com coragem mansa.","com verdade."];
 
-  const EXPECTED = 509;
-  const set = new Set();
-  SINGLES.forEach(s => set.add(s));
-
-  function cap(s){
-    return s.replace(/\s+/g,' ').replace(/\s([.,;:!?])/g,'$1').replace(/^./, c => c.toUpperCase());
+  function gerarFrases(n=1000){
+    const out = new Set(SINGLES);
+    outer: for (let i=0;i<INTROS.length;i++){
+      for (let j=0;j<VERBS.length;j++){
+        for (let k=0;k<ENDS.length;k++){
+          out.add(`${INTROS[i]} ${VERBS[j]} ${ENDS[k]}`);
+          if (out.size >= n) break outer;
+        }
+      }
+    }
+    return Array.from(out).slice(0,n);
   }
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]] } return a; }
 
-  let guard = 0;
-  while (set.size < EXPECTED && guard < 40000){
-    const o = OPEN[(Math.random()*OPEN.length)|0];
-    const v = VERB[(Math.random()*VERB.length)|0];
-    const t = TAIL[(Math.random()*TAIL.length)|0];
-    const tpl = TPL[(Math.random()*TPL.length)|0];
-    set.add(cap(tpl.replace("{o}", o).replace("{v}", v).replace("{t}", t)));
-    guard++;
-  }
-  let qi = 0;
-  while (set.size < EXPECTED){
-    set.add(EXTRA_Q[qi++ % EXTRA_Q.length]);
-  }
-
-  const DECK = Array.from(set).slice(0, EXPECTED);
-
-  // Fisher–Yates shuffle
-  for (let i=DECK.length-1; i>0; i--){
-    const j = (Math.random()*(i+1))|0; [DECK[i], DECK[j]] = [DECK[j], DECK[i]];
-  }
+  const DECK = shuffle(gerarFrases(1000));
+  console.log('[Oráculo v8] deck size =', DECK.length);
+  elText.setAttribute('data-deck', String(DECK.length));
 
   let idx = 0, last = "";
+
   function novaFrase(){
     if (!DECK.length) return;
-    if (idx >= DECK.length) { idx = 0; }
+    if (idx >= DECK.length){ shuffle(DECK); idx = 0; }
     let f = DECK[idx++];
     if (f === last && idx < DECK.length) f = DECK[idx++];
     last = f;
@@ -123,8 +59,7 @@
   function copiar(){
     const t = (elText.textContent||'').trim(); if (!t) return;
     if (navigator.clipboard?.writeText) navigator.clipboard.writeText(t).catch(()=>{});
-    else { const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
-      ta.select(); try{document.execCommand('copy');}catch{} ta.remove(); }
+    else { const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch{} ta.remove(); }
   }
   function whats(){
     const t = encodeURIComponent((elText.textContent||'').trim()); if (!t) return;
@@ -136,5 +71,5 @@
   btnWhats  && btnWhats .addEventListener('click', whats);
 
   if (!elText.textContent || /Nova mensagem/i.test(elText.textContent))
-    elText.textContent = "Toca em “Nova mensagem” para receber a tua mensagem.";
+    elText.textContent = 'Toca em “Nova mensagem” para receber a tua mensagem.';
 })();
