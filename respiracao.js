@@ -1,32 +1,30 @@
-/*! respiracao.js – 4·4·4·4 simples */
+/*! respiracao.js – balão simples e instruções */
 (function(){
-  const label = document.getElementById('resp-label');
-  const btnStart = document.getElementById('resp-start');
-  const btnStop  = document.getElementById('resp-stop');
-  if(!label || !btnStart || !btnStop) return;
-
-  const steps = [
-    {name:'Inspira', secs:4},
-    {name:'Sustém', secs:4},
-    {name:'Expira', secs:4},
-    {name:'Pausa',  secs:4},
-  ];
-  let t=null, i=0, c=0, running=false;
-
-  function tick(){
-    if(!running) return;
-    const step = steps[i];
-    label.textContent = step.name + ' ' + (step.secs-c);
-    c++;
-    if(c>step.secs){ i=(i+1)%steps.length; c=0; }
-    t = setTimeout(tick, 1000);
+  const sec = document.getElementById('tabRespiracao');
+  if(!sec) return;
+  let label = sec.querySelector('#breathInstruction');
+  let ball  = sec.querySelector('#breathBalloon');
+  if(!label){
+    label = document.createElement('p'); label.id='breathInstruction'; label.className='note';
+    sec.appendChild(label);
   }
-  btnStart.addEventListener('click', ()=>{
-    if(running) return;
-    running=true; i=0; c=0; label.textContent='Preparar…';
-    clearTimeout(t); t=setTimeout(tick, 800);
-  });
-  btnStop.addEventListener('click', ()=>{
-    running=false; clearTimeout(t); label.textContent='Preparar…';
-  });
+  if(!ball){
+    ball = document.createElement('div'); ball.id='breathBalloon'; sec.insertBefore(ball, label);
+  }
+  const steps = [
+    {text: "Inspira (4)", scale: 1.35, ms: 4000},
+    {text: "Sustém (4)",  scale: 1.35, ms: 4000},
+    {text: "Expira (6)",  scale: 1.00, ms: 6000},
+    {text: "Pausa (2)",   scale: 1.00, ms: 2000}
+  ];
+  let i=0;
+  function loop(){
+    const st = steps[i];
+    label.textContent = st.text;
+    ball.style.transition = `transform ${st.ms/1000}s ease-in-out`;
+    ball.style.transform  = `scale(${st.scale})`;
+    i = (i+1) % steps.length;
+    setTimeout(loop, st.ms);
+  }
+  loop();
 })();
