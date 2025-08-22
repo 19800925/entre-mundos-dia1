@@ -1,0 +1,33 @@
+<!-- PATCH: conteúdo para #tabRespiracao -->
+<h2>Exercício de Respiração</h2>
+<div id="resp-panel">
+  <div id="resp-balloon" aria-label="Animação da respiração"></div>
+  <div id="resp-status">
+    <div id="resp-phase" aria-live="polite">Pronto</div>
+    <div id="resp-count">00:00</div>
+  </div>
+
+  <div id="resp-controls">
+    <label>
+      Duração
+      <select id="resp-duration">
+        <option value="60">1 minuto</option>
+        <option value="120">2 minutos</option>
+      </select>
+    </label>
+    <label>
+      Padrão
+      <select id="resp-pattern">
+        <option value="4-4-4-4">4-4-4-4 (Box)</option>
+        <option value="4-4-6-4">4-4-6-4 (Relax)</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="row">
+    <button id="resp-start">Começar</button>
+    <button id="resp-pause" class="secondary">Pausar</button>
+    <button id="resp-stop" class="secondary">Parar</button>
+  </div>
+  <p class="note">Fases: Inspira • Sustém • Expira • Pausa</p>
+</div>

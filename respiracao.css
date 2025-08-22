@@ -1,0 +1,16 @@
+/* respiracao.css — estilos mínimos e isolados */
+#tabRespiracao #resp-panel{display:flex;flex-direction:column;gap:12px}
+#tabRespiracao #resp-balloon{
+  width:130px;height:130px;margin:8px auto;border-radius:50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.35), rgba(255,255,255,.12) 60%, rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.18);
+  transform: scale(1); transition: transform .6s ease-in-out;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35), inset 0 0 22px rgba(255,255,255,.15);
+}
+#tabRespiracao #resp-status{display:flex;justify-content:center;gap:16px;align-items:baseline}
+#tabRespiracao #resp-phase{font-weight:700;letter-spacing:.3px}
+#tabRespiracao #resp-count{font-variant-numeric:tabular-nums;opacity:.9}
+#tabRespiracao #resp-controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+#tabRespiracao #resp-controls label{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.06);padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+#tabRespiracao #resp-controls select{background:transparent;color:inherit;border:0;outline:0}
+#tabRespiracao .row{justify-content:center}
