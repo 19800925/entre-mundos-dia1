@@ -1,0 +1,101 @@
+name: Repo Cleanup (arquivar duplicados)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Git
+        run: |
+          git config user.name  "cleanup-bot"
+          git config user.email "cleanup-bot@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Mover duplicados/antigos para _archive/
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p _archive
+
+          # Lista de padrões que são supérfluos/antigos no teu repo
+          PATTERNS=(
+            "index-example.html"
+            "index-fase2.html"
+            "index-silencio.html"
+            "index_com_abas.html"           # variação antiga
+            "index_com_abas.*"
+            "limpa-numeros.html"
+            "limpar-oraculo.html"
+            "patch_respiracao.html"
+            "messages.json"
+            "debug-oraculo.html"
+            "oraculo-inline.*"
+            "oraculo-home.*"
+            "oraculo-com-voltar.html"
+            "oraculo.html"                  # página solta antiga
+            "share-oraculo.js"
+            "tabs.js"                       # motor antigo
+            "tabs-fix.js"                   # variante antiga
+            "styles-snippet.css"
+            "style.css"                     # manter apenas styles.css
+            "sw-nuke.js"
+            "app-bfcache-fix.js"
+            "app-fix-back-forward.js"
+          )
+
+          MOVED=0
+          for pat in "${PATTERNS[@]}"; do
+            # usa git ls-files para só apanhar ficheiros versionados
+            while IFS= read -r f; do
+              # ignora se já estiver em _archive/
+              [[ "$f" == _archive/* ]] && continue
+              echo "Arquivar: $f"
+              mkdir -p "_archive/$(dirname "$f")"
+              git mv "$f" "_archive/$f"
+              MOVED=$((MOVED+1))
+            done < <(git ls-files "$pat" || true)
+          done
+
+          echo "MOVED=$MOVED" >> "$GITHUB_ENV"
+          if [[ "$MOVED" -eq 0 ]]; then
+            echo "Nada para mover."
+          fi
+
+      - name: Criar branch / commit / push
+        run: |
+          BRANCH="cleanup-archive-$(date +%Y%m%d-%H%M%S)"
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          git checkout -b "$BRANCH"
+
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "Sem alterações para commitar."
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "Arquiva duplicados em _archive/ (limpeza automática)"
+          git push --set-upstream origin "$BRANCH"
+
+      - name: Abrir Pull Request
+        if: env.BRANCH != '' && env.MOVED != '0'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: main
+          branch: ${{ env.BRANCH }}
+          title: "Limpeza: arquivar duplicados para _archive/"
+          body: |
+            Este PR moveu ficheiros antigos/duplicados para **_archive/** para reduzir conflitos e simplificar o projeto.
+            Revê e faz merge quando estiveres satisfeito.
+          labels: cleanup
