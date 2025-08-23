@@ -1,0 +1,83 @@
+/*! Favoritos — aba própria + integração com Oráculo (localStorage) */
+(() => {
+  const $ = (s) => document.querySelector(s);
+
+  const elText   = $('#oracleMsg');
+  const btnFav   = $('#btnFav');
+  const favList  = $('#favList');
+  const clearAll = $('#btnClearAll');
+
+  if (!elText || !btnFav || !favList) return;
+
+  const LS_KEY = 'entreMundos.favs.v1';
+
+  const getFavs = () => {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+    catch { return []; }
+  };
+  const setFavs = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr.slice(0,1000)));
+
+  const isFav = (t) => getFavs().includes(t);
+  const addFav = (t) => {
+    const x = getFavs();
+    if (!x.includes(t)) { x.unshift(t); setFavs(x); }
+  };
+  const removeFav = (t) => { setFavs(getFavs().filter(s => s !== t)); };
+
+  function escapeHtml(s){ return s.replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+  function renderFavs(){
+    const favs = getFavs();
+    if (!favs.length){
+      favList.innerHTML = '<p class="note" style="font-style:italic">Ainda não tens favoritos. Guarda frases com o botão ⭐ no Oráculo.</p>';
+      return;
+    }
+    favList.innerHTML = favs.map(t => `
+      <div class="fav-item" style="display:flex;gap:12px;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)">
+        <div class="fav-text" style="flex:1">${escapeHtml(t)}</div>
+        <button class="secondary" data-rm="${encodeURIComponent(t)}">Remover</button>
+      </div>
+    `).join('');
+    favList.querySelectorAll('[data-rm]').forEach(b=>{
+      b.addEventListener('click', ()=>{ removeFav(decodeURIComponent(b.dataset.rm)); renderFavs(); updateFavBtn(); });
+    });
+  }
+
+  function updateFavBtn(){
+    const t = (elText.textContent || '').trim();
+    if (!t){ btnFav.disabled = true; btnFav.textContent = '⭐ Guardar'; return; }
+    btnFav.disabled = false;
+    btnFav.textContent = isFav(t) ? '★ Guardado' : '⭐ Guardar';
+  }
+
+  // Guardar a frase atual
+  btnFav.addEventListener('click', ()=>{
+    const t = (elText.textContent || '').trim(); if (!t) return;
+    if (!isFav(t)) { addFav(t); updateFavBtn(); if (isTab('tabFavoritos')) renderFavs(); }
+  });
+
+  // Limpar todos
+  clearAll && clearAll.addEventListener('click', ()=>{
+    if (confirm('Limpar todos os favoritos?')) { setFavs([]); renderFavs(); updateFavBtn(); }
+  });
+
+  // Atualiza estado do botão sempre que o texto do oráculo muda
+  const mo = new MutationObserver(updateFavBtn);
+  mo.observe(elText, { childList:true, characterData:true, subtree:true });
+
+  // Integração com as abas existentes: esconder Oráculo em Silêncio e Favoritos
+  document.querySelectorAll('.chip[data-tab]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const tabId = chip.dataset.tab;
+      const showOraculo = (tabId !== 'tabSilencio' && tabId !== 'tabFavoritos');
+      const card = $('#cardOraculo');
+      if (card) card.style.display = showOraculo ? 'block' : 'none';
+      if (tabId === 'tabFavoritos') renderFavs();
+    });
+  });
+
+  function isTab(id){ const el = document.getElementById(id); return el && el.style.display !== 'none'; }
+
+  // Primeira pintura
+  updateFavBtn();
+})();
