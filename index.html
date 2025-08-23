@@ -1,32 +1,26 @@
 <!doctype html>
 <html lang="pt">
-<head> <link rel="stylesheet" href="styles-favs.css">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entre Mundos — Dia 1</title>
 
   <style>
     :root{
-      --bg:#0b2238;
-      --card:#112c4a;
-      --card-edge:#1a3a5a;
-      --text:#e8f0fb;
-      --muted:#a9bed9;
-      --accent:#ffd85b;
-      --btn:#214f85;
-      --btn-text:#ffffff;
-      --btn-soft:#173a63;
-      --shadow:0 10px 24px rgba(0,0,0,.35);
-      --radius:20px;
+      --bg:#0b2238; --card:#112c4a; --card-edge:#1a3a5a;
+      --text:#e8f0fb; --muted:#a9bed9; --accent:#ffd85b;
+      --btn:#214f85; --btn-text:#ffffff; --btn-soft:#173a63;
+      --shadow:0 10px 24px rgba(0,0,0,.35); --radius:20px;
     }
-    html,body{margin:0;background:radial-gradient(1200px 600px at 50% -100px, #173455 0%, #0b2238 60%, #07192b 100%);color:var(--text);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+    html,body{margin:0;background:radial-gradient(1200px 600px at 50% -100px,#173455 0%,#0b2238 60%,#07192b 100%);color:var(--text);font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
     .wrap{max-width:860px;margin:24px auto;padding:0 16px}
     header{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
-    header .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%, #3ea7ff, #0e4379 60%, #0a2a4a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
+    header .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 30% 30%,#3ea7ff,#0e4379 60%,#0a2a4a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
     h1{font-size:32px;margin:0 0 10px}
     nav{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 14px}
     .chip{padding:10px 16px;border-radius:16px;background:rgba(255,255,255,.06);color:var(--muted);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.07);cursor:pointer}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid var(--card-edge);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px;margin:16px 0}
+    .chip.active{color:#fff;background:rgba(255,255,255,.12)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--card-edge);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px;margin:16px 0}
     .card h2{margin:0 0 10px;font-size:18px;color:var(--muted);font-weight:600}
     .highlight{color:var(--accent);font-weight:700}
     #oracleMsg{font-size:22px;margin:12px 0 16px;color:var(--text)}
@@ -34,12 +28,14 @@
     button{appearance:none;border:0;border-radius:14px;padding:12px 18px;background:var(--btn);color:var(--btn-text);font-weight:700;box-shadow:0 6px 14px rgba(13,86,164,.35);cursor:pointer}
     button.secondary{background:var(--btn-soft)}
     .note{color:var(--muted);font-size:14px;margin-top:8px}
+    .fav-empty{color:var(--muted);font-style:italic}
+    .fav-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .fav-text{flex:1}
+    .muted-link{color:var(--muted);text-decoration:underline;cursor:pointer}
     footer{color:var(--muted);text-align:center;margin:22px 0}
   </style>
 
-  <!-- ✅ Mantém apenas UM ficheiro de abas -->
-  <script src="tabs-hotfix.js" defer></script>
-  <!-- Oráculo com 1000 frases (v9 para forçar cache novo) -->
+  <!-- Só o Oráculo (frases). Não carregar tabs-hotfix.js para evitar conflito -->
   <script src="oraculo.js?v=9" defer></script>
 </head>
 <body>
@@ -50,95 +46,180 @@
     </header>
 
     <nav>
-  <div class="chip" data-tab="tabMensagem">Mensagem</div>
-  <div class="chip" data-tab="tabRespiracao">Respiração</div>
-  <div class="chip" data-tab="tabFrase">Frase</div>
-  <div class="chip" data-tab="tabSilencio">Silêncio</div>
-  <div class="chip" data-tab="tabFavoritos">Favoritos</div>
-</nav>
+      <div class="chip" data-tab="tabMensagem">Mensagem</div>
+      <div class="chip" data-tab="tabRespiracao">Respiração</div>
+      <div class="chip" data-tab="tabFrase">Frase</div>
+      <div class="chip" data-tab="tabSilencio">Silêncio</div>
+      <div class="chip" data-tab="tabFavoritos">Favoritos</div>
+    </nav>
 
-<!-- Mensagem -->
-<section class="card" id="tabMensagem">
-  <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
-  <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-</section>
+    <!-- Mensagem -->
+    <section class="card" id="tabMensagem">
+      <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
+      <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+    </section>
 
-<!-- Respiração -->
-<section class="card" id="tabRespiracao" style="display:none">
-  <h2>Exercício de Respiração</h2>
-  <p>Inspira 4, segura 4, expira 6. Repete 5 vezes.</p>
-</section>
+    <!-- Respiração -->
+    <section class="card" id="tabRespiracao" style="display:none">
+      <h2>Exercício de Respiração</h2>
+      <p>Inspira 4, segura 4, expira 6. Repete 5 vezes.</p>
+    </section>
 
-<!-- Frase -->
-<section class="card" id="tabFrase" style="display:none">
-  <h2>Frase Inspiradora</h2>
-  <p>"Mesmo no escuro, a tua luz interior sabe o caminho."</p>
-</section>
+    <!-- Frase -->
+    <section class="card" id="tabFrase" style="display:none">
+      <h2>Frase Inspiradora</h2>
+      <p>"Mesmo no escuro, a tua luz interior sabe o caminho."</p>
+    </section>
 
-<!-- Silêncio -->
-<section class="card" id="tabSilencio" style="display:none">
-  <h2>Prática de Silêncio</h2>
-  <p>Fecha os olhos, escuta a respiração e deixa o mundo desaparecer por 1 minuto.</p>
-</section>
+    <!-- Silêncio -->
+    <section class="card" id="tabSilencio" style="display:none">
+      <h2>Prática de Silêncio</h2>
+      <p>Fecha os olhos, escuta a respiração e deixa o mundo desaparecer por 1 minuto.</p>
+    </section>
 
-<!-- Oráculo — fica visível em todas as abas excepto Silêncio e Favoritos -->
-<section class="card" id="cardOraculo">
-  <h2>Oráculo — Entre Mundos</h2>
-  <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
-  <div class="row">
-    <button id="btnNova">Nova mensagem</button>
-    <button id="btnCopiar" class="secondary">Copiar</button>
-    <button id="btnWhats"  class="secondary">Partilhar no WhatsApp</button>
-    <!-- novo: botão de favoritos -->
-    <button id="btnFav" title="Guardar esta frase nos favoritos">⭐ Guardar</button>
-  </div>
-  <p class="note">As frases surgem de forma aleatória e sem números.</p>
-</section>
+    <!-- Oráculo — visível em todas as abas excepto Silêncio e Favoritos -->
+    <section class="card" id="cardOraculo">
+      <h2>Oráculo — Entre Mundos</h2>
+      <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
+      <div class="row">
+        <button id="btnNova">Nova mensagem</button>
+        <button id="btnCopiar" class="secondary">Copiar</button>
+        <button id="btnWhats" class="secondary">Partilhar no WhatsApp</button>
+        <button id="btnFav" title="Guardar esta frase nos favoritos">⭐ Guardar</button>
+      </div>
+      <p class="note">As frases surgem de forma aleatória e sem números.</p>
+    </section>
 
-<!-- Favoritos — aba própria -->
-<section class="card" id="tabFavoritos" style="display:none">
-  <h2>Favoritos</h2>
-  <div id="favList"></div>
-  <p class="note">
-    <a id="btnClearAll" class="muted-link" href="javascript:void(0)">Limpar todos</a>
-  </p>
-</section>
+    <!-- Favoritos -->
+    <section class="card" id="tabFavoritos" style="display:none">
+      <h2>Favoritos</h2>
+      <div id="favList"></div>
+      <p class="note"><a id="btnClearAll" class="muted-link" href="javascript:void(0)">Limpar todos</a></p>
+    </section>
+
     <footer>Entre Mundos — feito com verdade 💙</footer>
   </div>
 
- <script>
-  // IDs das secções
-  const HIDE_ORACULO_IN = new Set(['tabSilencio','tabFavoritos']);
-  const ORACULO_ID = 'cardOraculo';
+  <script>
+    /* ===== Alternar abas e esconder/mostrar Oráculo ===== */
+    const HIDE_ORACULO_IN = new Set(['tabSilencio','tabFavoritos']);
+    const ORACULO_ID = 'cardOraculo';
 
-  // Alternar abas
-  document.querySelectorAll('.chip[data-tab]').forEach(chip => {
-    chip.addEventListener('click', () => {
-      // 1) esconder todas as secções
-      document.querySelectorAll('section.card').forEach(sec => sec.style.display = 'none');
+    document.querySelectorAll('.chip[data-tab]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        // esconder tudo
+        document.querySelectorAll('section.card').forEach(sec => sec.style.display = 'none');
 
-      // 2) mostrar a secção pedida
-      const tabId = chip.dataset.tab;
-      const target = document.getElementById(tabId);
-      if (target) target.style.display = 'block';
+        // mostrar aba pedida
+        const tabId = chip.dataset.tab;
+        const target = document.getElementById(tabId);
+        if (target) target.style.display = 'block';
 
-      // 3) mostrar/esconder Oráculo conforme a aba
-      const oraculo = document.getElementById(ORACULO_ID);
-      if (oraculo) {
-        oraculo.style.display = HIDE_ORACULO_IN.has(tabId) ? 'none' : 'block';
-      }
+        // mostrar/esconder oráculo
+        const oraculo = document.getElementById(ORACULO_ID);
+        if (oraculo) oraculo.style.display = HIDE_ORACULO_IN.has(tabId) ? 'none' : 'block';
 
-      // (opcional) ativar visual no chip
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
+        // estado visual dos chips
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+
+        // quando entra nos Favoritos, renderiza lista
+        if (tabId === 'tabFavoritos') renderFavs();
+      });
     });
-  });
 
-  // Estado inicial: mostrar Mensagem e decidir Oráculo
-  (function initTabs(){
-    const defaultTab = 'tabMensagem';               // muda se quiseres outro por defeito
-    const first = document.querySelector(`.chip[data-tab="${defaultTab}"]`) 
-               || document.querySelector('.chip[data-tab]');
-    if (first) first.click();
-  })();
-</script>
+    // Estado inicial
+    (function initTabs(){
+      const defaultTab = 'tabMensagem';
+      const first = document.querySelector(`.chip[data-tab="${defaultTab}"]`) || document.querySelector('.chip[data-tab]');
+      if (first) first.click();
+    })();
+
+    /* ===== Oráculo – botões padrão ===== */
+    const elText   = document.getElementById('oracleMsg');
+    const btnNova  = document.getElementById('btnNova');
+    const btnCopiar= document.getElementById('btnCopiar');
+    const btnWhats = document.getElementById('btnWhats');
+    const btnFav   = document.getElementById('btnFav');
+
+    function copiar(){
+      const t=(elText.textContent||'').trim(); if(!t) return;
+      if(navigator.clipboard?.writeText) navigator.clipboard.writeText(t).catch(()=>{});
+      else { const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch{} ta.remove(); }
+    }
+    function whats(){
+      const t = encodeURIComponent((elText.textContent||'').trim()); if(!t) return;
+      location.href = 'https://wa.me/?text=' + t;
+    }
+    btnCopiar.addEventListener('click', copiar);
+    btnWhats .addEventListener('click', whats);
+
+    // a função novaFrase é criada em oraculo.js; se existir, liga o botão:
+    if (typeof window.novaFrase === 'function') {
+      btnNova.addEventListener('click', window.novaFrase);
+    }
+
+    /* ===== Favoritos (localStorage) ===== */
+    const LS_KEY = 'entreMundos.favs.v1';
+
+    function getFavs(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ return []; } }
+    function setFavs(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr.slice(0, 1000))); }
+    function isFav(txt){ const t=(txt||'').trim(); return getFavs().some(x=>x===t); }
+
+    function updateFavButtonState(){
+      const t=(elText.textContent||'').trim();
+      if(!t){ btnFav.disabled=true; btnFav.textContent='⭐ Guardar'; return; }
+      btnFav.disabled=false;
+      btnFav.textContent = isFav(t) ? '★ Guardado' : '⭐ Guardar';
+    }
+
+    function addFav(){
+      const t=(elText.textContent||'').trim(); if(!t) return;
+      const favs=getFavs();
+      if(!favs.includes(t)){ favs.unshift(t); setFavs(favs); }
+      updateFavButtonState(); renderFavs();
+    }
+    function removeFav(txt){
+      setFavs(getFavs().filter(x=>x!==txt));
+      renderFavs(); updateFavButtonState();
+    }
+    function clearAll(){
+      if(confirm('Limpar todos os favoritos?')){ setFavs([]); renderFavs(); updateFavButtonState(); }
+    }
+
+    function escapeHtml(s){ return s.replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+    function renderFavs(){
+      const box=document.getElementById('favList');
+      const favs=getFavs();
+      if(!favs.length){
+        box.innerHTML = '<p class="fav-empty">Ainda não tens favoritos. Guarda frases com o botão ⭐ no Oráculo.</p>';
+        return;
+      }
+      box.innerHTML = favs.map(t=>`
+        <div class="fav-item">
+          <div class="fav-text">${escapeHtml(t)}</div>
+          <button class="secondary" data-rm="${encodeURIComponent(t)}">Remover</button>
+        </div>`).join('');
+      box.querySelectorAll('button[data-rm]').forEach(b=>{
+        b.addEventListener('click', ()=> removeFav(decodeURIComponent(b.dataset.rm)));
+      });
+    }
+
+    btnFav.addEventListener('click', ()=>{
+      const t=(elText.textContent||'').trim(); if(!t) return;
+      if(isFav(t)) return;
+      addFav();
+    });
+    document.getElementById('btnClearAll').addEventListener('click', clearAll);
+
+    // mensagem inicial
+    if (!elText.textContent || /Nova mensagem/i.test(elText.textContent))
+      elText.textContent = 'Toca em “Nova mensagem” para receber a tua mensagem.';
+    updateFavButtonState();
+
+    // sempre que o oráculo muda (nova frase), tenta atualizar estado do botão
+    // (se a tua oraculo.js expuser um evento, liga aqui; senão, fica assim simples)
+    if (btnNova) btnNova.addEventListener('click', updateFavButtonState);
+  </script>
+</body>
+</html>
