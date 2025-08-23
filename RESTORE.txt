@@ -1,6 +1,0 @@
-REPOR/REVERTER
-Para voltar ao estado anterior, basta apagar estes ficheiros e fazer commit:
-- oraculo-home.js
-- oraculo-home.css
-
-Depois recarrega a página com ?v=XYZ para evitar cache (ex.: index.html?v=101).
