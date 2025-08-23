@@ -196,6 +196,23 @@ document.getElementById('btnClearAll').addEventListener('click', clearAll);
 // mensagem inicial
 elText.textContent = 'Toca em “Nova mensagem” para receber a tua mensagem.';
 updateFavButtonState();
+  <script>
+  // Navegação entre abas — esconde o Oráculo quando a aba for "Silêncio"
+  document.querySelectorAll('.chip[data-tab]').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      document.querySelectorAll('section.card').forEach(sec=>sec.style.display='none');
+      const tabId = chip.dataset.tab;
+      document.getElementById(tabId).style.display = 'block';
+
+      // 👇 Respeita o silêncio: não mostra o Oráculo nesta aba
+      const showOraculo = tabId !== 'tabSilencio';
+      document.getElementById('cardOraculo').style.display = showOraculo ? 'block' : 'none';
+
+      // (opcional) se um dia houver som na respiração, pára aqui:
+      if (!showOraculo && window.stopBreathAudio) window.stopBreathAudio();
+    });
+  });
+</script>
 </script>
 </body>
 </html>
