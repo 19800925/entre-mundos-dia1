@@ -106,21 +106,39 @@
     <footer>Entre Mundos — feito com verdade 💙</footer>
   </div>
 
-  <!-- Alternar abas (mantém o Oráculo visível) -->
-  <script>
-    document.querySelectorAll('.chip[data-tab]').forEach(chip => {
-      chip.addEventListener('click', () => {
-        document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
-        const destino = document.getElementById(chip.dataset.tab);
-        if (destino) destino.style.display = 'block';
-        // mantém o oráculo sempre visível
-        document.getElementById('cardOraculo').style.display = 'block';
-      });
-    });
-  </script>
+ <script>
+  // IDs das secções
+  const HIDE_ORACULO_IN = new Set(['tabSilencio','tabFavoritos']);
+  const ORACULO_ID = 'cardOraculo';
 
-  <!-- O teu JS adicional (se existir) -->
-  <script src="./app.js?v=1"></script>
-  <script src="favorites-oraculo.js" defer></script>
-</body>
-</html>
+  // Alternar abas
+  document.querySelectorAll('.chip[data-tab]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      // 1) esconder todas as secções
+      document.querySelectorAll('section.card').forEach(sec => sec.style.display = 'none');
+
+      // 2) mostrar a secção pedida
+      const tabId = chip.dataset.tab;
+      const target = document.getElementById(tabId);
+      if (target) target.style.display = 'block';
+
+      // 3) mostrar/esconder Oráculo conforme a aba
+      const oraculo = document.getElementById(ORACULO_ID);
+      if (oraculo) {
+        oraculo.style.display = HIDE_ORACULO_IN.has(tabId) ? 'none' : 'block';
+      }
+
+      // (opcional) ativar visual no chip
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // Estado inicial: mostrar Mensagem e decidir Oráculo
+  (function initTabs(){
+    const defaultTab = 'tabMensagem';               // muda se quiseres outro por defeito
+    const first = document.querySelector(`.chip[data-tab="${defaultTab}"]`) 
+               || document.querySelector('.chip[data-tab]');
+    if (first) first.click();
+  })();
+</script>
