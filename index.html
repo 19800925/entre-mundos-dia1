@@ -44,8 +44,8 @@
     footer{color:var(--muted);text-align:center;margin:22px 0}
   </style>
 
-  <!-- Lógica do Oráculo (mantém o teu ficheiro) -->
-  <script src="oraculo.js?v=9" defer></script>
+  <!-- Lógica do Oráculo -->
+  <script src="oraculo.js?v=10" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -90,7 +90,7 @@
     <p>Fecha os olhos, escuta a respiração e deixa o mundo desaparecer por 1 minuto.</p>
   </section>
 
-  <!-- Oráculo — visível só em Respiração e Frase -->
+  <!-- Oráculo — visível só em Frase -->
   <section class="card" id="cardOraculo">
     <h2>Oráculo — Entre Mundos</h2>
     <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
@@ -114,8 +114,8 @@
 </div>
 
 <script>
-  // Abas onde o Oráculo NÃO aparece
-  const HIDE_ORACULO_IN = new Set(['tabMensagem','tabSilencio','tabFavoritos']);
+  // Abas onde o Oráculo NÃO aparece (Mensagem, Respiração, Silêncio, Favoritos)
+  const HIDE_ORACULO_IN = new Set(['tabMensagem','tabRespiracao','tabSilencio','tabFavoritos']);
   const ORACULO_ID = 'cardOraculo';
 
   // Alternar abas
