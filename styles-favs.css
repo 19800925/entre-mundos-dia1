@@ -1,0 +1,6 @@
+/* Entre Mundos — estilos mínimos para favoritos */
+.fav-empty{color:var(--muted);font-style:italic}
+.fav-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.08)}
+.fav-text{flex:1}
+.muted-link{color:var(--muted);text-decoration:underline;cursor:pointer}
