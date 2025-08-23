@@ -50,43 +50,59 @@
     </header>
 
     <nav>
-      <div class="chip" data-tab="tabMensagem">Mensagem</div>
-      <div class="chip" data-tab="tabRespiracao">Respiração</div>
-      <div class="chip" data-tab="tabFrase">Frase</div>
-      <div class="chip" data-tab="tabSilencio">Silêncio</div>
-    </nav>
+  <div class="chip" data-tab="tabMensagem">Mensagem</div>
+  <div class="chip" data-tab="tabRespiracao">Respiração</div>
+  <div class="chip" data-tab="tabFrase">Frase</div>
+  <div class="chip" data-tab="tabSilencio">Silêncio</div>
+  <div class="chip" data-tab="tabFavoritos">Favoritos</div>
+</nav>
 
-    <section class="card" id="tabMensagem">
-      <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
-      <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
-    </section>
+<!-- Mensagem -->
+<section class="card" id="tabMensagem">
+  <h2>Mensagem de hoje — <span class="highlight">Reconexão</span></h2>
+  <p>Respira e lembra-te: <strong>tu és a casa antes do mundo.</strong> O teu valor não depende da produtividade; a tua verdade não precisa gritar. A cor azul é o teu porto — volta a ela quando o ruído te cansar.</p>
+</section>
 
-    <section class="card" id="tabRespiracao" style="display:none">
-      <h2>Exercício de Respiração</h2>
-      <p>Inspira profundamente contando até 4, segura por 4, expira por 6. Repete 5 vezes.</p>
-    </section>
+<!-- Respiração -->
+<section class="card" id="tabRespiracao" style="display:none">
+  <h2>Exercício de Respiração</h2>
+  <p>Inspira 4, segura 4, expira 6. Repete 5 vezes.</p>
+</section>
 
-    <section class="card" id="tabFrase" style="display:none">
-      <h2>Frase Inspiradora</h2>
-      <p>"Mesmo no escuro, a tua luz interior sabe o caminho."</p>
-    </section>
+<!-- Frase -->
+<section class="card" id="tabFrase" style="display:none">
+  <h2>Frase Inspiradora</h2>
+  <p>"Mesmo no escuro, a tua luz interior sabe o caminho."</p>
+</section>
 
-    <section class="card" id="tabSilencio" style="display:none">
-      <h2>Prática de Silêncio</h2>
-      <p>Fecha os olhos, escuta o som da tua respiração e deixa que o mundo desapareça por 1 minuto.</p>
-    </section>
+<!-- Silêncio -->
+<section class="card" id="tabSilencio" style="display:none">
+  <h2>Prática de Silêncio</h2>
+  <p>Fecha os olhos, escuta a respiração e deixa o mundo desaparecer por 1 minuto.</p>
+</section>
 
-    <section class="card" id="cardOraculo">
-      <h2>Oráculo — Entre Mundos</h2>
-      <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
-      <div class="row">
-        <button id="btnNova">Nova mensagem</button>
-        <button class="secondary" id="btnCopiar">Copiar</button>
-        <button class="secondary" id="btnWhats">Partilhar no WhatsApp</button>
-      </div>
-      <div class="note">As frases surgem de forma aleatória e sem números.</div>
-    </section>
+<!-- Oráculo — fica visível em todas as abas excepto Silêncio e Favoritos -->
+<section class="card" id="cardOraculo">
+  <h2>Oráculo — Entre Mundos</h2>
+  <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
+  <div class="row">
+    <button id="btnNova">Nova mensagem</button>
+    <button id="btnCopiar" class="secondary">Copiar</button>
+    <button id="btnWhats"  class="secondary">Partilhar no WhatsApp</button>
+    <!-- novo: botão de favoritos -->
+    <button id="btnFav" title="Guardar esta frase nos favoritos">⭐ Guardar</button>
+  </div>
+  <p class="note">As frases surgem de forma aleatória e sem números.</p>
+</section>
 
+<!-- Favoritos — aba própria -->
+<section class="card" id="tabFavoritos" style="display:none">
+  <h2>Favoritos</h2>
+  <div id="favList"></div>
+  <p class="note">
+    <a id="btnClearAll" class="muted-link" href="javascript:void(0)">Limpar todos</a>
+  </p>
+</section>
     <footer>Entre Mundos — feito com verdade 💙</footer>
   </div>
 
