@@ -10,26 +10,55 @@ body{
   margin:0;
   background:#0b2238;
   color:white;
-  font-family:system-ui;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
-.wrap{max-width:700px;margin:auto;padding:20px}
-nav{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.chip{padding:10px;background:#1a3a5a;border-radius:12px;cursor:pointer}
-.chip.active{background:#214f85}
-.card{background:#112c4a;padding:20px;border-radius:16px;margin-top:10px}
+.wrap{
+  max-width:700px;
+  margin:auto;
+  padding:20px;
+}
+h1{
+  margin-top:0;
+}
+nav{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.chip{
+  padding:10px 14px;
+  background:#1a3a5a;
+  border-radius:12px;
+  cursor:pointer;
+  user-select:none;
+}
+.chip.active{
+  background:#214f85;
+}
+.card{
+  background:#112c4a;
+  padding:20px;
+  border-radius:16px;
+  margin-top:10px;
+}
 button{
-  padding:10px;
+  padding:10px 14px;
   border-radius:10px;
   border:0;
   background:#214f85;
   color:white;
   margin-right:10px;
   margin-bottom:10px;
+  cursor:pointer;
 }
 #oracleMsg{
   font-size:22px;
   line-height:1.5;
   margin-bottom:18px;
+}
+p{
+  line-height:1.6;
 }
 </style>
 </head>
@@ -40,28 +69,27 @@ button{
 <h1>Entre Mundos</h1>
 
 <nav>
-<div class="chip" data-tab="tabOraculo">Oráculo</div>
-<div class="chip" data-tab="tabResp">Respiração</div>
-<div class="chip" data-tab="tabFrase">Frase</div>
+  <div class="chip" data-tab="tabOraculo">Oráculo</div>
+  <div class="chip" data-tab="tabResp">Respiração</div>
+  <div class="chip" data-tab="tabFrase">Frase</div>
 </nav>
 
 <section id="tabOraculo" class="card">
-<h2>Oráculo</h2>
-<div id="oracleMsg">Clica em "Nova mensagem"</div>
-<br>
-<button id="btnNova">Nova mensagem</button>
-<button id="btnCopiar">Copiar</button>
-<button id="btnWhats">WhatsApp</button>
+  <h2>Oráculo</h2>
+  <div id="oracleMsg">Clica em "Nova mensagem"</div>
+  <button id="btnNova">Nova mensagem</button>
+  <button id="btnCopiar">Copiar</button>
+  <button id="btnWhats">WhatsApp</button>
 </section>
 
 <section id="tabResp" class="card" style="display:none">
-<h2>Respiração</h2>
-<p>Respira 4-4-6</p>
+  <h2>Respiração</h2>
+  <p>Respira 4, segura 4, expira 6.</p>
 </section>
 
 <section id="tabFrase" class="card" style="display:none">
-<h2>Frase</h2>
-<p>Mesmo no escuro, a tua luz interior sabe o caminho.</p>
+  <h2>Frase</h2>
+  <p>Mesmo no escuro, a tua luz interior sabe o caminho.</p>
 </section>
 
 </div>
@@ -76,13 +104,16 @@ const mensagens = [
 ];
 
 const el = document.getElementById("oracleMsg");
+const btnNova = document.getElementById("btnNova");
+const btnCopiar = document.getElementById("btnCopiar");
+const btnWhats = document.getElementById("btnWhats");
 
-document.getElementById("btnNova").onclick = () => {
+btnNova.onclick = () => {
   const i = Math.floor(Math.random() * mensagens.length);
   el.textContent = mensagens[i];
 };
 
-document.getElementById("btnCopiar").onclick = async () => {
+btnCopiar.onclick = async () => {
   try {
     await navigator.clipboard.writeText(el.textContent);
     alert("Mensagem copiada.");
@@ -91,17 +122,17 @@ document.getElementById("btnCopiar").onclick = async () => {
   }
 };
 
-document.getElementById("btnWhats").onclick = async () => {
+btnWhats.onclick = async () => {
   const texto = el.textContent;
 
   try {
     await navigator.clipboard.writeText(texto);
-    alert("Mensagem copiada 🩵\nAgora abre o teu Estado no WhatsApp e cola.");
+    alert("Mensagem copiada 🩵\nAgora cola no teu Estado do WhatsApp.");
   } catch {
     alert("Copia manualmente esta mensagem para o teu Estado:\n\n" + texto);
   }
 
-  window.open("https://wa.me/", "_blank");
+  window.location.href = "https://wa.me/";
 };
 
 document.querySelectorAll(".chip").forEach(c => {
