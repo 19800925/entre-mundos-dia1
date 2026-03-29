@@ -13,11 +13,24 @@ body{
   font-family:system-ui;
 }
 .wrap{max-width:700px;margin:auto;padding:20px}
-nav{display:flex;gap:10px;margin-bottom:20px}
+nav{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .chip{padding:10px;background:#1a3a5a;border-radius:12px;cursor:pointer}
 .chip.active{background:#214f85}
 .card{background:#112c4a;padding:20px;border-radius:16px;margin-top:10px}
-button{padding:10px;border-radius:10px;border:0;background:#214f85;color:white;margin-right:10px}
+button{
+  padding:10px;
+  border-radius:10px;
+  border:0;
+  background:#214f85;
+  color:white;
+  margin-right:10px;
+  margin-bottom:10px;
+}
+#oracleMsg{
+  font-size:22px;
+  line-height:1.5;
+  margin-bottom:18px;
+}
 </style>
 </head>
 
@@ -42,45 +55,60 @@ button{padding:10px;border-radius:10px;border:0;background:#214f85;color:white;m
 </section>
 
 <section id="tabResp" class="card" style="display:none">
-Respira 4-4-6
+<h2>Respiração</h2>
+<p>Respira 4-4-6</p>
 </section>
 
 <section id="tabFrase" class="card" style="display:none">
-Mesmo no escuro, a tua luz interior sabe o caminho.
+<h2>Frase</h2>
+<p>Mesmo no escuro, a tua luz interior sabe o caminho.</p>
 </section>
 
 </div>
 
 <script>
 const mensagens = [
-"A tua alma já sabe o caminho.",
-"Confia no que sentes.",
-"Nem tudo precisa de resposta hoje.",
-"Respira. Estás onde precisas estar.",
-"O que procuras já está dentro de ti."
+  "A tua alma já sabe o caminho.",
+  "Confia no que sentes.",
+  "Nem tudo precisa de resposta hoje.",
+  "Respira. Estás onde precisas estar.",
+  "O que procuras já está dentro de ti."
 ];
 
 const el = document.getElementById("oracleMsg");
 
 document.getElementById("btnNova").onclick = () => {
-  const i = Math.floor(Math.random()*mensagens.length);
+  const i = Math.floor(Math.random() * mensagens.length);
   el.textContent = mensagens[i];
 };
 
-document.getElementById("btnCopiar").onclick = () => {
-  navigator.clipboard.writeText(el.textContent);
+document.getElementById("btnCopiar").onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(el.textContent);
+    alert("Mensagem copiada.");
+  } catch {
+    alert("Não consegui copiar automaticamente.");
+  }
 };
 
-document.getElementById("btnWhats").onclick = () => {
-  const t = encodeURIComponent(el.textContent);
-  window.open(`https://wa.me/?text=${t}`);
+document.getElementById("btnWhats").onclick = async () => {
+  const texto = el.textContent;
+
+  try {
+    await navigator.clipboard.writeText(texto);
+    alert("Mensagem copiada 🩵\nAgora abre o teu Estado no WhatsApp e cola.");
+  } catch {
+    alert("Copia manualmente esta mensagem para o teu Estado:\n\n" + texto);
+  }
+
+  window.open("https://wa.me/", "_blank");
 };
 
-document.querySelectorAll(".chip").forEach(c=>{
-  c.onclick=()=>{
-    document.querySelectorAll(".card").forEach(s=>s.style.display="none");
-    document.getElementById(c.dataset.tab).style.display="block";
-    document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".chip").forEach(c => {
+  c.onclick = () => {
+    document.querySelectorAll(".card").forEach(s => s.style.display = "none");
+    document.getElementById(c.dataset.tab).style.display = "block";
+    document.querySelectorAll(".chip").forEach(x => x.classList.remove("active"));
     c.classList.add("active");
   };
 });
