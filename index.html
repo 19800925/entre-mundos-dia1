@@ -28,120 +28,39 @@
       line-height:1.5;
     }
 
-    .wrap{
-      max-width:860px;
-      margin:24px auto;
-      padding:0 16px;
-    }
-
-    header{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      margin:8px 0 14px;
-    }
-
+    .wrap{max-width:860px;margin:24px auto;padding:0 16px}
+    header{display:flex;gap:12px;align-items:center;margin:8px 0 14px}
     .dot{
-      width:26px;
-      height:26px;
-      border-radius:8px;
+      width:26px;height:26px;border-radius:8px;
       background:radial-gradient(circle at 30% 30%, #3ea7ff, #0e4379 60%, #0a2a4a);
-      box-shadow:inset 0 0 0 2px rgba(255,255,255,.08);
+      box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)
     }
-
-    h1{
-      margin:0 0 10px;
-    }
-
-    nav{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin:0 0 14px;
-    }
-
+    h1{margin:0 0 10px}
+    nav{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 14px}
     .chip{
-      padding:10px 16px;
-      border-radius:16px;
-      background:rgba(255,255,255,.06);
-      color:var(--muted);
-      border:1px solid rgba(255,255,255,.07);
-      cursor:pointer;
-      transition:all .2s ease;
+      padding:10px 16px;border-radius:16px;background:rgba(255,255,255,.06);
+      color:var(--muted);border:1px solid rgba(255,255,255,.07);cursor:pointer;
+      transition:all .2s ease
     }
-
-    .chip.active{
-      background:rgba(255,255,255,.12);
-      color:#fff;
-    }
-
+    .chip.active{background:rgba(255,255,255,.12);color:#fff}
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--card-edge);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
-      margin:16px 0;
+      border:1px solid var(--card-edge);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:18px;margin:16px 0;
     }
-
-    .card h2{
-      margin:0 0 10px;
-      font-size:18px;
-      color:var(--muted);
-      font-weight:600;
-    }
-
-    .highlight{
-      color:var(--accent);
-      font-weight:700;
-    }
-
-    #oracleMsg{
-      font-size:22px;
-      margin:12px 0 16px;
-    }
-
-    .row{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
+    .card h2{margin:0 0 10px;font-size:18px;color:var(--muted);font-weight:600}
+    .highlight{color:var(--accent);font-weight:700}
+    #oracleMsg{font-size:22px;margin:12px 0 16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
     button{
-      appearance:none;
-      border:0;
-      border-radius:14px;
-      padding:12px 18px;
-      background:var(--btn);
-      color:var(--btn-text);
-      font-weight:700;
-      cursor:pointer;
+      appearance:none;border:0;border-radius:14px;padding:12px 18px;
+      background:var(--btn);color:var(--btn-text);font-weight:700;cursor:pointer
     }
-
-    button.secondary{
-      background:var(--btn-soft);
-    }
-
-    .note{
-      color:var(--muted);
-      font-size:14px;
-      margin-top:8px;
-    }
-
-    .muted-link{
-      color:var(--muted);
-      text-decoration:underline;
-      cursor:pointer;
-    }
-
-    footer{
-      color:var(--muted);
-      text-align:center;
-      margin:22px 0;
-    }
+    button.secondary{background:var(--btn-soft)}
+    .note{color:var(--muted);font-size:14px;margin-top:8px}
+    .muted-link{color:var(--muted);text-decoration:underline;cursor:pointer}
+    footer{color:var(--muted);text-align:center;margin:22px 0}
   </style>
-
-  <script src="oraculo.js?v=10" defer></script>
 </head>
 <body>
   <div class="wrap">
@@ -184,9 +103,7 @@
 
     <section class="card" id="cardOraculo" style="display:none">
       <h2>Oráculo — Entre Mundos</h2>
-      <div id="oracleMsg" aria-live="polite">
-        Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.
-      </div>
+      <div id="oracleMsg" aria-live="polite">Toca em <em>“Nova mensagem”</em> para receber a tua mensagem.</div>
 
       <div class="row">
         <button id="btnNova">Nova mensagem</button>
@@ -201,57 +118,73 @@
     <section class="card" id="tabFavoritos" style="display:none">
       <h2>Favoritos</h2>
       <div id="favList"></div>
-      <p class="note">
-        <a id="btnClearAll" class="muted-link" href="javascript:void(0)">Limpar todos</a>
-      </p>
+      <p class="note"><a id="btnClearAll" class="muted-link" href="javascript:void(0)">Limpar todos</a></p>
     </section>
 
     <footer>Entre Mundos — feito com verdade 💙</footer>
   </div>
 
   <script>
+    const mensagens = [
+      "A tua alma já sabe o caminho. Só precisas de confiar.",
+      "Nem tudo precisa de resposta hoje. Às vezes, sentir é suficiente.",
+      "O silêncio também fala. E hoje tem algo para te dizer.",
+      "O que procuras fora já está dentro de ti.",
+      "Confia no que sentes, mesmo que não consigas explicar.",
+      "Há algo a alinhar-se na tua vida, mesmo que ainda não vejas.",
+      "Nem tudo o que se afasta é perda. Às vezes é libertação.",
+      "O teu tempo não está atrasado. Está a acontecer como precisa.",
+      "A tua energia muda mais do que imaginas.",
+      "Respira. Estás exatamente onde precisas estar.",
+      "Não forces o que já está a fluir dentro de ti.",
+      "O que é verdadeiro permanece.",
+      "Há uma versão tua a nascer neste momento.",
+      "Nem tudo precisa de ser resolvido agora.",
+      "Confia no processo, mesmo no caos.",
+      "O que te inquieta está a tentar mostrar-te algo.",
+      "A tua sensibilidade é força, não fraqueza.",
+      "Há respostas que só chegam quando paras.",
+      "Nem todos vão entender o teu caminho. E está tudo bem.",
+      "Tu não estás perdido. Estás a transformar-te."
+    ];
+
     const HIDE_ORACULO_IN = new Set(['tabMensagem', 'tabRespiracao', 'tabSilencio', 'tabFavoritos']);
     const ORACULO_ID = 'cardOraculo';
 
-    document.querySelectorAll('.chip[data-tab]').forEach(chip => {
-      chip.addEventListener('click', () => {
-        document.querySelectorAll('section.card').forEach(sec => {
-          sec.style.display = 'none';
-        });
-
-        const tabId = chip.dataset.tab;
-        const target = document.getElementById(tabId);
-        if (target) {
-          target.style.display = 'block';
-        }
-
-        const oraculo = document.getElementById(ORACULO_ID);
-        if (oraculo) {
-          oraculo.style.display = HIDE_ORACULO_IN.has(tabId) ? 'none' : 'block';
-        }
-
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
+    function mostrarTab(tabId) {
+      document.querySelectorAll('section.card').forEach(sec => {
+        sec.style.display = 'none';
       });
-    });
 
-    (function initTabs(){
-      const defaultTab = 'tabFrase';
-      const first = document.querySelector(`.chip[data-tab="${defaultTab}"]`)
-                 || document.querySelector('.chip[data-tab]');
-      if (first) first.click();
-    })();
+      const target = document.getElementById(tabId);
+      if (target) target.style.display = 'block';
+
+      const oraculo = document.getElementById(ORACULO_ID);
+      if (oraculo) {
+        oraculo.style.display = HIDE_ORACULO_IN.has(tabId) ? 'none' : 'block';
+      }
+
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      const chipAtivo = document.querySelector(`.chip[data-tab="${tabId}"]`);
+      if (chipAtivo) chipAtivo.classList.add('active');
+    }
+
+    document.querySelectorAll('.chip[data-tab]').forEach(chip => {
+      chip.addEventListener('click', () => mostrarTab(chip.dataset.tab));
+    });
 
     const LS_KEY = 'entreMundos.favs.v1';
     const elText = document.getElementById('oracleMsg');
     const favList = document.getElementById('favList');
+    const btnNova = document.getElementById('btnNova');
+    const btnCopiar = document.getElementById('btnCopiar');
+    const btnWhats = document.getElementById('btnWhats');
+    const btnFav = document.getElementById('btnFav');
+    const btnClearAll = document.getElementById('btnClearAll');
 
     function getFavs() {
-      try {
-        return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-      } catch {
-        return [];
-      }
+      try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+      catch { return []; }
     }
 
     function setFavs(a) {
@@ -269,7 +202,6 @@
 
     function renderFavs() {
       if (!favList) return;
-
       const favs = getFavs();
 
       favList.innerHTML = favs.length
@@ -286,38 +218,54 @@
           const t = decodeURIComponent(b.dataset.rm);
           setFavs(getFavs().filter(x => x !== t));
           renderFavs();
+          updateFavBtn();
         });
       });
     }
 
     function updateFavBtn() {
-      const btnFav = document.getElementById('btnFav');
       if (!btnFav) return;
-
       const t = (elText?.textContent || '').trim();
-      if (!t) {
-        btnFav.disabled = true;
+      if (!t || t.includes('Toca em')) {
+        btnFav.disabled = false;
         btnFav.textContent = '⭐ Guardar';
         return;
       }
-
-      btnFav.disabled = false;
       btnFav.textContent = getFavs().includes(t) ? '★ Guardado' : '⭐ Guardar';
     }
 
-    document.getElementById('btnFav')?.addEventListener('click', () => {
-      const t = (elText?.textContent || '').trim();
-      if (!t) return;
+    function novaMensagem() {
+      const i = Math.floor(Math.random() * mensagens.length);
+      const msg = mensagens[i];
+      if (elText) elText.textContent = msg;
+      updateFavBtn();
+    }
 
+    btnNova?.addEventListener('click', novaMensagem);
+
+    btnCopiar?.addEventListener('click', async () => {
+      const texto = elText?.textContent || '';
+      try {
+        await navigator.clipboard.writeText(texto);
+      } catch {}
+    });
+
+    btnWhats?.addEventListener('click', () => {
+      const texto = encodeURIComponent(elText?.textContent || '');
+      window.open(`https://wa.me/?text=${texto}`, '_blank');
+    });
+
+    btnFav?.addEventListener('click', () => {
+      const t = (elText?.textContent || '').trim();
+      if (!t || t.includes('Toca em')) return;
       const favs = getFavs();
       if (!favs.includes(t)) favs.unshift(t);
-
       setFavs(favs);
       renderFavs();
       updateFavBtn();
     });
 
-    document.getElementById('btnClearAll')?.addEventListener('click', () => {
+    btnClearAll?.addEventListener('click', () => {
       if (confirm('Limpar todos os favoritos?')) {
         setFavs([]);
         renderFavs();
@@ -327,6 +275,7 @@
 
     renderFavs();
     updateFavBtn();
+    mostrarTab('tabFrase');
   </script>
 </body>
 </html>
