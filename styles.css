@@ -1,0 +1,62 @@
+:root{
+  --bg:#030611;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;min-height:100%;background:#000814;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+}
+body{
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+}
+.app-shell{
+  width:min(100vw,430px);
+  height:100vh;
+  position:relative;
+  background:#000;
+}
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+}
+.screen.active{display:block}
+.screen-bg{
+  position:absolute;
+  inset:0;
+  background-position:center top;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+.bg-home{background-image:url('home-bg.png')}
+.bg-mensagem{background-image:url('mensagem-bg.png')}
+.bg-respiracao{background-image:url('respiracao-bg.png')}
+.bg-oraculo{background-image:url('oraculo-bg.png')}
+.bg-silencio{background-image:url('silencio-bg.png')}
+
+#mensagem .screen-bg{background-image:url('home-bg.png')}
+#respiracao .screen-bg{background-image:url('respiracao-bg.png')}
+#oraculo .screen-bg{background-image:url('oraculo-bg.png')}
+#silencio .screen-bg{background-image:url('silencio-bg.png')}
+
+.nav-taps{
+  position:absolute;
+  left:0;right:0;bottom:max(10px, env(safe-area-inset-bottom));
+  height:94px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:0 18px;
+  z-index:5;
+}
+.nav-taps button{
+  background:transparent;
+  border:none;
+  appearance:none;
+}
+
+@media (max-width:380px){
+  .nav-taps{height:84px;padding:0 14px}
+}
