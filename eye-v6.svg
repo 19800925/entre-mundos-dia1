@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" fill="none">
+  <defs>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF4C9"/>
+      <stop offset="55%" stop-color="#F1C867"/>
+      <stop offset="100%" stop-color="#BC7627"/>
+    </radialGradient>
+    <linearGradient id="goldLine" x1="80" y1="80" x2="560" y2="180">
+      <stop offset="0%" stop-color="#C8842C"/>
+      <stop offset="22%" stop-color="#FFE39C"/>
+      <stop offset="52%" stop-color="#F0BE55"/>
+      <stop offset="76%" stop-color="#FFF1C0"/>
+      <stop offset="100%" stop-color="#BD7726"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-50%" width="160%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b1"/>
+      <feColorMatrix in="b1" type="matrix" values="1 0 0 0 0
+                                                    0 1 0 0 0
+                                                    0 1 0 0 0
+                                                    0 0 0 0.26 0"/>
+    </filter>
+    <filter id="irisGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="16" result="b2"/>
+      <feColorMatrix in="b2" type="matrix" values="1 0 0 0 0
+                                                    0 1 0 0 0
+                                                    0 1 0 0 0
+                                                    0 0 0 0.34 0"/>
+    </filter>
+  </defs>
+
+  <g opacity=".95">
+    <path d="M93 160 C150 115, 228 86, 320 86 C412 86, 490 115, 547 160" stroke="url(#goldLine)" stroke-width="10" stroke-linecap="round" filter="url(#softGlow)"/>
+    <path d="M72 182 C143 212, 223 230, 320 230 C417 230, 497 212, 568 182" stroke="url(#goldLine)" stroke-width="10" stroke-linecap="round" filter="url(#softGlow)"/>
+  </g>
+
+  <circle cx="320" cy="176" r="57" fill="url(#iris)"/>
+  <circle cx="320" cy="176" r="57" fill="#F1C65E" opacity=".38" filter="url(#irisGlow)"/>
+  <path d="M301 116 C289 137, 289 160, 294 180 C298 196, 298 214, 291 232" stroke="#B97929" stroke-width="8" stroke-linecap="round" opacity=".58"/>
+  <circle cx="302" cy="151" r="14" fill="#FFF8D2" opacity=".34"/>
+</svg>

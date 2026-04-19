@@ -7,50 +7,89 @@
   <meta name="description" content="Entre Mundos" />
   <title>Entre Mundos</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body>
+  <div class="cosmos"></div>
+
   <div class="app-shell">
-    <section class="screen active" id="mensagem" aria-label="Mensagem">
-      <div class="screen-bg bg-home"></div>
-      <div class="nav-taps">
-        <button data-tab="mensagem" aria-label="Mensagem"></button>
-        <button data-tab="respiracao" aria-label="Respiração"></button>
-        <button data-tab="oraculo" aria-label="Oráculo"></button>
-        <button data-tab="silencio" aria-label="Silêncio"></button>
-      </div>
-    </section>
+    <main class="screen active home-screen" id="mensagem">
+      <header class="hero">
+        <div class="hero-top">
+          <h1>ENTRE<br>MUNDOS</h1>
+          <div class="gold-line"><span></span></div>
+        </div>
 
-    <section class="screen" id="respiracao" aria-label="Respiração">
-      <div class="screen-bg bg-respiracao"></div>
-      <div class="nav-taps">
-        <button data-tab="mensagem" aria-label="Mensagem"></button>
-        <button data-tab="respiracao" aria-label="Respiração"></button>
-        <button data-tab="oraculo" aria-label="Oráculo"></button>
-        <button data-tab="silencio" aria-label="Silêncio"></button>
-      </div>
-    </section>
+        <div class="hero-middle">
+          <div class="galaxy-ribbon"></div>
+          <img src="eye-v6.svg" class="hero-eye" alt="Olho dourado" />
+        </div>
 
-    <section class="screen" id="oraculo" aria-label="Oráculo">
-      <div class="screen-bg bg-oraculo"></div>
-      <div class="nav-taps">
-        <button data-tab="mensagem" aria-label="Mensagem"></button>
-        <button data-tab="respiracao" aria-label="Respiração"></button>
-        <button data-tab="oraculo" aria-label="Oráculo"></button>
-        <button data-tab="silencio" aria-label="Silêncio"></button>
-      </div>
-    </section>
+        <div class="hero-bottom">
+          <p class="home-copy">UM ESPAÇO PARA TE LEMBRARES<br>DE QUEM REALMENTE ÉS</p>
+          <div class="star-divider"></div>
+          <p class="home-cta">ESCOLHE O TEU CAMINHO</p>
+        </div>
+      </header>
+    </main>
 
-    <section class="screen" id="silencio" aria-label="Silêncio">
-      <div class="screen-bg bg-silencio"></div>
-      <div class="nav-taps">
-        <button data-tab="mensagem" aria-label="Mensagem"></button>
-        <button data-tab="respiracao" aria-label="Respiração"></button>
-        <button data-tab="oraculo" aria-label="Oráculo"></button>
-        <button data-tab="silencio" aria-label="Silêncio"></button>
+    <main class="screen" id="respiracao">
+      <header class="section-header">RESPIRAÇÃO</header>
+      <p class="section-subtitle">Sente. Respira. Confia.</p>
+      <div class="section-ribbon ribbon-right"></div>
+      <div class="breath-orb" id="breathVisual"><span id="breathStage">INSPIRA<br><strong>4s</strong></span></div>
+      <p class="small-meta">4 • 4 • 6</p>
+      <p class="small-meta dim">5 CICLOS</p>
+      <div class="actions stack">
+        <button id="startBreathBtn" class="pill gold">COMEÇAR</button>
+        <button id="resetBreathBtn" class="pill">REINICIAR</button>
       </div>
-    </section>
+    </main>
+
+    <main class="screen" id="oraculo">
+      <header class="section-header">ORÁCULO</header>
+      <div class="section-ribbon ribbon-left"></div>
+      <div class="oracle-card">
+        <div class="card-star top"></div>
+        <p id="oracleText">Tudo o que procuras lá fora, já vive em ti.</p>
+        <div class="card-star bottom"></div>
+      </div>
+      <div class="actions stack compact">
+        <button id="newOracleBtn" class="pill gold">NOVA MENSAGEM</button>
+        <button id="shareOracleBtn" class="pill">PARTILHAR</button>
+      </div>
+      <p class="small-meta dim" id="oracleCounter">1 de 60</p>
+    </main>
+
+    <main class="screen" id="silencio">
+      <header class="section-header">SILÊNCIO</header>
+      <p class="section-subtitle">Encontra-te no silêncio.<br>Volta para ti.</p>
+      <div class="silence-ring" id="silenceRing">
+        <div class="silence-inner">
+          <div class="silence-time" id="silenceTime">02:00</div>
+          <div class="small-meta">MINUTOS</div>
+        </div>
+      </div>
+      <div class="preset-row">
+        <button class="pill preset" data-seconds="60">1 MIN</button>
+        <button class="pill preset gold active" data-seconds="120">2 MIN</button>
+        <button class="pill preset" data-seconds="300">5 MIN</button>
+      </div>
+      <div class="actions stack compact">
+        <button id="startSilenceBtn" class="pill gold">INICIAR</button>
+        <button id="pauseSilenceBtn" class="pill">PAUSAR</button>
+        <button id="resetSilenceBtn" class="pill">REPOR</button>
+      </div>
+      <p class="small-meta dim" id="silenceHint">Respira. Fica. Não tens de fazer mais nada.</p>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="mensagem"><span class="icon">●</span><span>MENSAGEM</span></button>
+      <button class="nav-item" data-tab="respiracao"><span class="icon">◌</span><span>RESPIRAÇÃO</span></button>
+      <button class="nav-item" data-tab="oraculo"><span class="icon">✦</span><span>ORÁCULO</span></button>
+      <button class="nav-item" data-tab="silencio"><span class="icon">◯</span><span>SILÊNCIO</span></button>
+    </nav>
   </div>
-  <script src="app.js"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
