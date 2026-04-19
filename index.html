@@ -1,95 +1,1085 @@
 <!doctype html>
+
 <html lang="pt-PT">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#050814" />
-  <meta name="description" content="Entre Mundos" />
-  <title>Entre Mundos</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#070b1f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Entre Mundos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: #070b1f;
+  color: #e8dfc0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* ─── CSS VARIABLES ─── */
+:root {
+–gold: #c9a84c;
+–gold-light: #f0d078;
+–gold-dim: rgba(201,168,76,0.35);
+–deep: #070b1f;
+–mid: #0d1535;
+–blue-glow: #3b6fd4;
+–purple: #6b3fa0;
+–text: #e8dfc0;
+–dim: rgba(232,223,192,0.45);
+–nav-h: 72px;
+}
+
+/* ─── COSMOS CANVAS ─── */
+.cosmos {
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,111,212,0.18) 0%, transparent 60%),
+radial-gradient(ellipse 60% 40% at 20% 80%, rgba(107,63,160,0.15) 0%, transparent 55%),
+radial-gradient(ellipse 50% 50% at 80% 30%, rgba(107,63,160,0.10) 0%, transparent 50%),
+linear-gradient(180deg, #070b1f 0%, #0a0f28 40%, #080c20 100%);
+z-index: 0;
+overflow: hidden;
+}
+.cosmos::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background-image:
+radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 25% 8%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1.5px 1.5px at 40% 20%, rgba(255,255,255,0.9) 0%, transparent 100%),
+radial-gradient(1px 1px at 60% 5%, rgba(255,255,255,0.7) 0%, transparent 100%),
+radial-gradient(1px 1px at 75% 18%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1.5px 1.5px at 88% 12%, rgba(255,255,255,0.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 5% 45%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 18% 38%, rgba(255,255,255,0.7) 0%, transparent 100%),
+radial-gradient(1.5px 1.5px at 32% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1px 1px at 50% 42%, rgba(255,255,255,0.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 68% 35%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 82% 48%, rgba(255,255,255,0.7) 0%, transparent 100%),
+radial-gradient(1px 1px at 93% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1px 1px at 12% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1.5px 1.5px at 28% 78%, rgba(255,255,255,0.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 45% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1px 1px at 62% 72%, rgba(255,255,255,0.7) 0%, transparent 100%),
+radial-gradient(1px 1px at 78% 60%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 92% 75%, rgba(255,255,255,0.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 8% 90%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1.5px 1.5px at 35% 88%, rgba(255,255,255,0.7) 0%, transparent 100%),
+radial-gradient(1px 1px at 55% 95%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 72% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1px 1px at 88% 92%, rgba(255,255,255,0.8) 0%, transparent 100%);
+}
+
+/* Nebula / milky way streak */
+.cosmos::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse 30% 80% at 38% 50%, rgba(59,111,212,0.12) 0%, transparent 70%),
+radial-gradient(ellipse 20% 90% at 42% 50%, rgba(107,63,160,0.10) 0%, transparent 60%);
+transform: rotate(-15deg);
+}
+
+/* ─── SPARKLE DOTS floating ─── */
+.sparkle {
+position: fixed;
+border-radius: 50%;
+pointer-events: none;
+z-index: 1;
+animation: twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+0% { opacity: 0.2; transform: scale(0.8); }
+100% { opacity: 1; transform: scale(1.3); }
+}
+
+/* ─── APP SHELL ─── */
+.app-shell {
+position: relative;
+z-index: 2;
+height: 100dvh;
+display: flex;
+flex-direction: column;
+max-width: 480px;
+margin: 0 auto;
+}
+
+/* ─── SCREENS ─── */
+.screen {
+display: none;
+flex: 1;
+overflow-y: auto;
+overflow-x: hidden;
+padding: 0 0 calc(var(–nav-h) + 12px);
+scrollbar-width: none;
+}
+.screen::-webkit-scrollbar { display: none; }
+.screen.active { display: flex; flex-direction: column; align-items: center; }
+
+/* ─── SECTION HEADER ─── */
+.section-header {
+font-family: ‘Cinzel’, serif;
+font-size: 13px;
+letter-spacing: 0.25em;
+color: var(–text);
+text-align: center;
+padding: 52px 0 0;
+opacity: 0.9;
+display: flex;
+align-items: center;
+gap: 16px;
+width: 100%;
+justify-content: center;
+}
+.section-header::before,
+.section-header::after {
+content: ‘‹’;
+font-size: 16px;
+color: var(–gold);
+opacity: 0.6;
+}
+.section-header::after { content: ‘›’; }
+
+/* ─── HOME / MENSAGEM ─── */
+#mensagem {
+justify-content: space-between;
+padding-top: env(safe-area-inset-top, 0);
+}
+.hero {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 56px 32px 0;
+flex: 1;
+}
+.hero h1 {
+font-family: ‘Cinzel’, serif;
+font-size: clamp(36px, 10vw, 52px);
+font-weight: 600;
+letter-spacing: 0.12em;
+text-align: center;
+color: var(–text);
+line-height: 1.15;
+margin-bottom: 8px;
+}
+.gold-line {
+display: flex;
+align-items: center;
+gap: 8px;
+margin: 10px 0 28px;
+width: 140px;
+}
+.gold-line::before, .gold-line::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(–gold), transparent);
+}
+.gold-line span {
+width: 5px; height: 5px;
+border-radius: 50%;
+background: var(–gold);
+box-shadow: 0 0 8px var(–gold);
+}
+
+/* ─── EYE ─── */
+.hero-eye {
+position: relative;
+width: 160px;
+height: 80px;
+margin: 0 auto 32px;
+}
+.eye-upper, .eye-lower {
+position: absolute;
+left: 0; right: 0;
+height: 50%;
+border: 2px solid transparent;
+}
+.eye-upper {
+top: 0;
+border-top: 2px solid var(–gold);
+border-radius: 80px 80px 0 0;
+box-shadow: 0 -4px 20px rgba(201,168,76,0.3);
+}
+.eye-lower {
+bottom: 0;
+border-bottom: 2px solid var(–gold);
+border-radius: 0 0 80px 80px;
+box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+.eye-core {
+position: absolute;
+width: 40px; height: 40px;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+background: radial-gradient(circle, #f0c040 0%, #c9811c 50%, #8b4a00 100%);
+border-radius: 50%;
+box-shadow:
+0 0 16px rgba(201,168,76,0.8),
+0 0 40px rgba(201,168,76,0.4),
+0 0 80px rgba(201,168,76,0.15);
+animation: eyePulse 4s ease-in-out infinite;
+}
+@keyframes eyePulse {
+0%, 100% { box-shadow: 0 0 16px rgba(201,168,76,0.8), 0 0 40px rgba(201,168,76,0.4); }
+50% { box-shadow: 0 0 24px rgba(201,168,76,1), 0 0 60px rgba(201,168,76,0.6), 0 0 100px rgba(201,168,76,0.2); }
+}
+
+/* ─── HOME COPY ─── */
+.home-copy {
+font-size: 13px;
+letter-spacing: 0.18em;
+text-align: center;
+color: var(–text);
+opacity: 0.75;
+line-height: 1.8;
+margin-bottom: 20px;
+}
+.home-cta {
+font-family: ‘Cinzel’, serif;
+font-size: 11px;
+letter-spacing: 0.3em;
+color: var(–gold);
+opacity: 0.8;
+text-align: center;
+margin-bottom: 8px;
+}
+
+/* ─── MENSAGEM CARD on home ─── */
+.msg-card-home {
+width: calc(100% - 48px);
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(201,168,76,0.15);
+border-radius: 20px;
+padding: 32px 28px;
+text-align: center;
+position: relative;
+margin: 0 24px 32px;
+backdrop-filter: blur(8px);
+}
+.msg-card-home::before {
+content: ‘✦’;
+position: absolute;
+top: -10px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 14px;
+color: var(–gold);
+background: var(–deep);
+padding: 0 8px;
+text-shadow: 0 0 12px var(–gold);
+}
+.msg-card-home::after {
+content: ‘✦’;
+position: absolute;
+bottom: -10px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 14px;
+color: var(–gold);
+background: var(–deep);
+padding: 0 8px;
+text-shadow: 0 0 12px var(–gold);
+}
+.msg-card-home p {
+font-size: 18px;
+font-style: italic;
+line-height: 1.8;
+color: var(–text);
+font-weight: 300;
+}
+
+/* ─── RESPIRAÇÃO ─── */
+#respiracao { gap: 0; }
+.section-subtitle {
+font-size: 14px;
+font-style: italic;
+color: var(–dim);
+text-align: center;
+margin: 12px 0 28px;
+letter-spacing: 0.05em;
+}
+
+/* Breath Orb */
+.breath-orb {
+position: relative;
+width: 200px;
+height: 200px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 8px auto 20px;
+cursor: pointer;
+}
+.breath-orb::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+border-radius: 50%;
+border: 2px solid rgba(100,160,255,0.6);
+box-shadow:
+0 0 30px rgba(59,111,212,0.5),
+0 0 60px rgba(59,111,212,0.25),
+inset 0 0 30px rgba(59,111,212,0.1);
+animation: breathRing 8s ease-in-out infinite;
+}
+.breath-orb::after {
+content: ‘’;
+position: absolute;
+inset: 8px;
+border-radius: 50%;
+border: 1px solid rgba(100,160,255,0.25);
+}
+@keyframes breathRing {
+0%, 100% {
+box-shadow: 0 0 30px rgba(59,111,212,0.5), 0 0 60px rgba(59,111,212,0.25), inset 0 0 30px rgba(59,111,212,0.1);
+border-color: rgba(100,160,255,0.6);
+}
+50% {
+box-shadow: 0 0 50px rgba(59,111,212,0.8), 0 0 100px rgba(59,111,212,0.4), inset 0 0 50px rgba(59,111,212,0.2);
+border-color: rgba(120,180,255,1);
+}
+}
+.breath-orb.expanding::before { animation: breathExpand 4s ease-in-out forwards; }
+.breath-orb.holding::before { animation: none; box-shadow: 0 0 60px rgba(59,111,212,0.9), 0 0 120px rgba(59,111,212,0.5); }
+.breath-orb.exhaling::before { animation: breathContract 6s ease-in-out forwards; }
+
+@keyframes breathExpand {
+0% { transform: scale(0.85); opacity: 0.7; }
+100% { transform: scale(1.1); opacity: 1; }
+}
+@keyframes breathContract {
+0% { transform: scale(1.1); opacity: 1; }
+100% { transform: scale(0.85); opacity: 0.7; }
+}
+
+#breathStage {
+font-family: ‘Cinzel’, serif;
+font-size: 13px;
+letter-spacing: 0.15em;
+text-align: center;
+color: #a8c8ff;
+line-height: 1.6;
+position: relative;
+z-index: 2;
+}
+#breathStage strong {
+display: block;
+font-size: 36px;
+font-weight: 400;
+color: #fff;
+font-family: ‘Cormorant Garamond’, serif;
+letter-spacing: 0;
+}
+
+.small-meta {
+font-size: 13px;
+letter-spacing: 0.2em;
+color: var(–text);
+text-align: center;
+margin: 4px 0;
+}
+.small-meta.dim { color: var(–dim); font-size: 12px; }
+
+/* ─── ACTIONS ─── */
+.actions { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; padding: 16px 32px 0; }
+.actions.compact { padding-top: 10px; }
+
+/* ─── PILLS / BUTTONS ─── */
+.pill {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+height: 44px;
+padding: 0 28px;
+border-radius: 100px;
+border: 1px solid rgba(201,168,76,0.4);
+background: transparent;
+color: var(–text);
+font-family: ‘Cinzel’, serif;
+font-size: 11px;
+letter-spacing: 0.2em;
+cursor: pointer;
+transition: all 0.25s ease;
+min-width: 180px;
+}
+.pill:hover, .pill:active { background: rgba(201,168,76,0.08); }
+.pill.gold {
+background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(240,208,120,0.1));
+border-color: var(–gold);
+color: var(–gold-light);
+box-shadow: 0 0 20px rgba(201,168,76,0.15);
+}
+.pill.gold:active { background: rgba(201,168,76,0.3); }
+.share-icon { font-size: 14px; }
+
+/* ─── ORÁCULO ─── */
+#oraculo { justify-content: center; gap: 0; }
+.oracle-card {
+position: relative;
+width: calc(100% - 48px);
+margin: 24px 24px 20px;
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(201,168,76,0.18);
+border-radius: 20px;
+padding: 40px 28px;
+text-align: center;
+min-height: 180px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+backdrop-filter: blur(8px);
+}
+.card-star {
+width: 10px; height: 10px;
+background: var(–gold);
+border-radius: 50%;
+box-shadow: 0 0 12px var(–gold), 0 0 24px rgba(201,168,76,0.5);
+animation: starPulse 2s ease-in-out infinite alternate;
+}
+.card-star.top { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); }
+.card-star.bottom { position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); }
+@keyframes starPulse {
+0% { box-shadow: 0 0 8px var(–gold), 0 0 16px rgba(201,168,76,0.4); }
+100% { box-shadow: 0 0 16px var(–gold), 0 0 32px rgba(201,168,76,0.7); }
+}
+#oracleText {
+font-size: 20px;
+font-style: italic;
+font-weight: 300;
+line-height: 1.75;
+color: var(–text);
+}
+#oracleCounter {
+font-size: 12px;
+color: var(–gold);
+opacity: 0.6;
+letter-spacing: 0.1em;
+margin-top: 8px;
+}
+
+/* ─── SILÊNCIO ─── */
+#silencio { gap: 0; }
+.silence-ring {
+position: relative;
+width: 190px; height: 190px;
+margin: 24px auto 20px;
+}
+.silence-ring svg {
+position: absolute;
+inset: 0;
+width: 100%; height: 100%;
+transform: rotate(-90deg);
+}
+.silence-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 6; }
+.silence-progress {
+fill: none;
+stroke-width: 6;
+stroke-linecap: round;
+stroke: url(#ringGrad);
+transition: stroke-dashoffset 1s linear;
+}
+.silence-inner {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.silence-time {
+font-size: 38px;
+font-weight: 300;
+color: var(–text);
+letter-spacing: 0.05em;
+font-variant-numeric: tabular-nums;
+font-family: ‘Cormorant Garamond’, serif;
+}
+.preset-row {
+display: flex;
+gap: 10px;
+justify-content: center;
+margin: 4px 0 8px;
+}
+.preset {
+min-width: 72px;
+height: 36px;
+font-size: 10px;
+padding: 0 16px;
+}
+.preset.active {
+background: linear-gradient(135deg, rgba(180,120,40,0.4), rgba(201,168,76,0.2));
+border-color: var(–gold);
+color: var(–gold-light);
+}
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav {
+position: fixed;
+bottom: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+max-width: 480px;
+height: var(–nav-h);
+background: rgba(7,11,31,0.92);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border-top: 1px solid rgba(201,168,76,0.12);
+display: flex;
+align-items: center;
+justify-content: space-around;
+padding-bottom: env(safe-area-inset-bottom, 0);
+z-index: 100;
+}
+.nav-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+background: none;
+border: none;
+color: rgba(232,223,192,0.35);
+font-family: ‘Cinzel’, serif;
+font-size: 8.5px;
+letter-spacing: 0.12em;
+cursor: pointer;
+padding: 8px 12px;
+transition: color 0.2s;
+position: relative;
+}
+.nav-item .icon {
+font-size: 18px;
+line-height: 1;
+transition: all 0.2s;
+}
+.nav-item.active {
+color: var(–gold);
+}
+.nav-item.active .icon {
+text-shadow: 0 0 12px var(–gold);
+}
+.nav-item.active::after {
+content: ‘•’;
+position: absolute;
+bottom: 2px;
+font-size: 6px;
+color: var(–gold);
+}
+
+/* ─── TOAST ─── */
+.toast {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%) scale(0.85);
+background: rgba(201,168,76,0.12);
+border: 1px solid rgba(201,168,76,0.3);
+color: var(–gold-light);
+font-family: ‘Cinzel’, serif;
+font-size: 11px;
+letter-spacing: 0.15em;
+padding: 14px 28px;
+border-radius: 100px;
+opacity: 0;
+pointer-events: none;
+transition: all 0.3s;
+z-index: 999;
+backdrop-filter: blur(12px);
+}
+.toast.show {
+opacity: 1;
+transform: translate(-50%, -50%) scale(1);
+}
+
+/* ─── CYCLE COMPLETE OVERLAY ─── */
+.cycle-done {
+position: fixed;
+inset: 0;
+background: rgba(7,11,31,0.85);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 200;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.5s;
+}
+.cycle-done.show {
+opacity: 1;
+pointer-events: all;
+}
+.cycle-done p {
+font-family: ‘Cinzel’, serif;
+font-size: 14px;
+letter-spacing: 0.2em;
+color: var(–gold-light);
+text-align: center;
+margin-bottom: 32px;
+line-height: 2;
+}
+</style>
+
 </head>
 <body>
-  <div class="cosmos"></div>
 
-  <div class="app-shell">
-    <main class="screen active home-screen" id="mensagem">
-      <header class="hero">
-        <div class="hero-top">
-          <h1>ENTRE<br>MUNDOS</h1>
-          <div class="gold-line"><span></span></div>
-        </div>
+<!-- Cosmos background -->
 
-        <div class="hero-middle">
-          <div class="galaxy-ribbon"></div>
-          <img src="eye-v6.svg" class="hero-eye" alt="Olho dourado" />
-        </div>
+<div class="cosmos"></div>
 
-        <div class="hero-bottom">
-          <p class="home-copy">UM ESPAÇO PARA TE LEMBRARES<br>DE QUEM REALMENTE ÉS</p>
-          <div class="star-divider"></div>
-          <p class="home-cta">ESCOLHE O TEU CAMINHO</p>
-        </div>
-      </header>
-    </main>
+<!-- Floating sparkles -->
 
-    <main class="screen" id="respiracao">
-      <header class="section-header">RESPIRAÇÃO</header>
-      <p class="section-subtitle">Sente. Respira. Confia.</p>
-      <div class="section-ribbon ribbon-right"></div>
-      <div class="breath-orb" id="breathVisual"><span id="breathStage">INSPIRA<br><strong>4s</strong></span></div>
-      <p class="small-meta">4 • 4 • 6</p>
-      <p class="small-meta dim">5 CICLOS</p>
-      <div class="actions stack">
-        <button id="startBreathBtn" class="pill gold">COMEÇAR</button>
-        <button id="resetBreathBtn" class="pill">REINICIAR</button>
+<div class="sparkle" style="width:3px;height:3px;background:#c9a84c;top:12%;left:15%;animation-delay:0s;animation-duration:2.8s;"></div>
+<div class="sparkle" style="width:2px;height:2px;background:#fff;top:20%;left:70%;animation-delay:0.6s;animation-duration:3.5s;"></div>
+<div class="sparkle" style="width:4px;height:4px;background:#c9a84c;top:35%;left:88%;animation-delay:1.2s;animation-duration:2.2s;"></div>
+<div class="sparkle" style="width:2px;height:2px;background:#fff;top:55%;left:8%;animation-delay:0.4s;animation-duration:4s;"></div>
+<div class="sparkle" style="width:3px;height:3px;background:#a8c8ff;top:65%;left:80%;animation-delay:1.8s;animation-duration:3s;"></div>
+<div class="sparkle" style="width:2px;height:2px;background:#c9a84c;top:78%;left:45%;animation-delay:0.9s;animation-duration:3.8s;"></div>
+<div class="sparkle" style="width:3px;height:3px;background:#fff;top:8%;left:50%;animation-delay:2s;animation-duration:2.5s;"></div>
+
+<!-- App Shell -->
+
+<div class="app-shell">
+
+  <!-- MENSAGEM (home) -->
+
+  <main class="screen active" id="mensagem">
+    <header class="hero">
+      <h1>ENTRE<br>MUNDOS</h1>
+      <div class="gold-line"><span></span></div>
+      <div class="hero-eye" aria-label="Olho dourado">
+        <span class="eye-upper"></span>
+        <span class="eye-lower"></span>
+        <span class="eye-core"></span>
       </div>
-    </main>
+      <p class="home-copy">UM ESPAÇO PARA TE LEMBRARES<br>DE QUEM REALMENTE ÉS</p>
+      <p class="home-cta">ESCOLHE O TEU CAMINHO</p>
+    </header>
+    <div class="msg-card-home">
+      <p id="dailyMessage">Hoje, escolhe parar.<br>Respira fundo.<br>O universo está<br>a alinhar-se contigo.<br>Confia no processo.</p>
+    </div>
+    <div class="actions compact">
+      <button class="pill" id="shareMsgBtn">PARTILHAR <span class="share-icon">⎙</span></button>
+    </div>
+  </main>
 
-    <main class="screen" id="oraculo">
-      <header class="section-header">ORÁCULO</header>
-      <div class="section-ribbon ribbon-left"></div>
-      <div class="oracle-card">
-        <div class="card-star top"></div>
-        <p id="oracleText">Tudo o que procuras lá fora, já vive em ti.</p>
-        <div class="card-star bottom"></div>
-      </div>
-      <div class="actions stack compact">
-        <button id="newOracleBtn" class="pill gold">NOVA MENSAGEM</button>
-        <button id="shareOracleBtn" class="pill">PARTILHAR</button>
-      </div>
-      <p class="small-meta dim" id="oracleCounter">1 de 60</p>
-    </main>
+  <!-- RESPIRAÇÃO -->
 
-    <main class="screen" id="silencio">
-      <header class="section-header">SILÊNCIO</header>
-      <p class="section-subtitle">Encontra-te no silêncio.<br>Volta para ti.</p>
-      <div class="silence-ring" id="silenceRing">
-        <div class="silence-inner">
-          <div class="silence-time" id="silenceTime">02:00</div>
-          <div class="small-meta">MINUTOS</div>
-        </div>
-      </div>
-      <div class="preset-row">
-        <button class="pill preset" data-seconds="60">1 MIN</button>
-        <button class="pill preset gold active" data-seconds="120">2 MIN</button>
-        <button class="pill preset" data-seconds="300">5 MIN</button>
-      </div>
-      <div class="actions stack compact">
-        <button id="startSilenceBtn" class="pill gold">INICIAR</button>
-        <button id="pauseSilenceBtn" class="pill">PAUSAR</button>
-        <button id="resetSilenceBtn" class="pill">REPOR</button>
-      </div>
-      <p class="small-meta dim" id="silenceHint">Respira. Fica. Não tens de fazer mais nada.</p>
-    </main>
+  <main class="screen" id="respiracao">
+    <header class="section-header">RESPIRAÇÃO</header>
+    <p class="section-subtitle">Sente. Respira. Confia.</p>
+    <div class="breath-orb" id="breathVisual">
+      <span id="breathStage">INSPIRA<br><strong>4s</strong></span>
+    </div>
+    <p class="small-meta">4 • 4 • 6</p>
+    <p class="small-meta dim" id="cycleCount">5 CICLOS</p>
+    <div class="actions stack">
+      <button id="startBreathBtn" class="pill gold">COMEÇAR</button>
+      <button id="resetBreathBtn" class="pill">REINICIAR</button>
+    </div>
+  </main>
 
-    <nav class="bottom-nav">
-      <button class="nav-item active" data-tab="mensagem"><span class="icon">●</span><span>MENSAGEM</span></button>
-      <button class="nav-item" data-tab="respiracao"><span class="icon">◌</span><span>RESPIRAÇÃO</span></button>
-      <button class="nav-item" data-tab="oraculo"><span class="icon">✦</span><span>ORÁCULO</span></button>
-      <button class="nav-item" data-tab="silencio"><span class="icon">◯</span><span>SILÊNCIO</span></button>
-    </nav>
-  </div>
-  <script src="app.js?v=6"></script>
+  <!-- ORÁCULO -->
+
+  <main class="screen" id="oraculo">
+    <header class="section-header">ORÁCULO</header>
+    <div class="oracle-card">
+      <div class="card-star top"></div>
+      <p id="oracleText">Tudo o que procuras lá fora, já vive em ti.</p>
+      <div class="card-star bottom"></div>
+    </div>
+    <div class="actions stack compact">
+      <button id="newOracleBtn" class="pill gold">NOVA MENSAGEM <span class="share-icon">✦</span></button>
+      <button id="shareOracleBtn" class="pill">PARTILHAR <span class="share-icon">⎙</span></button>
+    </div>
+    <p class="small-meta dim" id="oracleCounter">Frase 1 de 60</p>
+  </main>
+
+  <!-- SILÊNCIO -->
+
+  <main class="screen" id="silencio">
+    <header class="section-header">SILÊNCIO</header>
+    <p class="section-subtitle">Encontra-te no silêncio.<br>Volta para ti.</p>
+    <div class="silence-ring" id="silenceRing">
+      <svg viewBox="0 0 190 190">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#6b3fa0"/>
+            <stop offset="50%" stop-color="#3b6fd4"/>
+            <stop offset="100%" stop-color="#c9a84c"/>
+          </linearGradient>
+        </defs>
+        <circle class="silence-track" cx="95" cy="95" r="85"/>
+        <circle class="silence-progress" id="silenceProgress" cx="95" cy="95" r="85"
+          stroke-dasharray="534" stroke-dashoffset="0"/>
+      </svg>
+      <div class="silence-inner">
+        <div class="silence-time" id="silenceTime">02:00</div>
+        <div class="small-meta dim">MINUTOS</div>
+      </div>
+    </div>
+    <div class="preset-row">
+      <button class="pill preset" data-seconds="60">1 MIN</button>
+      <button class="pill preset gold active" data-seconds="120">2 MIN</button>
+      <button class="pill preset" data-seconds="300">5 MIN</button>
+    </div>
+    <div class="actions stack compact">
+      <button id="startSilenceBtn" class="pill gold">INICIAR</button>
+      <button id="pauseSilenceBtn" class="pill">PAUSAR</button>
+      <button id="resetSilenceBtn" class="pill">REPOR</button>
+    </div>
+    <p class="small-meta dim" style="margin-top:12px;padding:0 32px;">Respira. Fica. Não tens de fazer mais nada.</p>
+  </main>
+
+  <!-- NAV -->
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="mensagem">
+      <span class="icon">●</span><span>MENSAGEM</span>
+    </button>
+    <button class="nav-item" data-tab="respiracao">
+      <span class="icon">◌</span><span>RESPIRAÇÃO</span>
+    </button>
+    <button class="nav-item" data-tab="oraculo">
+      <span class="icon">✦</span><span>ORÁCULO</span>
+    </button>
+    <button class="nav-item" data-tab="silencio">
+      <span class="icon">◯</span><span>SILÊNCIO</span>
+    </button>
+  </nav>
+</div>
+
+<!-- Toast -->
+
+<div class="toast" id="toast"></div>
+
+<!-- Cycle done overlay -->
+
+<div class="cycle-done" id="cycleDone">
+  <p>CICLO COMPLETO<br>✦<br>Bem feito.</p>
+  <button class="pill gold" id="closeCycleBtn">FECHAR</button>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   TABS
+══════════════════════════════════ */
+const navBtns = document.querySelectorAll('.nav-item');
+const screens = document.querySelectorAll('.screen');
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    screens.forEach(s => s.classList.remove('active'));
+    navBtns.forEach(b => b.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+    btn.classList.add('active');
+  });
+});
+
+/* ══════════════════════════════════
+   TOAST
+══════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ══════════════════════════════════
+   SHARE / COPY
+══════════════════════════════════ */
+async function shareText(text, label) {
+  if (navigator.share) {
+    try { await navigator.share({ text }); return; } catch(e) {}
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('Copiado ✦');
+  } catch(e) { showToast('Partilha indisponível'); }
+}
+
+document.getElementById('shareMsgBtn').addEventListener('click', () => {
+  const txt = document.getElementById('dailyMessage').innerText;
+  shareText('✦ Entre Mundos ✦\n\n' + txt);
+});
+document.getElementById('shareOracleBtn').addEventListener('click', () => {
+  const txt = document.getElementById('oracleText').innerText;
+  shareText('✦ Entre Mundos — Oráculo ✦\n\n' + txt);
+});
+
+/* ══════════════════════════════════
+   ORÁCULO
+══════════════════════════════════ */
+const frases = [
+  "Tudo o que procuras lá fora, já vive em ti.",
+  "Hoje, escolhe parar. Respira fundo. O universo está a alinhar-se contigo. Confia no processo.",
+  "Não precisas de fazer mais nada. Só de ser.",
+  "A tua luz não precisa de permissão para brilhar.",
+  "Cada respiração é um recomeço.",
+  "Estás exatamente onde deves estar.",
+  "O silêncio é a tua casa mais profunda.",
+  "Confia no ritmo da tua própria vida.",
+  "A paz que procuras já existe dentro de ti.",
+  "Deixa ir o que já não te serve. Com amor.",
+  "O teu coração sabe o caminho. Ouve-o.",
+  "És suficiente. Sempre foste.",
+  "Neste momento, és completo.",
+  "A transformação começa numa respiração de cada vez.",
+  "Não és os teus pensamentos. És quem os observa.",
+  "Traz-te de volta ao momento presente. Aqui é seguro.",
+  "O teu valor não depende da tua produtividade.",
+  "Sente os teus pés no chão. Estás aqui. Estás bem.",
+  "A cura acontece quando paras de lutar.",
+  "Confia em ti como confias no nascer do sol.",
+  "Dás tanto. Lembra-te de também receber.",
+  "Não há pressa. O universo tem o seu próprio tempo.",
+  "A gratidão transforma o que temos em suficiente.",
+  "Cada fim é o início de algo que ainda não vês.",
+  "O amor começa sempre por ti.",
+  "Podes ser gentil contigo mesmo. Isso é força.",
+  "Às vezes o maior ato de coragem é descansar.",
+  "Sentes o peso? Deixa-o pousar. Não és obrigado a carregar tudo.",
+  "O universo conspira sempre a teu favor.",
+  "Há beleza neste exato instante, se escolheres vê-la.",
+  "A tua sensibilidade é um dom, não uma fraqueza.",
+  "Vai devagar. Isso é sabedoria.",
+  "Respira. Estás a fazer o teu melhor.",
+  "A jornada mais importante é a que fazes para dentro.",
+  "Não precisas de ser perfeito para ser amado.",
+  "O teu corpo é sagrado. Trata-o com ternura.",
+  "Soltar não é fracasso. É liberdade.",
+  "Cada cicatriz conta uma história de sobrevivência.",
+  "Estás conectado a algo muito maior do que podes imaginar.",
+  "O que sentes é válido. Sempre.",
+  "Hoje, uma coisa de cada vez.",
+  "Há poder no teu silêncio.",
+  "Confia no processo, mesmo quando não vês o resultado.",
+  "A tua presença é o maior presente que podes oferecer.",
+  "Não tens de ser forte o tempo todo.",
+  "Há magia no ordinário. Abre os olhos.",
+  "O teu caminho não tem de fazer sentido para os outros.",
+  "Pede ajuda. É um ato de amor-próprio.",
+  "A vida não é uma corrida. É uma dança.",
+  "Mereces o mesmo amor que dás tão generosamente.",
+  "Quando a mente aquieta, a alma fala.",
+  "O presente é o único lugar onde podes viver.",
+  "Deixa a natureza lembrar-te do que importa.",
+  "A tua alma conhece o caminho. Confia nela.",
+  "Não precisas de provar nada a ninguém, incluindo a ti mesmo.",
+  "Cada momento difícil passou. Este também passará.",
+  "Viver com intenção é um ato revolucionário.",
+  "A tua história ainda não terminou.",
+  "Há sempre uma nova manhã depois da noite mais escura.",
+  "Hoje, escolhe a versão mais gentil de ti mesmo."
+];
+
+let oraculoIndex = 0;
+let oraculoShuffled = [...Array(frases.length).keys()];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+shuffle(oraculoShuffled);
+
+function showOracle(idx) {
+  const el = document.getElementById('oracleText');
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(8px)';
+  setTimeout(() => {
+    el.textContent = frases[oraculoShuffled[idx]];
+    el.style.transition = 'all 0.4s ease';
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+  }, 200);
+  document.getElementById('oracleCounter').textContent = `Frase ${idx + 1} de ${frases.length}`;
+}
+
+showOracle(oraculoIndex);
+
+document.getElementById('newOracleBtn').addEventListener('click', () => {
+  oraculoIndex = (oraculoIndex + 1) % frases.length;
+  if (oraculoIndex === 0) shuffle(oraculoShuffled);
+  showOracle(oraculoIndex);
+});
+
+/* ══════════════════════════════════
+   RESPIRAÇÃO
+══════════════════════════════════ */
+let breathTimer = null;
+let breathRunning = false;
+let currentCycle = 0;
+const totalCycles = 5;
+const phases = [
+  { label: 'INSPIRA', secs: 4, class: 'expanding' },
+  { label: 'RETÉM',   secs: 4, class: 'holding' },
+  { label: 'EXPIRA',  secs: 6, class: 'exhaling' }
+];
+let phaseIdx = 0;
+let countdown = 0;
+
+const breathOrb = document.getElementById('breathVisual');
+const breathStage = document.getElementById('breathStage');
+const cycleCountEl = document.getElementById('cycleCount');
+
+function updateBreathUI() {
+  const p = phases[phaseIdx];
+  breathStage.innerHTML = `${p.label}<br><strong>${countdown}s</strong>`;
+  cycleCountEl.textContent = `CICLO ${currentCycle + 1} DE ${totalCycles}`;
+  breathOrb.className = 'breath-orb ' + p.class;
+}
+
+function startBreath() {
+  if (breathRunning) return;
+  breathRunning = true;
+  phaseIdx = 0;
+  currentCycle = 0;
+  countdown = phases[0].secs;
+  updateBreathUI();
+  breathTimer = setInterval(tick, 1000);
+}
+
+function tick() {
+  countdown--;
+  if (countdown <= 0) {
+    phaseIdx++;
+    if (phaseIdx >= phases.length) {
+      phaseIdx = 0;
+      currentCycle++;
+      if (currentCycle >= totalCycles) {
+        resetBreath();
+        document.getElementById('cycleDone').classList.add('show');
+        return;
+      }
+    }
+    countdown = phases[phaseIdx].secs;
+  }
+  updateBreathUI();
+}
+
+function resetBreath() {
+  clearInterval(breathTimer);
+  breathRunning = false;
+  phaseIdx = 0;
+  currentCycle = 0;
+  countdown = phases[0].secs;
+  breathOrb.className = 'breath-orb';
+  breathStage.innerHTML = `INSPIRA<br><strong>4s</strong>`;
+  cycleCountEl.textContent = '5 CICLOS';
+}
+
+document.getElementById('startBreathBtn').addEventListener('click', startBreath);
+document.getElementById('resetBreathBtn').addEventListener('click', resetBreath);
+document.getElementById('closeCycleBtn').addEventListener('click', () => {
+  document.getElementById('cycleDone').classList.remove('show');
+});
+
+/* ══════════════════════════════════
+   SILÊNCIO
+══════════════════════════════════ */
+let silenceTimer = null;
+let silenceRunning = false;
+let silenceTotal = 120;
+let silenceLeft = 120;
+
+const circumference = 2 * Math.PI * 85; // r=85
+const progressEl = document.getElementById('silenceProgress');
+const silenceTimeEl = document.getElementById('silenceTime');
+
+progressEl.style.strokeDasharray = circumference;
+progressEl.style.strokeDashoffset = 0;
+
+function setPreset(secs) {
+  resetSilence();
+  silenceTotal = secs;
+  silenceLeft = secs;
+  updateSilenceUI();
+}
+
+function updateSilenceUI() {
+  const m = Math.floor(silenceLeft / 60).toString().padStart(2, '0');
+  const s = (silenceLeft % 60).toString().padStart(2, '0');
+  silenceTimeEl.textContent = `${m}:${s}`;
+  const frac = silenceLeft / silenceTotal;
+  progressEl.style.strokeDashoffset = circumference * (1 - frac);
+}
+
+function startSilence() {
+  if (silenceRunning || silenceLeft <= 0) return;
+  silenceRunning = true;
+  silenceTimer = setInterval(() => {
+    silenceLeft--;
+    updateSilenceUI();
+    if (silenceLeft <= 0) {
+      clearInterval(silenceTimer);
+      silenceRunning = false;
+      showToast('✦ Tempo completo ✦');
+    }
+  }, 1000);
+}
+
+function pauseSilence() {
+  clearInterval(silenceTimer);
+  silenceRunning = false;
+}
+
+function resetSilence() {
+  clearInterval(silenceTimer);
+  silenceRunning = false;
+  silenceLeft = silenceTotal;
+  updateSilenceUI();
+}
+
+document.getElementById('startSilenceBtn').addEventListener('click', startSilence);
+document.getElementById('pauseSilenceBtn').addEventListener('click', pauseSilence);
+document.getElementById('resetSilenceBtn').addEventListener('click', resetSilence);
+
+document.querySelectorAll('.preset').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset').forEach(b => b.classList.remove('active', 'gold'));
+    btn.classList.add('active', 'gold');
+    setPreset(parseInt(btn.dataset.seconds));
+  });
+});
+
+updateSilenceUI();
+
+/* ══════════════════════════════════
+   DAILY MESSAGE (rotates daily)
+══════════════════════════════════ */
+const mensagensDiarias = [
+  "Hoje, escolhe parar.<br>Respira fundo.<br>O universo está<br>a alinhar-se contigo.<br>Confia no processo.",
+  "Dás tanto aos outros.<br>Hoje, lembra-te<br>de também dar a ti mesmo.<br>Mereces.",
+  "Não precisas de ter<br>tudo resolvido.<br>Basta estar presente<br>neste momento.",
+  "A tua sensibilidade<br>não é uma fraqueza.<br>É a tua maior força.",
+  "Vai devagar.<br>Não há pressa.<br>A vida acontece<br>no caminho.",
+  "Hoje, sê gentil contigo.<br>Faz o teu melhor<br>e deixa o resto<br>ao universo.",
+  "Cada momento difícil<br>que já passaste<br>prova que és<br>mais forte do que pensas."
+];
+
+const dayIdx = new Date().getDay();
+document.getElementById('dailyMessage').innerHTML = mensagensDiarias[dayIdx];
+</script>
+
 </body>
 </html>
