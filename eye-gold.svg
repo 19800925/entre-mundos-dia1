@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" fill="none">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="goldBall" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#fff6cf"/>
+      <stop offset="38%" stop-color="#f0d67f"/>
+      <stop offset="72%" stop-color="#d5a53b"/>
+      <stop offset="100%" stop-color="#8a5a10"/>
+    </radialGradient>
+    <linearGradient id="goldLine" x1="0" x2="1">
+      <stop offset="0%" stop-color="#d6a53c"/>
+      <stop offset="45%" stop-color="#f6dfa1"/>
+      <stop offset="100%" stop-color="#bb8420"/>
+    </linearGradient>
+  </defs>
+  <path d="M50 120 C110 42, 310 42, 370 120" stroke="url(#goldLine)" stroke-width="11" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M40 138 C110 196, 310 196, 380 138" stroke="url(#goldLine)" stroke-width="11" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="210" cy="134" r="43" fill="url(#goldBall)" filter="url(#glow)"/>
+  <path d="M182 100 C192 112, 195 124, 194 142 C193 159, 199 171, 210 178" stroke="#bf8a23" stroke-width="8" stroke-linecap="round" opacity="0.55"/>
+</svg>

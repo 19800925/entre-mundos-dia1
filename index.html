@@ -1,151 +1,82 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Entre Mundos — Dia 1</title>
-
-<style>
-body{
-  margin:0;
-  background:#0b2238;
-  color:white;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-}
-.wrap{
-  max-width:700px;
-  margin:auto;
-  padding:20px;
-}
-h1{
-  margin-top:0;
-}
-nav{
-  display:flex;
-  gap:10px;
-  margin-bottom:20px;
-  flex-wrap:wrap;
-}
-.chip{
-  padding:10px 14px;
-  background:#1a3a5a;
-  border-radius:12px;
-  cursor:pointer;
-  user-select:none;
-}
-.chip.active{
-  background:#214f85;
-}
-.card{
-  background:#112c4a;
-  padding:20px;
-  border-radius:16px;
-  margin-top:10px;
-}
-button{
-  padding:10px 14px;
-  border-radius:10px;
-  border:0;
-  background:#214f85;
-  color:white;
-  margin-right:10px;
-  margin-bottom:10px;
-  cursor:pointer;
-}
-#oracleMsg{
-  font-size:22px;
-  line-height:1.5;
-  margin-bottom:18px;
-}
-p{
-  line-height:1.6;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b1f" />
+  <meta name="description" content="Entre Mundos" />
+  <title>Entre Mundos</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-<div class="wrap">
+  <div class="cosmos"></div>
+  <div class="app-shell">
+    <main class="screen active" id="mensagem">
+      <header class="hero">
+        <h1>ENTRE<br>MUNDOS</h1>
+        <div class="gold-line"><span></span></div>
+        <img src="eye-gold.svg" class="hero-eye" alt="Olho dourado" />
+        <p class="home-copy">UM ESPAÇO PARA TE LEMBRARES<br>DE QUEM REALMENTE ÉS</p>
+        <p class="home-cta">ESCOLHE O TEU CAMINHO</p>
+      </header>
+    </main>
 
-<h1>Entre Mundos</h1>
+    <main class="screen" id="respiracao">
+      <header class="section-header">RESPIRAÇÃO</header>
+      <p class="section-subtitle">Sente. Respira. Confia.</p>
+      <div class="breath-orb" id="breathVisual"><span id="breathStage">INSPIRA<br><strong>4s</strong></span></div>
+      <p class="small-meta">4 • 4 • 6</p>
+      <p class="small-meta dim">5 CICLOS</p>
+      <div class="actions stack">
+        <button id="startBreathBtn" class="pill gold">COMEÇAR</button>
+        <button id="resetBreathBtn" class="pill">REINICIAR</button>
+      </div>
+    </main>
 
-<nav>
-  <div class="chip" data-tab="tabOraculo">Oráculo</div>
-  <div class="chip" data-tab="tabResp">Respiração</div>
-  <div class="chip" data-tab="tabFrase">Frase</div>
-</nav>
+    <main class="screen" id="oraculo">
+      <header class="section-header">ORÁCULO</header>
+      <div class="oracle-card">
+        <div class="card-star top"></div>
+        <p id="oracleText">Tudo o que procuras lá fora, já vive em ti.</p>
+        <div class="card-star bottom"></div>
+      </div>
+      <div class="actions stack compact">
+        <button id="newOracleBtn" class="pill gold">NOVA MENSAGEM</button>
+        <button id="shareOracleBtn" class="pill">PARTILHAR</button>
+      </div>
+      <p class="small-meta dim" id="oracleCounter">1 de 60</p>
+    </main>
 
-<section id="tabOraculo" class="card">
-  <h2>Oráculo</h2>
-  <div id="oracleMsg">Clica em "Nova mensagem"</div>
-  <button id="btnNova">Nova mensagem</button>
-  <button id="btnCopiar">Copiar</button>
-  <button id="btnWhats">WhatsApp</button>
-</section>
+    <main class="screen" id="silencio">
+      <header class="section-header">SILÊNCIO</header>
+      <p class="section-subtitle">Encontra-te no silêncio.<br>Volta para ti.</p>
+      <div class="silence-ring" id="silenceRing">
+        <div class="silence-inner">
+          <div class="silence-time" id="silenceTime">02:00</div>
+          <div class="small-meta">MINUTOS</div>
+        </div>
+      </div>
+      <div class="preset-row">
+        <button class="pill preset" data-seconds="60">1 MIN</button>
+        <button class="pill preset gold active" data-seconds="120">2 MIN</button>
+        <button class="pill preset" data-seconds="300">5 MIN</button>
+      </div>
+      <div class="actions stack compact">
+        <button id="startSilenceBtn" class="pill gold">INICIAR</button>
+        <button id="pauseSilenceBtn" class="pill">PAUSAR</button>
+        <button id="resetSilenceBtn" class="pill">REPOR</button>
+      </div>
+      <p class="small-meta dim" id="silenceHint">Respira. Fica. Não tens de fazer mais nada.</p>
+    </main>
 
-<section id="tabResp" class="card" style="display:none">
-  <h2>Respiração</h2>
-  <p>Respira 4, segura 4, expira 6.</p>
-</section>
-
-<section id="tabFrase" class="card" style="display:none">
-  <h2>Frase</h2>
-  <p>Mesmo no escuro, a tua luz interior sabe o caminho.</p>
-</section>
-
-</div>
-
-<script>
-const mensagens = [
-  "A tua alma já sabe o caminho.",
-  "Confia no que sentes.",
-  "Nem tudo precisa de resposta hoje.",
-  "Respira. Estás onde precisas estar.",
-  "O que procuras já está dentro de ti."
-];
-
-const el = document.getElementById("oracleMsg");
-const btnNova = document.getElementById("btnNova");
-const btnCopiar = document.getElementById("btnCopiar");
-const btnWhats = document.getElementById("btnWhats");
-
-btnNova.onclick = () => {
-  const i = Math.floor(Math.random() * mensagens.length);
-  el.textContent = mensagens[i];
-};
-
-btnCopiar.onclick = async () => {
-  try {
-    await navigator.clipboard.writeText(el.textContent);
-    alert("Mensagem copiada.");
-  } catch {
-    alert("Não consegui copiar automaticamente.");
-  }
-};
-
-btnWhats.onclick = async () => {
-  const texto = el.textContent;
-
-  try {
-    await navigator.clipboard.writeText(texto);
-    alert("Mensagem copiada 🩵\nAgora cola no teu Estado do WhatsApp.");
-  } catch {
-    alert("Copia manualmente esta mensagem para o teu Estado:\n\n" + texto);
-  }
-
-  window.location.href = "https://wa.me/";
-};
-
-document.querySelectorAll(".chip").forEach(c => {
-  c.onclick = () => {
-    document.querySelectorAll(".card").forEach(s => s.style.display = "none");
-    document.getElementById(c.dataset.tab).style.display = "block";
-    document.querySelectorAll(".chip").forEach(x => x.classList.remove("active"));
-    c.classList.add("active");
-  };
-});
-
-document.querySelector('.chip[data-tab="tabOraculo"]').click();
-</script>
-
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="mensagem"><span class="icon">●</span><span>MENSAGEM</span></button>
+      <button class="nav-item" data-tab="respiracao"><span class="icon">◌</span><span>RESPIRAÇÃO</span></button>
+      <button class="nav-item" data-tab="oraculo"><span class="icon">✦</span><span>ORÁCULO</span></button>
+      <button class="nav-item" data-tab="silencio"><span class="icon">◯</span><span>SILÊNCIO</span></button>
+    </nav>
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>
